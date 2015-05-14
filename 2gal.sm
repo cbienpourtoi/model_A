@@ -1,0 +1,2208 @@
+2gal 	erase
+	ctype black
+	ltype 0	
+
+	DEFINE  TeX_strings 1	
+	
+	ptype 3 0
+
+	expand 0.8
+	 
+	 	location 4500 29500 4500 29500
+
+
+
+	LIMITS 460 -460 -460 460 BOX 0 1 1 3
+#	LIMITS -350 350 0 1 BOX 0 1 3 0	 
+
+#	limits -350 350 -350 350
+#	axis 1 1 1 0  -350 350 -350 350 400 800
+#	box
+
+	expand 1.5
+
+	relocate -160 420
+	putlabel 3 NGC 1023
+
+	expand 1.0
+
+	set a=100,200,1
+
+	set a1=-250+a*0
+
+
+	set b=100,200,1
+
+	set b1=-280+b*0
+
+
+	ctype blue
+
+
+	#shed a a1 b b1 1000
+
+
+	set a=0,100,1
+
+	set a1=-250+a*0
+
+
+	set b=0,100,1
+
+	set b1=-280+b*0
+
+
+	ctype cyan
+
+
+	#shed a a1 b b1 1000
+
+
+	set a=-100,0,1
+
+	set a1=-250+a*0
+
+
+	set b=-100,0,1
+
+	set b1=-280+b*0
+
+
+	ctype red
+
+
+	#shed a a1 b b1 1000
+
+	expand 1.0
+	
+	ptype 3 3
+
+	#data vprofile.dat
+	#read v 1 read xs 2 read ysi 3 
+
+	#data coord.dat
+	#read x 1 read ys 2 read y 5 read fb 6 read o 
+
+	#data likelihood.dat
+
+	#read f 6 read rh 8 read nh 9 
+
+	data  prob_bd.dat
+	read v 3  read bb 5 read bd 6
+	read l 7 read h 8 read id 11 read xs 9 read ys 10 read ra 1 read dec 2
+
+#	data  unliky.dat
+#	read xs 1 read ys 2 read ysi 3 read v 4  
+#	read l 8 read h 9 read bb 6 read bd 7
+
+	set xs=-xs
+	set ys=ys
+	#set ys=-ysi*0.39
+	#set v=v-637
+
+
+
+
+	#	set bb=EXP(bb)
+	#	set bd=EXP(bd)
+	#	set f=(bb/(bb+bd))
+
+	#	print for_lodo_test.dat {ra dec xs ys v f bb bd gi id}
+
+
+
+        print {id bb bd}
+
+
+
+
+#	ctype green
+#	points x y
+#	ctype red
+#	set xx=-xx
+#	points xs ys
+#	ctype blue
+#	points xs ysi
+#	points x ys
+
+
+		do i=0,dimen(ys)-1{
+	
+		set xxs=xs[$i]
+		set yysi=ys[$i]	
+		set vv=bb[$i]
+		set fbb=bb[$i]
+		set idd=id[$i]
+	
+		
+
+		
+		if(idd==1){
+		ptype 10 0 }else{
+
+		ptype 3 3}
+			
+	 	   if (vv > 0.8) {
+		      set b = 255
+		      set g = 0
+		      set r = 0
+		      #write standard v < 325 at $i
+		      #print {r g b x y v}
+		   } else {
+		      if (vv > 0.7) {
+			 set b = 255
+			 set g = int(abs(vv-0.8)*2550)
+			 set r = 0
+			 #write standard v < 475 at $i
+			 #print {r g b x y v}
+		      } else { 
+			 if (vv > 0.6) {
+			    set b = int(abs(0.6-vv)*2550)
+			    set g = 255
+			    set r = 0
+			    #write standard v < 625 at $i
+			    #print {r g b x y v}
+		         } else {
+			    if (vv > 0.5) {
+			       set b = 0
+			       set g = 255
+			       set r = int(abs(vv-0.5)*2550)
+			       #write standard v < 775 at $i
+			       #print {r g b x y v}
+			    } else {
+			       if (vv > 0.4) {
+				  set b = 0
+				  set g = int(abs(0.4-vv)*2550)
+				  set r = 255
+				  #write standard v < 925 at $i
+				  #print {r g b x y v}
+			       } else {
+				  set b = 0
+				  set g = 0
+				  set r = 255
+				  #write standard v > 925 at $i
+				  #print {r g b x y v}
+			       }
+			    }  
+			 }
+		      }
+		   
+	   reset_ctype
+		   ctype = ctype() concat r + 256*(g+256*b)
+		   ctype = ctype(string) concat 'kleur'
+
+		   ctype kleur
+		  
+		
+
+		
+		#if(vv<610){ctype blue}else{
+	
+		#if(vv<750){ctype cyan}else{
+		#ctype red}}}
+
+		
+	 
+	
+		
+	
+		
+		expand 1.5	
+		points xxs yysi}
+
+
+
+	!rm yes.dat
+	!rm no.dat
+       
+
+       lweight 3
+	
+
+		do   i=0,dimen(l)-1{
+	
+		set ll=l[$i]
+		set idd=id[$i]
+		set xxs=xs[$i]
+	
+		set yysi=ys[$i]
+		set hh=h[$i]
+		set vv=v[$i]		
+		set mm=mm+1
+
+		
+		#set yysi=yysi*0.24
+
+		if(hh==1){
+		if(ll<-6.85){
+
+		print + yes.dat{mm rra ddec ff gii vv} 
+
+		
+			#if(mm==4){
+			#ctype cyan}
+			
+			expand 2.
+			ctype black
+
+
+
+			ptype 4 1
+			points xxs yysi}  } 	
+
+		if(hh==2){
+		if(ll<-6.85){
+
+			print + yes.dat{mm rra ddec ff gii vv} 
+			#if(mm==4){
+			#ctype cyan}
+			
+			expand 2.
+			ctype black
+
+	
+			ptype 4 1
+			points xxs yysi}}		
+
+		if(hh==3){
+		if(ll<-6.85){
+	
+			print + yes.dat{mm rra ddec ff gii  vv} 
+			#if(mm==4){
+			#ctype cyan}
+			
+			expand 2.
+			ctype black
+
+	
+			ptype 4 1
+			points xxs yysi}
+	}
+
+		if(hh==4){
+		if(ll<-6.5){
+
+			print + yes.dat{mm rra ddec ff gii vv} 
+			#if(mm==4){
+			#ctype cyan}
+			
+			expand 2.
+			ctype black
+
+		
+			ptype 4 1
+			points xxs yysi}}
+	}
+
+
+	lweight 0
+
+	data bin.dat
+	read rmax 5 read h 2 read o 6
+
+	
+
+	expand 0.1
+
+	ctype black
+
+	do i=0,dimen(h)-1{
+
+
+
+
+	set hh=h[$i]
+	set rr=rmax[$i]
+
+	#print{rr}
+	set xmax= -rr,rr,1
+	set ymax=sqrt((rr*0.39)**2-(0.39*xmax)**2)
+	
+	
+	ptype 30 0
+	points xmax ymax
+	set ymax=-ymax
+
+	points xmax ymax}
+
+	expand 0.8
+
+	
+	
+
+
+	relocate -350 395
+	ctype black
+	expand 1.6
+	ptype 30 0
+#	dot 
+	expand 0.8
+	relocate -380 395
+#	putlabel 3 rejected 
+
+
+
+	
+
+	expand 1.0
+
+#	xlabel \Delta X(arcsec)
+	ylabel \Delta Y(arcsec)
+	relocate 0 480
+	putlabel 8  \Delta X(arcsec)
+
+
+	expand 0.9
+	relocate -580 0
+	angle 90
+	putlabel 8 V (km/s)
+
+	angle 0
+	expand 0.8
+	LIMITS  0 0 300 900 BOX 3 3 0 1
+
+2galsimple erase
+	     ctype black
+	     ltype 0	
+
+	DEFINE  TeX_strings 1	
+	
+
+	expand 0.8
+	 
+	 	location 4500 29500 4500 29500
+
+
+
+	LIMITS 460 -460 -460 460 BOX 0 1 1 3
+
+	expand 1.5
+
+	relocate -160 420
+	putlabel 3 NGC 1023
+
+	expand 1.0
+
+
+	data  prob_bd.dat
+	read v 3  read bb 5 read bd 6
+	read l 7 read h 8 read id 11 read xs 9 read ys 10 read ra 1 read dec 2
+
+
+	set xs=-xs
+	set ys=ys
+	#set ys=-ysi*0.39
+	#set v=v-637
+
+
+
+
+
+
+        print {id bb bd}
+
+
+
+	lweight 3
+
+		do i=0,dimen(ys)-1{
+	
+		set xxs=xs[$i]
+		set yysi=ys[$i]	
+		set vv=bb[$i]
+		set fbb=bb[$i]
+		set idd=id[$i]
+	
+		
+		if(fbb > 0.5){
+		
+		set idari=1 }else{
+		set idari=0}
+
+		
+		
+		if(idd==idari){
+		ctype blue
+		ptype 10 0 }else{
+		ctype red
+		ptype 4 1}
+			
+
+		
+	 
+	
+		
+	
+		
+		expand 1.5	
+		points xxs yysi}
+
+
+
+	!rm yes.dat
+	!rm no.dat
+       
+
+       lweight 0
+	
+
+		do   i=0,dimen(l)-1{
+	
+		set ll=l[$i]
+		set idd=id[$i]
+		set xxs=xs[$i]
+	
+		set yysi=ys[$i]
+		set hh=h[$i]
+		set vv=v[$i]		
+		set mm=mm+1
+
+		
+		#set yysi=yysi*0.24
+
+		if(hh==1){
+		if(ll<-6.85){
+
+		print + yes.dat{mm rra ddec ff gii vv} 
+
+		
+			#if(mm==4){
+			#ctype cyan}
+			
+			expand 2.
+			ctype red
+
+
+
+			ptype 10 0
+			points xxs yysi}  } 	
+
+		if(hh==2){
+		if(ll<-6.85){
+
+			print + yes.dat{mm rra ddec ff gii vv} 
+			#if(mm==4){
+			#ctype cyan}
+			
+			expand 2.
+			ctype red
+
+	
+			ptype 10 0
+			points xxs yysi}}		
+
+		if(hh==3){
+		if(ll<-6.85){
+	
+			print + yes.dat{mm rra ddec ff gii  vv} 
+			#if(mm==4){
+			#ctype cyan}
+			
+			expand 2.
+			ctype red
+
+	
+			ptype 10 0
+			points xxs yysi}
+	}
+
+		if(hh==4){
+		if(ll<-6.5){
+
+			print + yes.dat{mm rra ddec ff gii vv} 
+			#if(mm==4){
+			#ctype cyan}
+			
+			expand 2.
+			ctype red
+
+		
+			ptype 10 0
+			points xxs yysi}}
+	}
+
+
+	lweight 1
+
+	data bin.dat
+	read rmax 5 read h 2 read o 6
+
+	
+
+	expand 0.05
+
+	ctype black
+	
+
+	do i=0,dimen(h)-1{
+
+
+
+
+	set hh=h[$i]
+	set rr=rmax[$i]
+
+	#print{rr}
+	set xmax= -rr,rr,1
+	set ymax=sqrt((rr*0.39)**2-(0.39*xmax)**2)
+	
+	
+	ptype 30 0
+	points xmax ymax
+	set ymax=-ymax
+
+	points xmax ymax}
+
+	expand 0.8
+
+	
+	
+
+
+	relocate -350 395
+	ctype black
+	expand 1.6
+	ptype 30 0
+#	dot 
+	expand 0.8
+	relocate -380 395
+#	putlabel 3 rejected 
+
+
+
+	
+
+	expand 1.0
+
+#	xlabel \Delta X(arcsec)
+	ylabel \Delta Y(arcsec)
+	relocate 0 480
+	putlabel 8  \Delta X(arcsec)
+
+
+	expand 0.9
+	relocate -580 0
+	angle 90
+	putlabel 8 V (km/s)
+
+	angle 0
+	expand 0.8
+	LIMITS  0 0 300 900 BOX 3 3 0 1
+
+radial erase
+	     ctype black
+	     ltype 0	
+
+	DEFINE  TeX_strings 1	
+	
+
+	expand 0.8
+	 
+	 	location 4500 29500 4500 29500
+
+
+
+	LIMITS 460 -460 -460 460 BOX 0 1 1 3
+
+	expand 1.5
+
+	relocate -160 420
+	putlabel 3 NGC 1023
+
+	expand 1.0
+
+
+	data  prob_bd.dat
+	read v 3  read bb 5 read bd 6
+	read l 7 read h 8 read id 11 read xs 9 read ys 10 read ra 1 read dec 2
+
+
+	set xs=-xs
+	set ys=ys
+	set ysi=ys/0.39
+
+	!rm yes.dat
+	!rm no.dat
+       
+
+       lweight 0
+       set 	mm=0
+       set nn=0
+
+		do   i=0,dimen(l)-1{
+	
+		set ll=l[$i]
+		set idd=id[$i]
+		set xxs=xs[$i]
+		set fbb=bb[$i]
+		set yysi=ysi[$i]
+		set hh=h[$i]
+		set vv=v[$i]		
+		set mm=mm+1
+
+
+	
+		if(fbb > 0.5){
+		
+		set idari=1 }else{
+		set idari=0}
+
+
+		if(idari!=id){set nw=1}
+		
+		
+		#set yysi=yysi*0.24
+
+		if(hh==1){
+		if(ll>= -6.85){
+
+		print + yes.dat{mm xxs yysi idari idd nw} 
+		set nn=nn+1
+		
+		}  } 	
+
+		if(hh==2){
+		if(ll>= -6.85){
+
+		print + yes.dat{mm xxs yysi idari idd nw} 
+		set nn=nn+1
+	}}		
+
+		if(hh==3){
+		if(ll>= -6.85){
+	
+				print + yes.dat{mm xxs yysi idari idd nw} 
+			set 	nn=nn+1
+	}
+	}
+
+		if(hh==4){
+		if(ll>= -6.5){
+
+		print + yes.dat{mm xxs yysi idari idd nw} 
+		set nn=nn+1
+	}}
+	}
+
+	print {mm nn}
+
+
+	
+	data bin_model0.dat
+	read rmax 5 read h 2 
+	set nwb=h
+
+	
+		do   i=0,dimen(l)-1{
+		
+		set xxs=xs[$i]
+		set yys=ysi[$i]
+		set nnw=nw[$i]
+		set	rrs=sqrt(xxs**2+yys**2)
+
+		do   j=0,dimen(rmax)-1{
+
+
+	
+		set rr=rmax[$j]
+		set nnwb=nwb[$j]
+
+
+		
+
+		if(rrs < rmax){set nnwb=nnwb+1}
+		print {rrs rr nnwb}}}
+
+		print {nwb}
+		
+
+
+
+colour	erase
+	ltype 0
+
+	ctype black
+	
+#	data  unliky.dat
+#	read xs 1 read ys 2 read ysi 3 read v 4  read bb 6 read bd 7
+#	read l 9 read h 13 read gi 8 
+
+	data  unliky.dat
+	read xs 3 read ys 4 read ysi 5 read v 6  read bb 8 read bd 9
+	read l 11 read h 15 read gi 10 read id 14
+
+	data histov.c.dat
+	read h_b 1 read h_d 2 read j 3 read ju 4
+
+
+	print {h_b h_d}	
+
+	location 3500 15000 3500 15000	
+	limits 0.6 1.7 0 20
+	ctype black
+	box
+
+		ctype green
+
+
+	histogram j  h_b
+	angle 210 
+	shade histogram 200 j h_b
+	angle 0
+
+	ctype magenta
+
+		histogram j  h_d
+	angle 210 
+	shade histogram 500 j h_d
+	angle 0
+
+
+
+	ctype black
+	xlabel g-z
+	ylabel N
+
+
+
+	ctype black
+
+	lweight 1
+	expand 1
+#	data  unliky.dat
+#	read xs 1 read ys 2 read ysi 3 read v 4  read bb 6 read bd 7
+#	read l 9 read h 13 read gi 8 
+	data  unliky.dat
+	read xs 3 read ys 4 read ysi 5 read v 6  read bb 8 read bd 9
+	read l 11 read h 15 read gi 10 read id 14
+
+
+	ptype 4 3
+
+	set bb=EXP(bb)
+	set bd=EXP(bd)
+	set f=(bb/(bb+bd))
+
+	print {cat gi f}
+
+
+
+
+
+	location 17500 29000 3500 15000	
+	limits 0.6 1.7 0 1.2 
+	box 1 0 0 2
+		expand 2.5
+	set nn=0	
+
+		do   i=0,dimen(l)-1{
+	
+		set ff=f[$i]
+		set gii=gi[$i]
+		set ccat=cat[$i]
+		set ll=l[$i]
+		print{ll}
+
+	if(ll<-6.85){
+	ptype 4 1
+	ctype cyan
+	set nn=nn+1}else{
+	ctype black 
+	ptype 4 0}
+	points gii ff}
+	print{nn}
+	ctype black
+
+	expand 1.0
+	ctype black
+	xlabel g-z
+	RELOCATE 1.8 0.7
+	putlabel 6 Pb
+
+	ctype black
+	
+	expand 1
+
+#	data  unliky.dat
+#	read xs 1 read ys 2 read ysi 3 read v 4  read bb 6 read bd 7
+#	read l 9 read h 13 read gi 8 
+
+	data  unliky.dat
+	read xs 3 read ys 4 read ysi 5 read v 6  read bb 8 read bd 9
+	read l 11 read h 15 read gi 10 read id 14
+
+	set bb=EXP(bb)
+	set bd=EXP(bd)
+	set f=(bb/(bb+bd))
+
+	print {cat gi f}
+
+	set r=sqrt(xs**2+ysi**2)
+
+	print{r}
+
+
+	location 17500 29000 17500 29000	
+	limits 0.6 1.7 0 600
+	box 0 0 1 2
+	set nn=0
+		expand 2.5	
+
+		set tot=0
+		set nn=0
+		do   i=0,dimen(l)-1{
+	
+		set ff=f[$i]
+		set gii=gi[$i]
+		set ccat=cat[$i]
+		set ll=l[$i]
+		set rr=r[$i]
+		print{ll}
+
+		
+	if((gii<0.9)||(gii>1.25)){
+	set tot=tot+1		
+	if(ff<0.5){
+	ptype 4 0
+	ctype magenta
+	set nn=nn+1}else{
+	ctype green 
+	ptype 4 0}
+	if(ll<-6.85){
+	ctype cyan
+	ptype 4 1}
+	points gii rr}}
+	print{nn tot}
+	ctype black
+	expand 1
+
+	ctype black
+	xlabel g-z
+	relocate 1.8 300
+	putlabel 6 R
+
+	ctype black
+	
+	data  ks.c.dat
+	read fd 1 read fb 2 read gi 3
+
+
+
+
+	expand 1
+	location 3500 15000 17500 29000	
+	limits 0.6 1.7 0 1.3
+	box 0 2 1 0
+	set nn=0	
+
+	expand 2.5
+	ctype magenta
+	connect gi fd
+	ctype green
+	connect gi fb
+	ctype black
+	expand 1
+	xlabel g-z
+	ylabel S
+
+
+CAT	erase
+
+	ctype black
+	
+	data  unliky.dat
+	read xs 1 read ys 2 read ysi 3 read v 4  read bb 6 read bd 7
+	read l 10 read h 11 read gi 8 read cat 9
+	
+	data histov.dat
+	read h_b 1 read h_d 2 read j 3 read ju 4
+
+
+	print {h_b h_d}	
+
+	location 3500 15000 3500 15000	
+	limits 0.  12 0 10
+	ctype black
+	box
+
+		ctype green
+
+
+	histogram j  h_b
+	angle 210 
+	shade histogram 200 j h_b
+	angle 0
+
+	ctype magenta
+
+		histogram j  h_d
+	angle 210 
+	shade histogram 500 j h_d
+	angle 0
+
+
+
+	ctype black
+	xlabel CAT
+	ylabel N
+
+
+
+	ctype black
+
+	lweight 1
+	expand 1
+	data  unliky.dat
+	read xs 1 read ys 2 read ysi 3 read v 4  read bb 6 read bd 7
+	read l 10 read h 11 read gi 8 read cat 9
+
+	ptype 4 3
+
+	set bb=EXP(bb)
+	set bd=EXP(bd)
+	set f=(bb/(bb+bd))
+
+	print {cat gi f}
+
+
+
+
+
+	location 17500 29000 3500 15000	
+	limits 0.  12  0 1.2 
+	box 1 0 0 2
+		expand 2.5
+	set nn=0	
+
+		do   i=0,dimen(l)-1{
+	
+		set ff=f[$i]
+		set gii=cat[$i]
+		set ccat=cat[$i]
+		set ll=l[$i]
+		#print{ll}
+
+	if(ll<-6.85){
+	ptype 4 1
+	ctype cyan
+	set nn=nn+1}else{
+	ctype black 
+	ptype 4 0}
+	points gii ff}
+	#print{nn}
+	ctype black
+
+	expand 1.0
+	ctype black
+	xlabel CAT
+	RELOCATE 14 0.6
+	putlabel 6 Pb
+
+	ctype black
+	
+	expand 1
+
+	data  unliky.dat
+	read xs 1 read ys 2 read ysi 3 read v 4  read bb 6 read bd 7
+	read l 10 read h 11 read gi 8 read cat 9
+
+	set bb=EXP(bb)
+	set bd=EXP(bd)
+	set f=(bb/(bb+bd))
+
+	print {cat gi f}
+
+	set r=sqrt(xs**2+ysi**2)
+
+	print{r}
+
+
+	location 17500 29000 17500 29000	
+	limits 0.  12  0 600
+	box 0 0 1 2
+	set nn=0
+		expand 2.5	
+
+		do   i=0,dimen(l)-1{
+	
+		set ff=f[$i]
+		set gii=cat[$i]
+		set ccat=cat[$i]
+		set ll=l[$i]
+		set rr=r[$i]
+		print{ll}
+
+	if(ll<-6.85){
+	ptype 4 1
+	ctype cyan
+	set nn=nn+1}else{
+	ctype black 
+	ptype 4 0}
+	points gii rr}
+	print{nn}
+	ctype black
+	expand 1
+
+	ctype black
+	xlabel CAT
+	relocate 14 300
+	putlabel 6 R
+
+	ctype black
+	
+	data  ks.dat
+	read fd 1 read fb 2 read cat 3
+
+
+
+
+	expand 1
+	location 3500 15000 17500 29000	
+	limits 0.  12  0 1
+	box 0 2 1 0
+	set nn=0	
+
+	expand 2.5
+	ctype magenta
+	connect cat fd
+	ctype green
+	connect cat fb
+	ctype black
+	expand 1
+	xlabel CAT
+	ylabel S
+
+CATgi	erase
+
+	ctype black
+	
+	
+	data  unliky.dat
+	read xs 1 read ys 2 read ysi 3 read v 4  read bb 6 read bd 7
+	read l 10 read h 11 read gi 8 read cat 9
+	
+	limits 0.6 1.3 2.5 10
+	ptype 20 3
+	box
+	
+	set bb=EXP(bb)
+	set bd=EXP(bd)
+	set f=(bb/(bb+bd))
+	ltype 0
+
+		do   i=0,dimen(l)-1{
+	
+		set ff=f[$i]
+		set ggi=gi[$i]
+		set ccat=cat[$i]
+		if(ff<0.5){
+		ptype 3 3} else{
+		ptype 20 0}
+		
+
+	print {ccat ggi f}
+
+
+	points ggi ccat}
+	
+	xlabel g-z
+	ylabel cat
+
+
+2galgi 	erase
+	ctype black
+	ltype 0	
+
+	DEFINE  TeX_strings 1	
+	
+	ptype 3 0
+
+	lweight 3
+	expand 1.2
+	 
+	 	location 4500 29500 4500 29500
+
+
+
+	LIMITS 460 -460 -460 460 BOX 0 1 1 3
+#	LIMITS -350 350 0 1 BOX 0 1 3 0	 
+
+#	limits -350 350 -350 350
+#	axis 1 1 1 0  -350 350 -350 350 400 800
+#	box
+
+	expand 1
+
+	relocate -190 430
+	putlabel 3 disk-like
+	relocate -190 400
+	putlabel 3 bulge-like
+	relocate -400 380
+	ptype 20 3
+	dot
+
+	relocate -190 360
+	putlabel 3 FFs
+	relocate -400 350	
+	expand 2
+	ptype 20 0
+	dot
+	expand 1
+
+	relocate -190 330
+	putlabel 3 1023A
+	relocate -400 320
+	expand 2
+	ptype 5 1
+	dot
+	expand 1
+
+	relocate -190 300
+	putlabel 3 rejected
+	relocate -400 290
+	expand 2
+	ptype 4 1
+	dot
+	expand 1
+	
+	
+
+	expand 1.0
+
+	set a=100,200,1
+
+	set a1=-250+a*0
+
+
+	set b=100,200,1
+
+	set b1=-280+b*0
+
+
+	ctype blue
+
+
+	#shed a a1 b b1 1000
+
+
+	set a=0,100,1
+
+	set a1=-250+a*0
+
+
+	set b=0,100,1
+
+	set b1=-280+b*0
+
+
+	ctype cyan
+
+
+	#shed a a1 b b1 1000
+
+
+	set a=-100,0,1
+
+	set a1=-250+a*0
+
+
+	set b=-100,0,1
+
+	set b1=-280+b*0
+
+
+	ctype red
+
+
+	#shed a a1 b b1 1000
+
+	expand 1.0
+	
+	ptype 3 0
+
+	#data vprofile.dat
+	#read v 1 read xs 2 read ysi 3 
+
+	#data coord.dat
+	#read x 1 read ys 2 read y 5 read fb 6 read o 7
+
+	#data likelihood.dat
+
+	#read f 6 read rh 8 read nh 9 
+
+	data    unliky.dat
+	read xs 3 read ys 4 read ysi 5 read v 6  read bb 8 read bd 9
+	read l 11 read h 15 read gi 10 read id 14
+
+
+
+	set xs=-xs
+	set ys=ys	
+	#set ys=-ysi*0.39
+	#set v=v-663
+
+	set bb=EXP(bb)
+	set bd=EXP(bd)
+	set f=(bb/(bb+bd))
+
+	print{xs ys v bb bd  f}
+
+
+
+        ###print {fbin id}
+
+
+
+
+#	ctype green
+#	points x y
+#	ctype red
+#	set xx=-xx
+#	points xs ys
+#	ctype blue
+#	points xs ysi
+#	points x ys
+
+
+		do i=0,dimen(ys)-1{
+	
+		set xxs=xs[$i]
+		set yysi=ys[$i]	
+		set vv=gi[$i]
+		set fbb=f[$i]
+		set rrsb=4.5
+		set rrsd=10
+		set idd=id[$i]
+	
+		
+		if(idd==1){
+		if(fbb<0.5){
+		 	
+		 
+ 	
+		  set i = 0,2*pi, 0.001   # supermongo works in radians
+  		  set x = xxs + rrsd*cos(i)
+		 
+  		  set y = yysi + 0.5*rrsd*sin(i)
+  		 
+		  
+			
+	   if (vv == 0.){
+		     ctype black
+		   } else {
+
+	   if (vv < 0.8) {
+		      set b = 255
+		      set g = 0
+		      set r = 0
+		      #write standard v < 325 at $i
+		      #print {r g b x y v}
+		   } else {
+		      if (vv < 0.9) {
+			 set b = 255
+			 set g = int((vv-0.8)*2550)
+			 set r = 0
+			 #write standard v < 475 at $i
+			 #print {r g b x y v}
+		      } else { 
+			 if (vv < 1) {
+			    set b = int((1-vv)*2550)
+			    set g = 255
+			    set r = 0
+			    #write standard v < 625 at $i
+			    #print {r g b x y v}
+		         } else {
+			    if (vv < 1.1) {
+			       set b = 0
+			       set g = 255
+			       set r = int((vv-1)*2550)
+			       #write standard v < 775 at $i
+			       #print {r g b x y v}
+			    } else {
+			       if (vv < 1.2) {
+				  set b = 0
+				  set g = int((1.2-vv)*2550)
+				  set r = 255
+				  #write standard v < 925 at $i
+				  #print {r g b x y v}
+			       } else {
+				  set b = 0
+				  set g = 0
+				  set r = 255
+				  #write standard v > 925 at $i
+				  #print {r g b x y v}
+			       }
+			    }  
+			 }
+		      }
+		   }
+
+
+		   reset_ctype
+		   ctype = ctype() concat r + 256*(g+256*b)
+		   ctype = ctype(string) concat 'kleur'
+
+		   ctype kleur
+		  
+		
+
+		
+		#if(vv<610){ctype blue}else{
+	
+		#if(vv<750){ctype cyan}else{
+		#ctype red}}}
+
+		
+		expand 1.	
+		connect x y}}}
+
+		do i=0,dimen(ys)-1{
+	
+		set xxs=xs[$i]
+		set yysi=ys[$i]	
+		set vv=gi[$i]
+		set fbb=f[$i]
+		set rrsb=4.5
+		set rrsd=10
+		set idd=id[$i]
+	
+		
+		if(idd==1){
+		if(fbb>0.5){
+		 	
+		
+		  ptype 20 3
+			
+	   if (vv == 0.){
+		     ctype black
+		   } else {
+
+	   if (vv < 0.8) {
+		      set b = 255
+		      set g = 0
+		      set r = 0
+		      #write standard v < 325 at $i
+		      #print {r g b x y v}
+		   } else {
+		      if (vv < 0.9) {
+			 set b = 255
+			 set g = int((vv-0.8)*2550)
+			 set r = 0
+			 #write standard v < 475 at $i
+			 #print {r g b x y v}
+		      } else { 
+			 if (vv < 1) {
+			    set b = int((1-vv)*2550)
+			    set g = 255
+			    set r = 0
+			    #write standard v < 625 at $i
+			    #print {r g b x y v}
+		         } else {
+			    if (vv < 1.1) {
+			       set b = 0
+			       set g = 255
+			       set r = int((vv-1)*2550)
+			       #write standard v < 775 at $i
+			       #print {r g b x y v}
+			    } else {
+			       if (vv < 1.2) {
+				  set b = 0
+				  set g = int((1.2-vv)*2550)
+				  set r = 255
+				  #write standard v < 925 at $i
+				  #print {r g b x y v}
+			       } else {
+				  set b = 0
+				  set g = 0
+				  set r = 255
+				  #write standard v > 925 at $i
+				  #print {r g b x y v}
+			       }
+			    }  
+			 }
+		      }
+		   }
+
+
+		   reset_ctype
+		   ctype = ctype() concat r + 256*(g+256*b)
+		   ctype = ctype(string) concat 'kleur'
+
+		   ctype kleur
+		  
+		
+
+		
+		#if(vv<610){ctype blue}else{
+	
+		#if(vv<750){ctype cyan}else{
+		#ctype red}}}
+
+		
+		expand 1.	
+		points xxs yysi}}}
+
+		do i=0,dimen(ys)-1{
+	
+		set xxs=xs[$i]
+		set yysi=ys[$i]	
+		set vv=gi[$i]
+		set fbb=f[$i]
+		set rrsb=4.5
+		set rrsd=12
+		set idd=id[$i]
+	
+
+		if(idd==2){
+		ptype 20 0
+			
+	   if (vv == 0.){
+		     ctype black
+		   } else {
+
+	   if (vv < 0.8) {
+		      set b = 255
+		      set g = 0
+		      set r = 0
+		      #write standard v < 325 at $i
+		      #print {r g b x y v}
+		   } else {
+		      if (vv < 0.9) {
+			 set b = 255
+			 set g = int((vv-0.8)*2550)
+			 set r = 0
+			 #write standard v < 475 at $i
+			 #print {r g b x y v}
+		      } else { 
+			 if (vv < 1) {
+			    set b = int((1-vv)*2550)
+			    set g = 255
+			    set r = 0
+			    #write standard v < 625 at $i
+			    #print {r g b x y v}
+		         } else {
+			    if (vv < 1.1) {
+			       set b = 0
+			       set g = 255
+			       set r = int((vv-1)*2550)
+			       #write standard v < 775 at $i
+			       #print {r g b x y v}
+			    } else {
+			       if (vv < 1.2) {
+				  set b = 0
+				  set g = int((1.2-vv)*2550)
+				  set r = 255
+				  #write standard v < 925 at $i
+				  #print {r g b x y v}
+			       } else {
+				  set b = 0
+				  set g = 0
+				  set r = 255
+				  #write standard v > 925 at $i
+				  #print {r g b x y v}
+			       }
+			    }  
+			 }
+		      }
+		   }
+
+
+		   reset_ctype
+		   ctype = ctype() concat r + 256*(g+256*b)
+		   ctype = ctype(string) concat 'kleur'
+
+		   ctype kleur
+		  
+		
+
+		
+		#if(vv<610){ctype blue}else{
+	
+		#if(vv<750){ctype cyan}else{
+		#ctype red}}}
+
+		
+			expand 2
+		points xxs yysi}}
+
+
+
+		do i=0,dimen(ys)-1{
+	
+		set xxs=xs[$i]
+		set yysi=ys[$i]	
+		set vv=gi[$i]
+		set fbb=f[$i]
+		set rrsb=4.5
+		set rrsd=12
+		set idd=id[$i]
+	
+		if(idd==4){
+		ptype 5 1
+			
+	   if (vv == 0.){
+		     ctype black
+		   } else {
+
+	   if (vv < 0.8) {
+		      set b = 255
+		      set g = 0
+		      set r = 0
+		      #write standard v < 325 at $i
+		      #print {r g b x y v}
+		   } else {
+		      if (vv < 0.9) {
+			 set b = 255
+			 set g = int((vv-0.8)*2550)
+			 set r = 0
+			 #write standard v < 475 at $i
+			 #print {r g b x y v}
+		      } else { 
+			 if (vv < 1) {
+			    set b = int((1-vv)*2550)
+			    set g = 255
+			    set r = 0
+			    #write standard v < 625 at $i
+			    #print {r g b x y v}
+		         } else {
+			    if (vv < 1.1) {
+			       set b = 0
+			       set g = 255
+			       set r = int((vv-1)*2550)
+			       #write standard v < 775 at $i
+			       #print {r g b x y v}
+			    } else {
+			       if (vv < 1.2) {
+				  set b = 0
+				  set g = int((1.2-vv)*2550)
+				  set r = 255
+				  #write standard v < 925 at $i
+				  #print {r g b x y v}
+			       } else {
+				  set b = 0
+				  set g = 0
+				  set r = 255
+				  #write standard v > 925 at $i
+				  #print {r g b x y v}
+			       }
+			    }  
+			 }
+		      }
+		   }
+
+
+		   reset_ctype
+		   ctype = ctype() concat r + 256*(g+256*b)
+		   ctype = ctype(string) concat 'kleur'
+
+		   ctype kleur
+		  
+		
+
+		
+		#if(vv<610){ctype blue}else{
+	
+		#if(vv<750){ctype cyan}else{
+		#ctype red}}}
+
+		
+			expand 2
+		points xxs yysi}}
+
+
+
+	
+
+	
+	
+	
+	
+		do   i=0,dimen(l)-1{
+	
+		set ll=l[$i]
+		set xxs=xs[$i]
+		set ff=f[$i]
+		set gii=gi[$i]
+		set ccat=cat[$i]
+		set yysi=ys[$i]
+		set hh=h[$i]
+		#set vv=v[$i]
+		
+		#set mm=m[$i]
+
+		
+		#set yysi=yysi*0.24
+
+		if(hh==1){
+		if(ll<-6.85){
+
+	#print + yes.dat{ff gii ccat} 
+		
+			#if(mm==4){
+			#ctype cyan}
+			
+			expand 2.
+			ctype black
+
+
+
+			ptype 4 1
+			points xxs yysi} } 	
+
+		if(hh==2){
+		if(ll<-6.85){
+
+		#	print + yes.dat{ff gii ccat} 
+			#if(mm==4){
+			#ctype cyan}
+			
+			expand 2.
+			ctype black
+
+	
+			ptype 4 1
+			points xxs yysi}}		
+
+		if(hh==3){
+		if(ll<-6.85){
+	
+			#print + yes.dat{ff gii ccat} 
+			#if(mm==4){
+			#ctype cyan}
+			
+			expand 2.
+			ctype black
+
+	
+			ptype 4 1
+			points xxs yysi}
+	}
+
+		if(hh==4){
+		if(ll<-6.85){
+
+			#print + yes.dat{ff gii ccat} 
+			#if(mm==4){
+			#ctype cyan}
+			
+			expand 2.
+			ctype black
+
+		
+			ptype 4 1
+			points xxs yysi}}
+	}
+
+
+	data bin.uni.b.dat
+	read rmax 5 read h 2 read o 6
+
+	
+
+	expand 0.1
+
+	ctype black
+
+	do i=0,dimen(h)-1{
+
+
+
+
+	set hh=h[$i]
+	set rr=rmax[$i]
+
+	#print{rr}
+	set xmax= -rr,rr,1
+	set ymax=sqrt((rr*0.24)**2-(0.24*xmax)**2)
+	
+	lweight 0	
+	ptype 30 0
+	ltype 0
+	connect xmax ymax
+	set ymax=-ymax
+
+	connect xmax ymax}
+
+	expand 0.8
+
+	lweight 3
+	
+
+
+	relocate -350 395
+	ctype black
+	expand 1.6
+	ptype 30 0
+#	dot 
+	expand 0.8
+	relocate -380 395
+#	putlabel 3 rejected 
+
+
+
+	
+
+	expand 1.0
+
+#	xlabel \Delta X(arcsec)
+#	ylabel \Delta Y(arcsec)
+	relocate 0 500
+	putlabel 8  \Delta X(arcsec)
+	relocate 500 0
+	angle 90
+	putlabel 8  \Delta Y(arcsec)
+	angle 0
+
+
+	expand 1
+	relocate -550 0
+	angle 90
+	putlabel 8 g-z 
+
+
+
+
+
+	angle 0
+	expand 0.8
+	LIMITS  0 0 0.6 1.2 BOX 3 3 0 1
+
+2galsz 	erase
+	ctype black
+	ltype 0	
+	lweight 3
+
+	DEFINE  TeX_strings 1	
+	
+	ptype 3 0
+
+	expand 0.8
+	 
+	 	location 4500 29500 4500 29500
+
+
+
+	LIMITS 460 -460 -460 460 BOX 0 1 1 3
+#	LIMITS -350 350 0 1 BOX 0 1 3 0	 
+
+#	limits -350 350 -350 350
+#	axis 1 1 1 0  -350 350 -350 350 400 800
+#	box
+
+	expand 1.5
+
+	relocate -160 420
+	putlabel 3 NGC 1023
+
+	expand 1.0
+
+	set a=100,200,1
+
+	set a1=-250+a*0
+
+
+	set b=100,200,1
+
+	set b1=-280+b*0
+
+
+	ctype blue
+
+
+	#shed a a1 b b1 1000
+
+
+	set a=0,100,1
+
+	set a1=-250+a*0
+
+
+	set b=0,100,1
+
+	set b1=-280+b*0
+
+
+	ctype cyan
+
+
+	#shed a a1 b b1 1000
+
+
+	set a=-100,0,1
+
+	set a1=-250+a*0
+
+
+	set b=-100,0,1
+
+	set b1=-280+b*0
+
+
+	ctype red
+
+
+	#shed a a1 b b1 1000
+
+	expand 1.0
+	
+	ptype 3 0
+
+	#data vprofile.dat
+	#read v 1 read xs 2 read ysi 3 
+
+	#data coord.dat
+	#read x 1 read ys 2 read y 5 read fb 6 read o 7
+
+	#data likelihood.dat
+
+	#read f 6 read rh 8 read nh 9 
+
+	data   prob_bd_1023_AriAri.dat
+	read xs 3 read ys 4 read ysi 5 read v 6  read bb 8 read bd 9
+	read l 11 read sg 12 read sz 13 read h 15 read gi 10 read id 14
+
+
+
+	set xs=-xs
+	set ys=ys	
+	#set ys=-ysi*0.39
+	#set v=v-663
+
+	set bb=EXP(bb)
+	set bd=EXP(bd)
+	set f=(bb/(bb+bd))
+
+	print{xs ys v bb bd  f}
+
+
+
+        ###print {fbin id}
+
+
+
+
+#	ctype green
+#	points x y
+#	ctype red
+#	set xx=-xx
+#	points xs ys
+#	ctype blue
+#	points xs ysi
+#	points x ys
+
+
+		do i=0,dimen(ys)-1{
+	
+		set xxs=xs[$i]
+		set yysi=ys[$i]	
+		set vv=gi[$i]
+		set fbb=f[$i]
+		set rrs=sz[$i]
+		
+	
+		
+		
+	
+			
+
+
+	
+	
+		lweight 3
+		
+
+		
+	  	 if (fbb < 0.5) {
+	            ctype magenta
+		                  } else {
+		                   ctype green}
+		
+		if (rrs < 90) {	
+		  set i = 0,2*pi, 0.001   # supermongo works in radians
+  		  set x = xxs + rrs*cos(i)
+		 
+  		  set y = yysi + rrs*sin(i)
+  		 
+		   ltype 0
+		  expand 2
+		  connect x y}}
+
+		  lweight 3
+
+
+
+		do   i=0,dimen(l)-1{
+	
+		set ll=l[$i]
+		set idd=id[$i]
+		set xxs=xs[$i]
+		set ff=f[$i]
+		set gii=gi[$i]
+		set ccat=cat[$i]
+		set yysi=ys[$i]
+		set hh=h[$i]
+		#set vv=v[$i]
+		
+		#set mm=m[$i]
+
+		
+		#set yysi=yysi*0.24
+
+	
+		if(idd==2){
+
+
+		
+			#if(mm> 3){
+			#ctype cyan}
+			
+			expand 2.
+			ctype black
+
+
+
+			ptype 30 0
+			points xxs yysi} 
+
+		if(idd==4){
+	
+
+			print + yes.dat{ff gii idd} 
+			#if(mm==4){
+			#ctype cyan}
+			
+			expand 2.
+			ctype black
+
+	
+			ptype 3 0
+			points xxs yysi}		
+
+		if(idd==3){
+	
+	
+		
+			#if(mm==4){
+			#ctype cyan}
+			
+			expand 3.
+			ctype black
+
+	
+			ptype 4 0
+			points xxs yysi}
+
+		if(idd==34){
+	
+	
+		
+			#if(mm==4){
+			#ctype cyan}
+			
+			expand 3
+			ctype black
+
+	
+			ptype 4 0
+			points xxs yysi
+			expand 2.
+			ctype black
+
+	
+			ptype 3 0
+			points xxs yysi}
+	}
+
+	
+	
+	
+		do   i=0,dimen(l)-1{
+	
+		set ll=l[$i]
+		set xxs=xs[$i]
+		set ff=f[$i]
+		set gii=gi[$i]
+		set ccat=cat[$i]
+		set yysi=ys[$i]
+		set hh=h[$i]
+		#set vv=v[$i]
+		
+		#set mm=m[$i]
+
+		
+		#set yysi=yysi*0.24
+
+		if(hh==1){
+		if(ll<-6.85){
+
+	#print + yes.dat{ff gii ccat} 
+		
+			#if(mm==4){
+			#ctype cyan}
+			
+			expand 2.
+			ctype black
+
+
+
+			ptype 4 1
+			points xxs yysi} } 	
+
+		if(hh==2){
+		if(ll<-6.85){
+
+		#	print + yes.dat{ff gii ccat} 
+			#if(mm==4){
+			#ctype cyan}
+			
+			expand 2.
+			ctype black
+
+	
+			ptype 4 1
+			points xxs yysi}}		
+
+		if(hh==3){
+		if(ll<-6.85){
+	
+			#print + yes.dat{ff gii ccat} 
+			#if(mm==4){
+			#ctype cyan}
+			
+			expand 2.
+			ctype black
+
+	
+			ptype 4 1
+			points xxs yysi}
+	}
+
+		if(hh==4){
+		if(ll<-6.85){
+
+			#print + yes.dat{ff gii ccat} 
+			#if(mm==4){
+			#ctype cyan}
+			
+			expand 2.
+			ctype black
+
+		
+			ptype 4 1
+			points xxs yysi}}
+	}
+
+
+	data bin.novbulge.dat
+	read rmax 5 read h 2 read o 6
+
+	
+
+	expand 0.1
+
+	ctype black
+
+	do i=0,dimen(h)-1{
+
+
+
+
+	set hh=h[$i]
+	set rr=rmax[$i]
+
+	#print{rr}
+	set xmax= -rr,rr,1
+	set ymax=sqrt((rr*0.24)**2-(0.24*xmax)**2)
+	
+	lweight 3	
+	ptype 30 0
+	ltype 0
+	connect xmax ymax
+	set ymax=-ymax
+
+	connect xmax ymax}
+
+	expand 0.8
+
+	
+	
+
+
+	relocate -350 395
+	ctype black
+	expand 1.6
+	ptype 30 0
+#	dot 
+	expand 0.8
+	relocate -380 395
+#	putlabel 3 rejected 
+
+
+
+	
+
+	expand 1.0
+
+#	xlabel \Delta X(arcsec)
+	ylabel \Delta Y(arcsec)
+	relocate 0 480
+	putlabel 8  \Delta X(arcsec)
+
+
+	expand 0.9
+	relocate -550 0
+	angle 90
+	putlabel 8 g-z 
+
+	angle 0
+	expand 0.8
+	LIMITS  0 0 0.6 1.2 BOX 3 3 0 1
+
+ReR erase
+	ctype black
+	ltype 0	
+	lweight 3
+
+	DEFINE  TeX_strings 1	
+	
+
+   	LIMITS 0 600 0 10 BOX 0 1 1 3
+
+	data   prob_bd_1023_AriAri.dat
+	read xs 3 read ys 4 read ysi 5 read v 6  read bb 8 read bd 9
+	read l 11 read sg 12 read sz 13 read h 15 read gi 10 read id 14
+
+
+
+	set xs=-xs
+	set ys=ys	
+	#set ys=-ysi*0.39
+	#set v=v-663
+
+	set bb=EXP(bb)
+	set bd=EXP(bd)
+	set f=(bb/(bb+bd))
+
+	set r=sqrt(xs**2+ys**2)
+
+	print {f sz r} 
+
+	
+		do i=0,dimen(ys)-1{
+	
+		set rr=r[$i]
+		set ss=sz[$i]	
+		set fbb=f[$i]
+ 
+			
+		lweight 3
+		
+	  	 if (fbb < 0.5) {
+	            ctype magenta
+		    points rr ss} else {
+		                   ctype green
+				   points rr ss}}
+
+
+				   
+		

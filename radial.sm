@@ -1,0 +1,174 @@
+		erase
+		DEFINE  TeX_strings 1	
+		lweight 3
+
+		ctype black
+
+		da radial0.dat 
+		read nw1 1 read nlike1 2 read rgal1 3 read ntot1 4
+		
+		da count0.dat
+		read nb1 1 read nbl 2 read nd 3 read ndl 4 read nbclip1 7 read nbclipno1 8 
+
+		da radial1.dat 
+		read nw2 1 read nlike2 2 read rgal2 3 read ntot 4
+		
+		da count1.dat
+		read nb2 1 read nbl 2 read nd 3 read ndl 4 read nbclip2 7 read nbclipno2 8 
+
+		da radial2.dat 
+		read nw3 1 read nlike3 2 read rgal3 3 read ntot 4
+		
+		da count2.dat
+		read nb3 1 read nbl 2 read nd 3 read ndl 4 read nbclip3 7 read nbclipno3 8 
+
+		da radial3.dat 
+		read nw4 1 read nlike4 2 read rgal4 3 read ntot 4
+		
+		da count3.dat
+		read nb4 1 read nbl 2 read nd 3 read ndl 4 read nbclip4 7 read nbclipno4 8 
+
+		da radial4.dat 
+		read nw5 1 read nlike5 2 read rgal5 3 read ntot 4
+		
+		da count4.dat
+		read nb5 1 read nbl 2 read nd 3 read ndl 4 read nbclip5 7 read nbclipno5 8 
+
+		da radial5.dat 
+		read nw6 1 read nlike6 2 read rgal6 3 read ntot 4
+		
+		da count5.dat
+		read nb6 1 read nbl 2 read nd 3 read ndl 4 read nbclip6 7 read nbclipno6 8 
+
+		da radial6.dat 
+		read nw7 1 read nlike7 2 read rgal7 3 read ntot 4
+		
+		da count6.dat
+		read nb7 1 read nbl 2 read nd 3 read ndl 4 read nbclip7 7 read nbclipno7 8 
+
+		da radial7.dat 
+		read nw8 1 read nlike8 2 read rgal8 3 read ntot 4
+		
+		da count7.dat
+		read nb8 1 read nbl 2 read nd 3 read ndl 4 read nbclip8 7 read nbclipno8 8 
+
+		da radial8.dat 
+		read nw9 1 read nlike9 2 read rgal9 3 read ntot 4
+		
+		da count8.dat
+		read nb9 1 read nbl 2 read nd 3 read ndl 4 read nbclip9 7 read nbclipno9 8 
+
+		da radial9.dat 
+		read nw10 1 read nlike10 2 read rgal10 3 read ntot 4
+		
+		da count9.dat
+		read nb10 1 read nbl 2 read nd 3 read ndl 4 read nbclip10 7 read nbclipno10 8 
+
+		print errmed.dat {}
+		print serrmed.dat {}
+
+		do i=0,dimen(nw1)-1{
+	
+		set nnw1=nw1[$i]
+		set nnw2=nw2[$i]
+		set nnw3=nw3[$i]
+		set nnw4=nw4[$i]
+		set nnw5=nw5[$i]
+		set nnw6=nw6[$i]
+		set nnw7=nw7[$i]
+		set nnw8=nw8[$i]
+		set nnw9=nw9[$i]
+		set nnw10=nw10[$i]
+
+		set nnlike1=nlike1[$i]
+		set nnlike2=nlike2[$i]
+		set nnlike3=nlike3[$i]
+		set nnlike4=nlike4[$i]
+		set nnlike5=nlike5[$i]
+		set nnlike6=nlike6[$i]
+		set nnlike7=nlike7[$i]
+		set nnlike8=nlike8[$i]
+		set nnlike9=nlike9[$i]
+		set nnlike10=nlike10[$i]
+		set nntot=ntot[$i]
+
+		set nrgal1=rgal1[$i]
+		set nrgal2=rgal2[$i]
+		set nrgal3=rgal3[$i]
+		set nrgal4=rgal4[$i]
+		set nrgal5=rgal5[$i]
+		set nrgal6=rgal6[$i]
+		set nrgal7=rgal7[$i]
+		set nrgal8=rgal8[$i]
+		set nrgal9=rgal9[$i]
+		set nrgal10=rgal10[$i]
+		
+		
+		set errmed=(nnw1+nnw2+nnw3+nnw4+nnw5+nnw6+nnw7+nnw8+nnw9+nnw10)/10
+
+		set rmed=(nrgal1+nrgal2+nrgal3+nrgal4+nrgal5+nrgal6+nrgal7+nrgal8+nrgal9+nrgal10)/10
+
+		set nlikebin=(nnlike1+nnlike2+nnlike3+nnlike4+nnlike5+nnlike6+nnlike7+nnlike8+nnlike9+nnlike10)/10
+
+
+		print+ errmed.dat {errmed rmed nlikebin nntot}
+		
+
+		}
+
+
+		da errmed.dat
+		read errmed 1 read rmed 2 read nlikebin 3 read  nntot 4
+
+		do i=0,dimen(nw1)-1{
+	
+		set nnw1=nw1[$i]
+		set nnw2=nw2[$i]
+		set nnw3=nw3[$i]
+		set nnw4=nw4[$i]
+		set nnw5=nw5[$i]
+		set nnw6=nw6[$i]
+		set nnw7=nw7[$i]
+		set nnw8=nw8[$i]
+		set nnw9=nw9[$i]
+		set nnw10=nw10[$i]
+
+		set eerrmed=errmed[$i]
+
+		set serrmed=sqrt(((nnw1-eerrmed)**2+(nnw2-eerrmed)**2+(nnw3-eerrmed)**2+(nnw4-eerrmed)**2+(nnw5-eerrmed)**2+(nnw6-eerrmed)**2+(nnw7-eerrmed)**2+(nnw8-eerrmed)**2+(nnw9-eerrmed)**2+(nnw10-eerrmed)**2)/10)
+		print+ serrmed.dat { serrmed }}
+
+				
+		da serrmed.dat
+		read serrmed 1 
+
+
+		set nbtot=(nb1+nb2+nb3+nb4+nb5+nb6+nb7+nb8+nb9+nb10)/10
+		set nbcliptot=(nbclip1+nbclip2+nbclip3+nbclip4+nbclip5+nbclip6+nbclip7+nbclip8+nbclip9+nbclip10)/10
+		set nbclipnotot=(nbclipno1+nbclipno2+nbclipno3+nbclipno4+nbclipno5+nbclipno6+nbclipno7+nbclipno8+nbclipno9+nbclipno10)/10
+
+		print model_A.dat {}
+		
+		print model_A.dat{errmed serrmed rmed nlikebin nntot nbtot  nbl nbcliptot nbclipnotot}
+
+		ctype black
+		expand 2
+		ptype 35 3
+		limits 0 600 0 1
+		box
+
+		set err=errmed/nlikebin
+		set serrmed=serrmed/nlikebin
+		points rmed err
+		errorbar rmed err serrmed 2
+		errorbar rmed err serrmed 4
+
+		lweight 0
+		expand 1
+		relocate 400 0.9
+		putlabel 6 MODEL A
+		relocate 400 0.8
+		putlabel 6 nb_{ari}=144, 122
+		relocate 400 0.7  
+		putlabel 6 nb_{Lodo}=139 
+		

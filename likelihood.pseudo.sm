@@ -1,0 +1,2038 @@
+#reading
+#coord
+#companion
+#2gal
+#stream
+#densprof
+#err
+#like
+#alphaparameter
+#vprofile
+#bins
+#velav
+#ffrac	
+	
+
+
+reading 	da N1023_merge.cat 
+		read '%d %d:%d:%f %d:%d:%f %f %f %f %f %f %f %f %s %d %f' \
+		     {ID hr_merge min_merge sec_merge deg_merge dmin_merge \
+		      dsec_merge vhel dv dv2 m dm dRA dDec pointing ID_orig \
+		      fluxrat}	
+
+	print Edo.cat {dRA  dDec vhel}
+
+
+
+
+
+
+coord 	erase
+	ctype black
+	ptype 3 3
+
+	expand 1.5
+	 
+	location 3500 30500 3500 30500
+	
+	limits -1000 1000 -1000 1000
+	box
+
+	data  coord.dat
+
+	read  xs 1 read ys 2 read x 3 read y 4 read ysi 5
+
+	ctype black 
+
+	points x y
+
+	ptype 20 0
+
+	ctype red 
+
+	points xs ys 
+
+	ctype green
+
+	points xs ysi
+ 
+companion	erase
+
+		location 500 30000 500 30000
+
+		limits -600 600 -600 600
+		ctype black
+		box
+
+		set pa=84.6*3.1416/180
+		set incl=71.5*3.1416/180
+
+		data companion.dat
+		read vco 2 read xco 3 read yco 4
+		set vco=vco-771.79
+		ptype 30 30
+		ctype magenta
+		#set yco=xco*COS(pa)-yco*SIN(pa)
+		#set xco=xco*SIN(pa)+yco*COS(pa)
+		#set yco=yco/COS(incl)
+		points xco yco
+		print{xco yco}
+
+		ctype black
+		ptype 3 3
+		data N1023_merge.cat 
+		read x 7 read y 8
+		set y=x*COS(pa)-y*SIN(pa)
+		set x=x*SIN(pa)+y*COS(pa)
+		set y=y/COS(incl)
+
+		points x yoad fonts TeX_defs
+
+		data N1023.rotres.Vsysfixed.cat
+		read xx 2 read yy 3
+		ctype black
+		set yy=xx*COS(pa)-yy*SIN(pa)
+		set xx=xx*SIN(pa)+yy*COS(pa)
+		set yy=yy/COS(incl)
+
+
+		points xx yy
+
+
+	data vprofile.dat
+	read v 1 read xs 2 read ysi 3
+
+	data coord.dat
+	read x 1 read y 5 read fb 6
+
+
+
+
+
+
+
+#	ctype green
+#	points x y
+#	ctype red
+#	set xx=-xx
+#	points xs ys
+#	ctype blue
+#	points xs ysi
+#	points x ys
+
+		do i=0,dimen(v)-1{
+	
+		set xxs=xs[$i]
+		set yysi=ysi[$i]	
+		set vv=v[$i]
+		set fbb=fb[$i]
+
+		if(fbb>0.5){
+		ctype green}else{
+		if(vv>0){
+		ctype red}else{
+		ctype blue}}
+
+		
+		expand 1.5	
+		points xxs yysi}
+
+
+2gal 	erase
+	ctype black
+	ltype 0	
+
+	DEFINE  TeX_strings 1	
+	
+	ptype 3 0
+
+	expand 0.8
+	 
+	location 3500 30500 3500 30500
+
+
+
+	LIMITS -360 360 -360 360 BOX 1 1 3 0
+#	LIMITS -350 350 0 1 BOX 0 1 3 0	 
+
+#	limits -350 350 -350 350
+#	axis 1 1 1 0  -350 350 -350 350 400 800
+#	box
+
+	expand 1.5
+
+	relocate 180 320
+	putlabel 3 NGC 3377
+
+	expand 1.0
+
+	set a=100,200,1
+
+	set a1=-250+a*0
+
+
+	set b=100,200,1
+
+	set b1=-280+b*0
+
+
+	ctype blue
+
+
+	#shed a a1 b b1 1000
+
+
+	set a=0,100,1
+
+	set a1=-250+a*0
+
+
+	set b=0,100,1
+
+	set b1=-280+b*0
+
+
+	ctype cyan
+
+
+	#shed a a1 b b1 1000
+
+
+	set a=-100,0,1
+
+	set a1=-250+a*0
+
+
+	set b=-100,0,1
+
+	set b1=-280+b*0
+
+
+	ctype red
+
+
+	#shed a a1 b b1 1000
+
+	expand 1.0
+	
+	ptype 3 3
+
+	#data vprofile.dat
+	#read v 1 read xs 2 read ysi 3 
+
+	#data coord.dat
+	#read x 1 read ys 2 read y 5 read fb 6 read o 7
+
+	data likelihood.dat
+
+	read f 6 read rh 8 read nh 9 
+
+	data  unliky.dat
+	read l 1 read h 2 read xs 4 read ysi 5 read id 6 read v 7 read o 8 
+	read fbin 9
+
+	set ys=-ysi*0.29
+	set xs=-xs
+
+	#set v=v+637
+
+        ###print {fbin id}
+
+
+
+
+#	ctype green
+#	points x y
+#	ctype red
+#	set xx=-xx
+#	points xs ys
+#	ctype blue
+#	points xs ysi
+#	points x ys
+
+
+		do i=0,dimen(ys)-1{
+	
+		set xxs=xs[$i]
+		set yysi=ys[$i]	
+		set vv=v[$i]
+		set fbb=fbin[$i]
+		set oo=o[$i]
+		
+	
+		
+		if(oo==1){
+		if(fbb>0.5){
+		ptype 4 0 }else{
+
+		ptype 3 3}
+			
+	   if (vv < 500) {
+		      set b = 255
+		      set g = 0
+		      set r = 0
+		      #write standard v < 325 at $i
+		      #print {r g b x y v}
+		   } else {
+		      if (vv < 600) {
+			 set b = 255
+			 set g = int((vv-600)*2.55)
+			 set r = 0
+			 #write standard v < 475 at $i
+			 #print {r g b x y v}
+		      } else { 
+			 if (vv < 700) {
+			    set b = int((700-vv)*2.55)
+			    set g = 255
+			    set r = 0
+			    #write standard v < 625 at $i
+			    #print {r g b x y v}
+		         } else {
+			    if (vv < 800) {
+			       set b = 0
+			       set g = 255
+			       set r = int((vv-700)*2.55)
+			       #write standard v < 775 at $i
+			       #print {r g b x y v}
+			    } else {
+			       if (vv < 900) {
+				  set b = 0
+				  set g = int((900-vv)*2.55)
+				  set r = 255
+				  #write standard v < 925 at $i
+				  #print {r g b x y v}
+			       } else {
+				  set b = 0
+				  set g = 0
+				  set r = 255
+				  #write standard v > 925 at $i
+				  #print {r g b x y v}
+			       }
+			    }  
+			 }
+		      }
+		   
+
+
+		   reset_ctype
+		   ctype = ctype() concat r + 256*(g+256*b)
+		   ctype = ctype(string) concat 'kleur'
+
+		   ctype kleur
+		  
+		
+
+		
+		#if(vv<610){ctype blue}else{
+	
+		#if(vv<750){ctype cyan}else{
+		#ctype red}}}
+
+		
+		expand 1.5	
+		points xxs yysi}}
+
+
+
+
+       
+
+	#set v=v+623
+
+	
+		
+		
+	
+	#read l 1
+	
+		do   i=0,dimen(l)-1{
+	
+		set ll=l[$i]
+		set xxs=xs[$i]
+		set yysi=ys[$i]
+		set hh=h[$i]
+		#set vv=v[$i]
+		set iid=id[$i]		
+		#set mm=m[$i]
+
+		
+		#set yysi=yysi*0.24
+
+		if(hh==1){
+		if(ll<=-7.15){
+
+		
+			#if(mm==4){
+			#ctype cyan}
+			
+			expand 2.
+			ctype black
+
+	print{iid}
+
+			ptype 30 0
+			points xxs yysi}}
+
+		if(hh==2){
+		if(ll<=-6.85){
+
+		
+			#if(mm==4){
+			#ctype cyan}
+			
+			expand 2.
+			ctype black
+
+		print{iid}
+			ptype 30 0
+			points xxs yysi}}
+
+		if(hh==3){
+		if(ll<=-7.5){
+
+		
+			#if(mm==4){
+			#ctype cyan}
+			
+			expand 2.
+			ctype black
+
+		print{iid}
+			ptype 30 0
+			points xxs yysi}}
+
+		if(hh==4){
+		if(ll<=-7.5){
+
+		
+			#if(mm==4){
+			#ctype cyan}
+			
+			expand 2.
+			ctype black
+
+		print{iid}
+			ptype 30 0
+			points xxs yysi}}}
+
+
+	data bin.dat
+	read rmax 1 read h 2 read o 6
+	print {rmax}
+	
+
+	expand 0.1
+
+	ctype black
+
+	do i=0,dimen(h)-1{
+
+
+	set oo=o[$i]
+
+	if(oo==1){
+	set hh=h[$i]
+	set rr=rmax[$i]}
+
+	#print{rr}
+	set xmax= -rr,rr,1
+	set ymax=sqrt((rr*0.29)**2-(0.29*xmax)**2)
+	
+	
+	ptype 30 0
+	points xmax ymax
+	set ymax=-ymax
+
+	points xmax ymax}
+
+	expand 0.8
+
+	
+	
+
+
+	relocate -350 395
+	ctype black
+	expand 1.6
+	ptype 30 0
+#	dot 
+	expand 0.8
+	relocate -380 395
+#	putlabel 3 rejected 
+
+
+
+	
+
+	expand 1.0
+
+	xlabel \Delta X(arcsec)
+	ylabel \Delta Y(arcsec)
+
+
+	relocate 0 400
+	putlabel 2 v_{hel} (km/s)
+
+	expand 0.8
+	LIMITS  1000 1600 0 0 BOX 3 3 1 0
+
+
+		
+stream 	erase
+	ctype black
+	
+	DEFINE  TeX_strings 1	
+
+	expand 1
+	 
+	location 3500 30500 15750 30500
+
+	ltype 0
+	
+	limits -360 360 600 2000
+	box
+
+	
+
+		data companion.dat
+		read vco 2 read xco 3 read yco 4 read ycon 5
+		set xco=-xco
+
+		print{vco}
+		#set vco=vco-750
+
+		
+		expand 1.8
+		ptype 8 1
+		points xco vco
+
+		ctype black
+
+
+	data vprofile.dat
+	read vv 1 read xx 2 read yy 3
+
+	set xx=-xx
+
+	#set vv=vv+610	
+
+	expand 1.5
+
+	ptype 4 0
+	#ctype red
+	points xx vv
+	
+	
+
+	data rejected.disc.sph.dat
+	read l 1 read x 4 read y 5 read v 7
+
+	set x=-x
+
+	#set v=v+610
+
+	
+
+	expand 1.5
+	ptype 4 3
+	
+	
+
+	points x v
+
+	ctype black
+	
+
+	expand 1.2
+	xlabel \Delta X(arcsec)
+	ylabel v_{los} (km/s)
+
+#	location 3500 30500 17000 30500
+
+#	expand 1
+	
+#	limits 1200 0 -400 400
+#	box
+
+
+
+#	#ctype red
+#	ptype 4 0
+#	points vv yy
+
+#	expand 1.2
+
+#	ctype green
+
+#	ptype 8 1
+#	points vco ycon
+
+
+#	expand 1
+
+#	ctype red
+
+#	data rejected.dat
+#	read l 1 read x 4 read y 5 read v 7
+
+	#set v=v+610
+
+#	expand 1.5
+#	ptype 4 3
+	
+
+#	points v y
+
+#	ctype black
+
+#	expand 1.5
+#	ylabel \Delta Dec (arcsec)
+#	#xlabel v_{los} (km/s)
+
+
+
+	#ctype red
+	relocate -340 1160 
+	ptype 4 0
+	expand 1.5
+#	dot
+	expand 1.
+	relocate -330 1180 
+#	putlabel 3 NGC1023
+
+	#ctype red
+	relocate -340 1100 
+	ptype 8 1 
+	expand 1.5
+#	dot	
+	expand 1.
+	relocate -330 1120 
+#	putlabel 3 NGC1023A
+
+
+
+	#ctype red
+	relocate 210 1840 
+	expand 1.5
+	ptype 4 3
+	dot
+	expand 1
+	relocate 220 1860 
+	putlabel 3 rejected
+
+
+	
+
+densprof        erase
+
+		expand 1
+
+		limits 1.5 3 -5 -2
+
+		ctype black
+
+		box
+
+		data likelihood.dat
+
+		read f 6 read rh 8 read nh 9 read rr 10
+
+		set rr=rr*10000
+
+		da bin.dat
+
+		read rgal 1 read rmed 2 read r1 3 read r4 4
+	
+ 		set dh=(f*nh/(3.14*rr))
+
+		set dh=LG(dh)
+
+		
+
+		print {dh rh}
+
+		expand 1.5
+
+		ptype 10 3
+		ltype 0
+
+		points rmed dh
+		
+		#connect rh dh
+
+		set dd=((1-f)*nh/(3.14*rr))
+
+		set dd=LG(dd)
+
+		ctype red
+
+		#connect rh dd
+
+		points rmed dd
+		
+		print{dd}
+
+
+		expand 0.75
+		ctype black
+		relocate 2.3 -3.5 
+		putlabel 6 halo
+
+		ctype red 
+		relocate 2.3 -3.5
+		putlabel 2 disk
+
+		expand 1
+
+		ctype black
+
+		xlabel log(R)
+		ylabel log(density)
+
+
+err		erase
+
+		data error.dat	
+		ctype black	
+
+		read l 1 read v 2 read sr 3 read sf 4 read f 6 read h 7
+
+		#limits -1000 80000 -350 -450
+		limits 0 300 0 300
+
+		box
+		expand 1.5
+		ctype black
+	
+		do i=0,dimen(l)-1{
+	
+
+		set hh=h[$i]
+		set ll=l[$i]
+		set vv=v[$i]
+		set ssr=sf[$i]
+
+		if(hh==1){
+		ctype red
+	
+		points vv ssr}
+		if(hh==2){
+		ctype blue
+	
+		points vv ssr}
+		if(hh==3){
+		ctype green
+	
+		points vv ssr}
+		if(hh==4){
+		ctype magenta
+		set xz=0,dimen(ll),1
+		points  vv ssr}}
+
+
+		#set ss=sqrt(sr**2+sf**2)
+		#points ss v 
+
+		#do i=0,dimen(h)-1{
+
+
+
+
+		#set hh=h[$i]
+		#set ll=l[$i]
+
+		#set xz=0,100,1
+		#if(hh==1){
+		#ptype 10 1
+		#points xz ll}else{
+		#if(h==2){
+		#ptype 10 2
+		#points xz ll}else{
+		#if(h==3){
+		#ptype 10 3
+		#poins xz ll}else{
+		#ptype 10 4
+		#points xz ll}}}}
+		
+
+
+
+
+
+like	DEFINE  TeX_strings 1	
+
+	#	DEFINE default_font \gr
+
+	#	load fonts TeX_defs	
+				
+		data likelihood.dat
+		set sini=0.96
+
+ 		read v 2 read sr 3 read sv 4 read sh 5 
+		read rh 8 read nh 9
+		
+		set v=v*sini
+		set sr=sr*sini
+		set sv=sv*sini
+		set sh=sh
+		set ssh=sh*sini*0.35
+
+	#	set v=sqrt(v**2+sv**2+(sr**2)*((163.75*rh-6702)/6702))
+
+		#set v=lg(v)
+		#set sr=lg(sr)
+		#set sv=lg(sv)
+		#set sh=lg(sh)
+
+		#data N1023.rotcur.Vsysfixed.dat
+		#data N1023.rotcur.num.iter5.dat
+
+	#	data velav.cat
+		
+		#read rbin 2 read vrot 10 read sigmaf 11 read sigmar 13
+	#	read vr 1 read ssr 2 read r 3 read vb 4 read ssb 5
+
+		
+
+	#	data velavmin.cat
+	#	read srr 2 read rs 3 read srb 5
+
+		data error.dat
+		read errv 1 read Errv 2 read errsr 3 read Errsr 4 read errsf 5 
+		read Errsf 6 read errvh 7 read  Errvh 8 read errf 9 read Errf 10 
+
+		set errv=(errv)*sini
+		set Errv=(Errv)*sini
+		set errsr=(errsr)*sini
+		set Errsr=(Errsr)*sini
+		set errsf=(errsf)*sini
+		set Errsf=(Errsf)*sini
+		set errvh=(errvh)
+		set Errvh=(Errvh)
+		set errvvh=errvh*0.6*sini
+		set Errvvh=Errvh*0.6*sini
+
+		set errv=abs(errv-v)
+		set Errv=abs(Errv-v)
+
+		set errsr=abs(errsr-sr)
+		set Errsr=abs(Errsr-sr)
+		
+		set errsf=abs(errsf-sv)
+		set Errsf=abs(Errsf-sv)
+
+		set errvh=abs(errvh-sh)
+		set Errvh=abs(Errvh-sh)
+
+	expand 1
+
+		da bin.dat
+
+		read rgal 1 read rmed 3 read r1 4 read r2 5
+
+		#set rmed=lg(rmed)
+		#set r1=lg(r1)
+		#set r2=lg(r2)
+
+		#set rgal=rgal*0.44
+		#set rmed=rmed*0.44
+		#set r1=r1*0.44
+		#set r2=r2*0.44
+
+
+		set r1=abs(r1-rmed)
+		set r2=abs(r2-rmed)
+
+
+		
+
+
+		#data Proctor.dat
+		#read Pra 2 read Pram 3 read Pras 4
+		read Pdec 5 read Pdecm 6 read Pdecs 7 
+		read Cv 15 read errc 16 read Cs 17 read errcs 18
+
+	
+
+          	set Cra=( Pra*3600 + Pram*60 + Pras)-33097.5195
+		set Cde=( Pdec*3600 + Pdecm*60 + Pdecs)-216134.
+
+		
+		
+		set Cra=Cra*15*COS(216134*3.14/(3600*180))
+
+		set Cr=sqrt(Cra**2+Cde**2)
+
+		set Cv=Cv-1373
+
+		#print {Cr Cv errc Cs errcs}
+
+		if(Cr.le.0){
+		Cr=-Cr
+		Cv=-Cv}
+
+
+		#data  N1023.rotcur.Vsysfixed.dat
+		#read re1 1 read re 2 read re2 3 read ve 10 read dve 11 read sre 12 read sfe 13
+
+		#da vcdataLENTIGALS1.dat
+		#da vcdata-LG1-20jan11.dat
+		#read rk 1 read vk 2
+		#set rk=rk/0.04
+		#set rk=lg(rk)
+		#set vk=vk*sini
+		#set vk=lg(vk)
+
+		#da sig_LG4.dat
+		#da Dsig-LG1-20jan11.dat
+		#read rsk 1 read srk 3 read sfk 4  
+		#set rsk=lg(rsk)
+
+		#da Bsig_LG1-20jan11.dat 
+		#da Bsig_LG4.dat
+		#read rhk 1 read shk 2
+		#set rhk=lg(rhk)
+
+#print rotational velocity with errors in 10
+		
+		location 3500 30500 21500 30500
+#		location 3500 15500 11500 15500 
+		limits 0 500 0 350
+		ctype black
+		expand 1.2
+		ticksize 0 0 0 0 
+		box 0 2 0 0
+
+		expand 1.2
+
+		relocate 20 330
+#		putlabel 3 n_{prior}=disc 
+		putlabel 3 model=disk+sph		
+		relocate 250 330
+		putlabel 3 N_{PN}=143
+		relocate 400 330
+		putlabel 3  NGC 3377
+	
+		ltype 0 
+       		expand 1.5
+
+		ptype 10 3
+
+		#errorbar rh v errv 4 
+		#errorbar rh v Errv 2
+
+		points rmed v
+		errorbar rmed v r1 3 
+		errorbar rmed v r2 1 
+		errorbar rmed v errv 4 
+		errorbar rmed v Errv 2
+		
+		print {v}
+		
+		#connect rh v
+
+
+#		ltype 0 
+#		connect rh errv
+#		connect rh Errv
+
+		ltype 0
+
+		angle 20		
+
+		#shed rh errv rh Errv 200
+
+#		set y= errv  concat Errv
+
+		angle 0
+		
+#		print{y errv Errv}
+
+
+		ltype 0		
+		ptype 10 0	
+		points Cr Cv
+
+
+		ltype 2
+		errorbar Cr Cv errc 2 
+		errorbar Cr Cv errc 4
+
+	
+		
+
+		#ctype green
+
+		expand 4
+		ltype 2
+		connect rk vk
+		
+		ctype black
+		expand 1
+
+		set re1=ABS(re1-re)
+		set re2=ABS(re2-re)
+
+#		errorbar re ve re1 3 
+#		errorbar re ve re2 1 
+#		errorbar re ve dve  2
+#		errorbar re ve dve  4
+
+		expand 1.5
+		ptype 10 0
+#		points re ve
+		#connect re ve
+
+		expand 1.5
+
+
+		ylabel V (km/s)
+
+		
+		
+
+#################################################################
+		expand 1
+
+		location 3500 30500 12500 21500
+#		location 3500 15500 7500  11500
+		limits 0 500 0.01 350
+		expand 1.2
+		ticksize 0 0 0 0 
+		box 0 2 0 0 
+	
+		ptype 4 3
+		expand 1.8
+		ctype red
+		ltype 0
+		points rmed sr
+		errorbar rmed sr r1 3 
+		errorbar rmed sr r2 1 
+		errorbar rmed sr errsr 4 
+		errorbar rmed sr Errsr 2
+
+		set rsk=rsk/0.04
+		set srk=srk*sini
+
+	
+
+		expand 4
+		ltype 2	
+		connect rsk srk
+		
+		ctype black
+		expand 1
+
+		expand 1.5
+		ltype 0		
+		ptype 10 0	
+		points Cr Cs
+
+
+		ltype 2
+		errorbar Cr Cs errcs 2 
+		errorbar Cr Cs errcs 4
+
+	
+		
+
+		ltype 0
+		#ctype red
+		#errorbar rh sr errsr 4
+		#errorbar rh sr Errsr 2
+		#connect rh sr
+
+		#ctype blue
+		#errorbar rh sv errsf 4
+		#errorbar rh sv Errsf 2
+		#connect rh sv
+
+
+		
+		ltype 0 
+		#ctype red
+#		connect rh errsr
+#		connect rh Errsr
+
+		ltype 0
+
+		expand 1
+
+		angle 20
+
+		#shed rh errsr rh Errsr 100
+
+		angle 0
+
+		#ctype red
+
+	
+		expand 1.8
+		ptype 4 0
+#		points re sre
+		#connect re sre
+
+
+
+
+
+		ctype blue	
+
+		ptype 10 3
+
+		expand 1.5
+		points rmed sv 
+		errorbar rmed sv r1 3 
+		errorbar rmed sv r2 1 
+		errorbar rmed sv errsf  4 
+		errorbar rmed sv Errsf  2
+
+
+		
+		set sfk=sfk*sini
+
+	
+
+		expand 4
+		ltype 2	
+		connect rsk sfk
+		
+		ctype black
+		expand 1
+
+		#ltype 6 expand 1
+		#ctype blue
+#		connect rh errsf
+#		connect rh Errsf
+
+		ltype 0
+
+		angle 40
+
+		expand 1
+
+		#shed rh errsf rh Errsf 300
+
+
+		angle 0
+
+		ltype 0
+		expand 1.5
+		ptype 10 0
+# 		points re sfe
+		#connect re sfe
+		expand 1
+
+
+		expand 1.5
+
+		ctype red
+
+		
+		relocate 40 300
+		putlabel 5 \sigma_{r}
+		relocate 20 310
+		expand 1.8
+		ptype 4 3
+		dot 
+
+		expand 1.5
+		ctype blue
+
+		relocate 40 250
+		putlabel 5 \sigma_{\phi}
+		relocate 20 260
+		expand 1.5
+		ptype 10 3
+		dot
+		
+
+		expand 1.5
+
+		ctype black
+		ylabel \sigma_{disk} (km/s)
+#		xlabel radius(arcsec)
+#######################################################################
+		ctype black
+		location 3500 30500 3500 12500
+		#location 3500 15500 3500 7500
+		limits 0 500 0.01 350
+		ticksize 0 0 0 0 
+		expand 1.2
+		box
+	
+		expand 1
+		ltype 0
+	
+		ctype black
+		#errorbar rh sh errvh 4
+		#errorbar rh sh errvh 2
+		#connect rh sh
+
+
+		expand 1.5
+		ptype 10 3	
+		ltype 0	
+		points rmed sh
+	#	expand 1.0
+		errorbar rmed sh r1 3 
+		errorbar rmed sh  r2 1 
+		errorbar rmed sh errvh 4 
+		errorbar rmed sh Errvh 2
+
+
+		set rhk=rhk/0.04
+		set shk=shk*sini
+
+	
+
+		expand 4
+		ltype 2	
+		#connect rhk shk
+		
+		ctype black
+		expand 1
+
+		#ctype green
+		#ptype 10 3	
+		#ltype 0	
+		#points rmed ssh
+		#expand 1.0
+        	#errorbar rmed ssh r1 3 
+		#errorbar rmed ssh  r2 1 
+		#errorbar rmed ssh errvvh 4 
+		#errorbar rmed ssh Errvvh 2
+		
+
+		#ltype 6 expand 0.6 
+
+	
+
+		#ctype green
+		#connect rh errvh
+		#connect rh Errvh
+		ltype 1
+
+		angle 20
+		#shed rh errvh rh Errvh 300	
+		
+		angle 0
+
+		expand 1.5
+
+		ctype black
+ 		xlabel radius(arcsec)
+ 		ylabel \sigma_{spheroid} (km/s)
+#####################################################################
+
+alphaparameter
+		ctype black
+		location 2000 30000 2000 30000
+
+#		#limits 1.5 3 -6 -1
+		#limits 0 400 -6 0
+		limits 0 1200 0 1 
+		ctype black
+
+		box 
+
+
+
+		data likelihood.dat
+
+		read f 6 read rh 8 read nh 9 read rr 10
+
+		set rr=rr*10000
+
+		data error.dat
+		read errv 1 read Errv 2 read errsr 3 read Errsr 4 read errsf 5 
+		read Errsf 6 read errvh 7 read  Errvh 8 read errf 9 read Errf 10 
+		da bin.dat
+
+		read rgal 1 read rmed 3 read r1 4 read r2 5
+
+		
+
+		ltype 1
+		angle 0
+
+		#set dd=((1-f)*nh/(3.14*rr))
+		#set ddd=((1-errf)*nh/(3.14*rr))
+		#set Ddd=((1-Errf)*nh/(3.14*rr))
+
+	
+		
+		set r1=abs(r1-rmed)
+		set r2=abs(r2-rmed)
+
+		#set dd=LG(dd)	
+		#set ddd=LG(ddd)
+		#set Ddd=LG(Ddd)
+
+		
+
+		set ddd=abs(ddd-dd)
+		set Ddd=abs(Ddd-dd)
+
+		ltype 4
+
+		angle 30
+
+		#shed r1 ddd r1 Ddd 50
+		#shed r1 ddd r2 ddd 100
+		#shed r1 ddd r2 ddd 100
+		#shed r1 Ddd r2 Ddd
+		#connect r1 ddd
+		#connect r2 ddd
+		#shed r1 ddd r2 ddd 100
+
+		#connect r1 Ddd
+		#connect r2 Ddd
+		#shed r1 Ddd r2 Ddd 100
+
+		#relocate (r1 ddd)
+		#draw r2 ddd
+#		points rh ddd
+
+#		connect rh Ddd
+#		points rh Ddd
+
+		
+#		print{dd rr}
+
+ 		#set dh=(f*nh/(3.14*rr))
+		#set ddh=(errf*nh/(3.14*rr))
+		#set Ddh=(Errf*nh/(3.14*rr))
+
+	
+		print {dd ddd Ddd rh f nh}
+
+		ctype green
+
+		#set dh=LG(dh)
+		#set ddh=LG(ddh)
+		#set Ddh=LG(Ddh)
+
+		set dh=f
+		set ddh=errf
+		set Ddh=Errf
+
+		set ddh=abs(ddh-dh)
+		set Ddh=abs(Ddh-dh)
+
+
+		#set rh=LG(rh)
+
+		print {dh ddh Ddh rmed r1 r2}
+
+		expand 1
+
+	
+
+			
+		#connect rh dh
+
+		ltype 0
+
+		angle 20
+
+#		points rh ddh
+		#shed r1 ddh r2 ddh 500
+		###shed r1 ddh r1 Ddh 200
+
+#		points rh Ddh
+#		shed rh Ddh
+
+		ptype 4 3
+
+		ctype black
+
+		#points rmed dd
+		#errorbar rmed dd r1 3 
+		#errorbar rmed dd r2 1 
+		#errorbar rmed dd ddd 2 
+		#errorbar rmed dd Ddd 4
+
+		#points rmed ddd
+		#points rmed Ddd
+
+
+
+		print {r1 r2 ddd Ddd}
+
+		ctype green		
+		ltype 2
+
+		points rmed dh
+		errorbar rmed dh r1 3 
+		errorbar rmed dh r2 1 
+		#errorbar rmed dh ddh 4 
+		#errorbar rmed dh Ddh 2
+
+
+		ctype red
+
+		da 1023s.dat
+		read amaj 1 read fs 11
+
+		da 1023t.dat
+		read aamaj 1 read ft 11
+
+		print {fs ft}
+
+		
+
+		do i=1,dimen(ft)-1{
+
+	
+
+		set ffs=fs[$i]-fs[$i-1]
+		set ftt=ft[$i]-ft[$i-1]
+		set rm=rmed[$i-1]
+		set rr1=r1[$i-1]
+		set rr2=r2[$i-1]
+		set amajj=amaj[$i]
+		set aamajj=aamaj[$i]
+		set cont=$i
+		#set ffencls=ffs[$i]-ffs[$i-1]
+		#set ffenclt=ftt[$i]-ftt[$i-1]
+
+		
+
+		print {ffs ftt}
+
+		set ff=ffs/ftt
+		print {cont ff}
+
+#		if(cont==1){
+#		set ff=ff*0.49}
+
+#		if(cont==2){
+#		set ff=ff*0.67}
+		
+
+		print {ff amajj aamajj}
+		
+		points rm ff
+		errorbar rm ff rr1 3 
+		errorbar rm ff rr2 1 }	
+		
+
+		angle 0
+		#expand 0.75
+		#ctype green
+		#relocate 10 -2
+		#putlabel 6 spheroidal component
+
+		#ctype black 
+		#relocate 25 -1.5
+		#putlabel 2 disc
+
+	
+		ctype red
+		relocate 100 0.8
+		putlabel 6 photometric
+
+		ctype green
+		relocate 700 0.8
+		putlabel 6 kinematic
+
+		
+
+		ctype black
+
+		xlabel R(arcsec)
+		#ylabel log(density)
+		ylabel f(B/T)
+
+
+########################################################################
+		#ltype 0 
+		#ctype black
+		#set vrot=(abs(vr)+abs(vb))/2
+		#points rh vrot
+		#connect rh vrot 
+		#points rbin vrot
+		#connect rbin vrot  
+		#ctype red 
+		#points rbin sigmar
+		#connect rbin sigmar 
+		#ctype blue
+		#set sig=(ssr+ssb)/2
+		#connect rh sig
+		#points rh sig
+	
+		#ctype red
+		#set sigr=(srr+srb)/2
+
+		#connect rh sigr
+		#points rh sigr
+
+		#ctype black
+		#expand 1
+		#xlabel R_gal
+(arcsec)
+		#ylabel km/s	
+
+			
+
+		#connect rbin sigmaf
+		#points rbin sigmaf
+
+		#relocate 200 280
+		#putlabel 5 black v, blue sigma v, red sigma r, 
+			
+		#ctype green
+		#ltype 1
+		#connect  xz l
+		#ptype 1 1
+		#ctype red
+		#points nn l
+		#ltype 2
+		#ctype black 
+		#connect xz (0*xz+2142.6)
+		#ltype 1
+		#connect (0*xz+4053) xz
+		#relocate 5000 2149
+		#putlabel 5 lnL=-2142 v=140+9 sr=240+2 sf=220+3
+
+
+vprofile	data vprofile.dat
+		ctype black
+		limits 0 7 -400 400
+		box
+		expand 1.0
+
+	DEFINE  TeX_strings 1	
+		
+	#read vhel 1 read v 2 read sigma 3 read c 4 read s 5 read ID 6 read h 7
+		read v 1 read x 2 read y 3
+
+		data coord.dat
+	 	read f 6 
+
+
+
+
+		
+		set r=sqrt(x**2+y**2)
+
+
+
+	
+		set t=ACOS(x/r)
+
+
+		xlabel \theta (rad)
+		ylabel V_{rad}(km/s)
+
+
+
+
+
+		
+
+
+
+		#print {t f y}
+
+		do i=1,dimen(f)-1{
+		set ff=f[$i]
+		set yy=y[$i]
+		set vv=v[$i]
+		set tt=t[$i]
+
+
+		if(yy<0){
+		set tt=tt+3.14}
+
+		if(ff>0.5){
+		ctype green}else{
+		ctype black}
+
+		points tt vv}
+
+
+		
+		relocate 1 350
+		ctype green
+		putlabel 3 f_{b} > 0.5
+
+
+bin	erase
+
+		data vprofile.dat
+		ctype black
+		limits 0 1 -400 400
+		box
+		
+
+		read v 1 read x 2 read y 3
+
+
+		do i=0,dimen(v)-1{
+		set vv=v[$i]
+		set xx=x[$i]
+		set yy=y[$i]
+
+		ptype 4 10
+	
+	
+		if(vv<0){
+		ctype blue }else{
+		ctype red}
+
+		#ptype 3 3
+
+		expand 1.0
+
+		points xx yy}
+
+		ctype black
+
+		xlabel RA (arcsec)
+		ylabel Dec (arcsec)
+
+
+
+	data bin.dat
+	read rmax 1 read h 2
+
+	#ctype black
+	#limits -600 600 -600 600 
+	#box
+	#points xsi ysi
+
+	ctype red
+
+	set rgal=437.64679
+	set xz=-rgal,rgal,1
+
+	do i=1,dimen(ys)-1{
+	set yssi=ys[$i]
+	set yz=sqrt(rgal**2-xz**2)
+	if (yssi<0){
+	set yz=-yz}
+	ptype 1 3
+	#points xz yz}
+
+
+	#print {h}
+
+	ctype green
+
+	do i=0,dimen(h)-1{
+
+	set hh=h[$i]
+	set yy=ys[$i]
+	set rr=rmax[$i]
+	print{rr}
+	set xmax= -rr,rr,1
+	set ymax=sqrt(rr**2-xmax**2)
+
+	#if(yy<0){
+	#set ymax=-ymax}
+	
+	expand 0.3
+	ptype 1 20
+	points xmax ymax
+	set ymax=-ymax
+	points xmax ymax}
+
+
+	#connect (0*xz+rr) xz}
+
+velav		data velavmin.cat
+		ctype black
+		limits -450 450 -450 450
+		box
+	
+		read vr 1 read sr 2 read r 3 read vb 4 read sb 5
+
+		data likelihood.nohalo.dat
+		read rh 6 
+		
+		set rr=-r
+		set rrh=-rh
+		set sb=-sb
+		
+		expand 1.5
+
+
+		#points rrh vr
+		connect rr vr
+		#points rh vb
+		connect  r vb
+
+		ctype red
+		#points rrh sr
+		connect rr sr
+		#points rh sb
+		connect r sb
+
+		ctype red
+		expand 1.0
+		relocate  0 0
+		dot
+
+
+ffrac		erase
+
+		ctype black
+		da coord.dat
+		
+		read x 1 read y 2 read ys 5 read f 6 read o 7
+
+
+
+		limits -0 400 -0 800
+
+		box
+
+	
+
+		set r=sqrt(x**2+y**2)
+
+		set rr=sqrt(x**2+ys**2)
+		
+		ctype red
+
+		connect r r
+
+		set a=ACOS(x /r)
+
+		set a2=ACOS(x /rr)
+
+		do i=1,dimen(x){
+
+	
+
+		set yy=y[$i]
+		set aa=a[$i]
+		set ff=f[$i]
+		set aa2=a2[$i]
+		set rs=r[$i]
+		set rrs=rr[$i]
+		set oo=o[$i]
+
+		if(oo==0){
+
+		expand 1.2
+
+		ptype 10 3
+
+		if(yy <0){
+		set aa=aa+3.141592654
+
+		
+		set aa2=aa2+3.141592654}
+
+		if(ff>0.5){
+		ctype green}else{
+		ctype black}
+
+		#ctype black
+
+		points rs rrs}}
+
+		#ctype red
+
+		#expand 2.0
+
+		#ptype 1 1
+
+
+		#points rs rs}}
+
+		#ctype blue
+
+		#points rrs rrs}}
+
+		expand 0.8
+
+		ctype black
+
+		xlabel radius
+		ylabel radius corrected for inclination
+
+	
+alphaparameter2(in preparation)
+		ctype black
+		location 2000 30000 2000 30000
+
+#		#limits 1.5 3 -6 -1
+		#limits 0 400 -6 0
+		limits 0 1200 0 1 
+		ctype black
+
+		box 
+
+		data unliky.dat
+		read h 2 read fb 9 read mag 13
+
+	do i=1,dimen(h)-1{
+	set hh=h[$i]
+	set ffb=fb[$i]
+	set mmag=mag[$i]
+	if (hh==1){
+	if (mmag  yz=-yz}
+	ptype 1 3
+	#points xz yz}
+
+		data likelihood.dat
+
+		read f 6 read rh 8 read nh 9 read rr 10
+
+		set rr=rr*10000
+
+		data error.dat
+		read errv 1 read Errv 2 read errsr 3 read Errsr 4 read errsf 5 
+		read Errsf 6 read errvh 7 read  Errvh 8 read errf 9 read Errf 10 
+		da bin.dat
+
+		read rgal 1 read rmed 3 read r1 4 read r2 5
+
+		
+
+		ltype 1
+		angle 0
+
+		#set dd=((1-f)*nh/(3.14*rr))
+		#set ddd=((1-errf)*nh/(3.14*rr))
+		#set Ddd=((1-Errf)*nh/(3.14*rr))
+
+	
+		
+		set r1=abs(r1-rmed)
+		set r2=abs(r2-rmed)
+
+		#set dd=LG(dd)	
+		#set ddd=LG(ddd)
+		#set Ddd=LG(Ddd)
+
+		
+
+		set ddd=abs(ddd-dd)
+		set Ddd=abs(Ddd-dd)
+
+		ltype 4
+
+		angle 30
+
+		#shed r1 ddd r1 Ddd 50
+		#shed r1 ddd r2 ddd 100
+		#shed r1 ddd r2 ddd 100
+		#shed r1 Ddd r2 Ddd
+		#connect r1 ddd
+		#connect r2 ddd
+		#shed r1 ddd r2 ddd 100
+
+		#connect r1 Ddd
+		#connect r2 Ddd
+		#shed r1 Ddd r2 Ddd 100
+
+		#relocate (r1 ddd)
+		#draw r2 ddd
+#		points rh ddd
+
+#		connect rh Ddd
+#		points rh Ddd
+
+		
+#		print{dd rr}
+
+ 		#set dh=(f*nh/(3.14*rr))
+		#set ddh=(errf*nh/(3.14*rr))
+		#set Ddh=(Errf*nh/(3.14*rr))
+
+	
+		print {dd ddd Ddd rh f nh}
+
+		ctype green
+
+		#set dh=LG(dh)
+		#set ddh=LG(ddh)
+		#set Ddh=LG(Ddh)
+
+		set dh=f
+		set ddh=errf
+		set Ddh=Errf
+
+		set ddh=abs(ddh-dh)
+		set Ddh=abs(Ddh-dh)
+
+
+		#set rh=LG(rh)
+
+		print {dh ddh Ddh rmed r1 r2}
+
+		expand 1
+
+	
+
+			
+		#connect rh dh
+
+		ltype 0
+
+		angle 20
+
+#		points rh ddh
+		#shed r1 ddh r2 ddh 500
+		###shed r1 ddh r1 Ddh 200
+
+#		points rh Ddh
+#		shed rh Ddh
+
+		ptype 4 3
+
+		ctype black
+
+		#points rmed dd
+		#errorbar rmed dd r1 3 
+		#errorbar rmed dd r2 1 
+		#errorbar rmed dd ddd 2 
+		#errorbar rmed dd Ddd 4
+
+		#points rmed ddd
+		#points rmed Ddd
+
+
+
+		print {r1 r2 ddd Ddd}
+
+		ctype green		
+		ltype 2
+
+		points rmed dh
+		errorbar rmed dh r1 3 
+		errorbar rmed dh r2 1 
+		#errorbar rmed dh ddh 4 
+		#errorbar rmed dh Ddh 2
+
+
+		ctype red
+
+		da 1023s.dat
+		read amaj 1 read fs 11
+
+		da 1023t.dat
+		read aamaj 1 read ft 11
+
+		print {fs ft}
+
+		
+
+		do i=1,dimen(ft)-1{
+
+	
+
+		set ffs=fs[$i]-fs[$i-1]
+		set ftt=ft[$i]-ft[$i-1]
+		set rm=rmed[$i-1]
+		set rr1=r1[$i-1]
+		set rr2=r2[$i-1]
+		set amajj=amaj[$i]
+		set aamajj=aamaj[$i]
+		set cont=$i
+		#set ffencls=ffs[$i]-ffs[$i-1]
+		#set ffenclt=ftt[$i]-ftt[$i-1]
+
+		
+
+		print {ffs ftt}
+
+		set ff=ffs/ftt
+		print {cont ff}
+
+		if(cont==1){
+		set ff=ff*0.49}
+
+		if(cont==2){
+		set ff=ff*0.67}
+		
+
+		print {ff amajj aamajj}
+		
+		points rm ff
+		errorbar rm ff rr1 3 
+		errorbar rm ff rr2 1 }	
+		
+
+		angle 0
+		#expand 0.75
+		#ctype green
+		#relocate 10 -2
+		#putlabel 6 spheroidal component
+
+		#ctype black 
+		#relocate 25 -1.5
+		#putlabel 2 disc
+
+	
+		ctype red
+		relocate 100 0.8
+		putlabel 6 photometric
+
+		ctype green
+		relocate 700 0.8
+		putlabel 6 kinematic
+
+		
+
+		ctype black
+
+		xlabel R(arcsec)
+		#ylabel log(density)
+		ylabel f(B/T)
+
+
+########################################################################
+		#ltype 0 
+		#ctype black
+		#set vrot=(abs(vr)+abs(vb))/2
+		#points rh vrot
+		#connect rh vrot 
+		#points rbin vrot
+		#connect rbin vrot  
+		#ctype red 
+		#points rbin sigmar
+		#connect rbin sigmar 
+		#ctype blue
+		#set sig=(ssr+ssb)/2
+		#connect rh sig
+		#points rh sig
+	
+		#ctype red
+		#set sigr=(srr+srb)/2
+
+		#connect rh sigr
+		#points rh sigr
+
+		#ctype black
+		#expand 1
+		#xlabel R_gal
+(arcsec)
+		#ylabel km/s	
+
+			
+
+		#connect rbin sigmaf
+		#points rbin sigmaf
+
+		#relocate 200 280
+		#putlabel 5 black v, blue sigma v, red sigma r, 
+			
+		#ctype green
+		#ltype 1
+		#connect  xz l
+		#ptype 1 1
+		#ctype red
+		#points nn l
+		#ltype 2
+		#ctype black 
+		#connect xz (0*xz+2142.6)
+		#ltype 1
+		#connect (0*xz+4053) xz
+		#relocate 5000 2149
+		#putlabel 5 lnL=-2142 v=140+9 sr=240+2 sf=220+3
