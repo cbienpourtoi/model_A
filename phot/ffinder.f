@@ -19,8 +19,7 @@ c     instead of using a iterator
 
       do i=1,m
          n=n+1
-         write(*,*)'ĺoic is amazing'
-         
+
 
          read(1,*,end=11)xb(i),yb(i),sb(i),fb(i),sub(i),areb(i),idb(i)
          read(2,*,end=22)xd(i),yd(i),sd(i),ftot(i),sut(i),aret(i),idd(i)
