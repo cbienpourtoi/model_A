@@ -51,10 +51,22 @@ print "Will use "+fcompilator+" as fortran compilator"
 
 
 #######################
+# Prepares the catalog with good format for use in ML.f
+
+prefile = "catalog01before.cat"
+postfile = "catalog01after.cat"
+
+f = open(postfile, "w")
+for line in file(prefile, mode='r'):
+    if line[0] != "#":
+        f.write(line.replace(":", " "))
+f.close()
+
+
+#######################
 # Exectution ML.f
 
-# TODO : One of the input catalogue.cat has wrong format, with : to delete. Where does this come from?
-# TODO : make something that corrects the catalogue.cat file.
+# TODO : Check that the previous catalog name will be coherent with the new one (right now it is not!)
 
 f_exec_filename = 'a.out'
 subprocess.call([fcompilator, '-o', f_exec_filename, 'ML.f'])
