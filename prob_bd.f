@@ -32,7 +32,7 @@ c Likelihood code to be run on a mock galaxy. Input:catalogue of PNe and input f
 c INPUT & OUTPUT FILES
       
 c     catalogue (without :) created with set_catalogue.sm
-       open(11,file="phot/catalog00.cat",status="old")
+       open(11,file="phot/catalog09.cat",status="old")
 c      write(*,*)'input file'
 c      read(*,*)inputfile
 
@@ -40,7 +40,7 @@ c      write(*,*)'qui'
 c       open(11,file=inputfile,status="old")
 c       write(*,*)'letto'
 c     f
-       open(18,file= "phot/NA0_f.dat",status="old")
+       open(18,file= "phot/NC9_f.dat",status="old")
 c     input created with create_input.f
        open(21,file="input.model_A.dat",status="old")
 c     rejection 0.04 nearly 2 sigma
@@ -54,11 +54,11 @@ c       open(15,file="bin.dat",status="unknown")
 c     coordinate (xs,ys,x,y,ysi)
 c       open(44,file="coord.dat",status="unknown")
 c     rgal(h), h, raggio di ogni bin 
-       open(15,file="bin_model0.dat",status="unknown")
+       open(15,file="bin_model9.dat",status="unknown")
 c     coordinate and vel v_av, xs, ysi
-       open(12,file="likethresh0.dat",status="unknown")
+       open(12,file="likethresh9.dat",status="unknown")
 c     likelihood
-       open(10,file="likelihood_model0.dat",status="unknown")
+       open(10,file="likelihood_model9.dat",status="unknown")
 c     data used in the program before and after sigma-clipping
 c       open(66,file="cleancatalogue.dat",status="unknown")
 c     errors
@@ -240,23 +240,23 @@ c     obtain azimuthal angle in the galaxy plain
        enddo
                                                   
        do i=1,n
-          write(*,*)b(i),i,xm(i),ym(i)
+c          write(*,*)b(i),i,xm(i),ym(i)
        enddo
 
        do h=1,nbin
 c          do i=1,n
              rgalgc(h)=b(int((h*n/nbin)))
 c            enddo
-              write(*,*)'rgalgc', rgalgc(h)
+c              write(*,*)'rgalgc', rgalgc(h)
              enddo
 
  
 c GC obtaining prob for each GC
  
-               open(17,file="prob_bd0.dat",status="unknown")
+               open(17,file="prob_bd9.dat",status="unknown")
               open(19,file="all.dat",status="unknown")
-              open(21,file="radial0.dat",status="unknown")
-              open(22,file="count0.dat",status="unknown")
+              open(21,file="radial9.dat",status="unknown")
+              open(22,file="count9.dat",status="unknown")
 
                likes=0
                tot_gc=0
@@ -301,7 +301,7 @@ c                  cat_c(i)=0
                   if(rgal(nbin).le.rgalgc(nbin))rgal(nbin)=rgalgc(nbin)
 
                   read(15,*)rgal(h)
-                  write(*,*)'rgal',rgal(h)
+c                  write(*,*)'rgal',rgal(h)
 
                   loglike=0
                   likes=0
@@ -455,14 +455,14 @@ c                           enddo
               
                
  
-                write(*,*)mm(h),mmm(h)
+c               write(*,*)mm(h),mmm(h)
                 tot_gc=mm(h)+tot_gc
 
                enddo
 
                write(*,*)'here'
 
-               write(*,*)n,tot_gc,cont,cont1
+c               write(*,*)n,tot_gc,cont,cont1
 
                do h=1,nbin
                   write(*,*)rgal(h),rgalgc(h),mm(h)
@@ -488,13 +488,23 @@ c                  nbclip=0
                     pb(i)=bb(i)/(bb(i)+bd(i))
                     pd(i)=bd(i)/(bb(i)+bd(i))
 
+
+                    if((pb(i)).ne.pb(i))pb(i)=0
+
+                    if((pb(i)).ne.pb(i))pd(i)=1
+
+                    if((pd(i)).ne.pd(i))pd(i)=0
+
+                    if((pd(i)).ne.pd(i))pb(i)=1
+                    
                     if(pb(i).ge.0.55) idari(i)=1
                      if(pb(i).lt.0.45) idari(i)=0
                      if(idari(i).ne.flag_c(i)) idwrong(i)=1
 
-                    write(*,*)pb(i),pd(i),flag_c(i),idwrong(i)
+c                    write(*,*)'pb',pb(i),pd(i),flag_c(i),idwrong(i)
                     
                     nb=nb+pb(i)
+                    write(*,*)'nb',nb,pb(i)
 c                    nbclip=nbclip+idari(i)
                     nd=nd+pd(i)
                     nbl=nbl+flag_c(i)
