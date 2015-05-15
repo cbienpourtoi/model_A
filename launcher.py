@@ -70,3 +70,12 @@ subprocess.call(['./'+f_exec_filename])
 
 # TODO : do you need to keep the output of this file?
 
+
+#######################
+# Exectution ffinder.f
+
+f_exec_filename = 'phot/a.out'
+subprocess.call([fcompilator, '-o', f_exec_filename, 'phot/ffinder.f'])
+subprocess.call(['cd', 'phot'])
+subprocess.call(['./'+f_exec_filename])
+
