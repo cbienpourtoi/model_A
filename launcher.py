@@ -44,6 +44,7 @@ print "Will use "+fcompilator+" as fortran compilator"
 
 
 
+
 #####################################
 # Exectution of the series of codes #
 #####################################
@@ -52,15 +53,15 @@ print "Will use "+fcompilator+" as fortran compilator"
 """ TODO: check I/O for each process"""
 
 
+std_out_dir = "stdout/" # In this directory I'll put all the outputs from the codes that are usually displayed on screen
 
 
 #######################
 # Exectution supermongo overplot.sm
 
 workdir = "phot/"
-subprocess.call(['sm'], stdin=open(workdir+"overplot.sm", 'r'), cwd=workdir)
-
-
+#subprocess.check_output(['sm'], stdin=open(workdir+"overplot.sm", 'r'), cwd=workdir, stdout=open(std_out_dir+"overplot.txt", 'w'))
+subprocess.check_output(['sm'], stdin=open(workdir+"overplot.sm", 'r'), cwd=workdir)
 
 
 
@@ -84,23 +85,39 @@ for line in file(prefile, mode='r'):
         f.write(line.replace(":", " "))
 f.close()
 
+# TODO: replace with the right catalog in ML.f
 
 #######################
 # Exectution ML.f
 
 # TODO : Check that the previous catalog name will be coherent with the new one (right now it is not!)
 
+# The file NA9_f.dat can contain NaN and we don't want them, so I replace the NaN by 0.5
+# and create a new catalog NA9_f_NaNcorrected.dat, that is the one read by the fortran code ML.f
+
+prefile = "phot/NA9_f.dat"
+postfile = "phot/NA9_f_NaNcorrected.dat"
+
+f = open(postfile, "w")
+for line in file(prefile, mode='r'):
+    f.write((line.replace("-NAN.", ".5        ")).replace("NAN.", ".5        "))
+f.close()
+
+
 f_exec_filename = 'a.out'
-subprocess.call([fcompilator, '-o', f_exec_filename, 'ML.f'])
+subprocess.check_output([fcompilator, '-o', f_exec_filename, 'ML.f'])
 subprocess.call(['./'+f_exec_filename], stdin=open("commands_for_ML", 'r'))
 
+sys.exit()
 
 #######################
 # Exectution prob_bd.f
 
 f_exec_filename = 'a.out'
-subprocess.call([fcompilator, '-o', f_exec_filename, 'prob_bd.f'])
-subprocess.call(['./'+f_exec_filename])
+subprocess.check_output([fcompilator, '-o', f_exec_filename, 'prob_bd.f'])
+subprocess.check_output(['./'+f_exec_filename])
+#subprocess.check_output([fcompilator, '-o', f_exec_filename, 'prob_bd.f'], stderr=open(std_out_dir+"prob_bd_compil.txt", 'w'))
+#subprocess.check_output(['./'+f_exec_filename], stderr=open(std_out_dir+"prob_bd_exec.txt", 'w'))
 
 
 
@@ -109,8 +126,6 @@ subprocess.call(['./'+f_exec_filename])
 
 f_exec_filename = 'a.out'
 workdir = "phot/"
-subprocess.call([fcompilator, '-o', f_exec_filename, 'ffinder.f'], cwd=workdir)
-subprocess.call(['./'+f_exec_filename], cwd=workdir)
 
-sys.exit()
-
+subprocess.check_output([fcompilator, '-o', f_exec_filename, 'fxfinder.f'], cwd=workdir)
+subprocess.check_output(['./'+f_exec_filename], cwd=workdir)

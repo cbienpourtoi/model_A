@@ -51,7 +51,7 @@ c INPUT & OUTPUT FILES
 c     catalogue (without :)
        open(11,file="phot/catalog09.cat",status="old")
 c     f
-       open(18,file="phot/NA9_f.dat",status="old")
+       open(18,file="phot/NA9_f_NaNcorrected.dat",status="old")
 c     input created with create_input.f
        open(21,file="input.model_A.dat",status="old")
 c     rejection 0.04 nearly 2 sigma
