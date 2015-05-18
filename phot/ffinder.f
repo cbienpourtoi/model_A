@@ -9,10 +9,10 @@
       integer idb(m),idd(m)
 
 
-      open(1,file='phot/NABall_nb.txt',status='old')
-      open(2,file='phot/NATall_nb.txt',status='old')
-      open(4,file='phot/NAFall_nb.txt',status='old')
-      open(3,file='phot/NA9_f.dat',status='unknown')
+      open(1,file='NABall_nb.txt',status='old')
+      open(2,file='NATall_nb.txt',status='old')
+      open(4,file='NAFall_nb.txt',status='old')
+      open(3,file='NA9_f.dat',status='unknown')
 c     TODO: change number previous line (iterative) - 
 c     or always the same? Use python to rename file 
 c     instead of using a iterator

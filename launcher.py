@@ -22,6 +22,7 @@ import os
 import sys
 
 
+
 ###############################
 ### Test fortran compilers ####
 ###############################
@@ -43,10 +44,31 @@ print "Will use "+fcompilator+" as fortran compilator"
 
 
 
+#####################################
+# Exectution of the series of codes #
+#####################################
+
+""" TODO: check the right order of things """
+""" TODO: check I/O for each process"""
+
+
+
+
+#######################
+# Exectution supermongo overplot.sm
+
+workdir = "phot/"
+subprocess.call(['sm'], stdin=open(workdir+"overplot.sm", 'r'), cwd=workdir)
+
+
+
+
+
+
 #######################
 # Exectution create_input.f
 
-# TODO: This should happen only once, compared to the rest that will be mnore frequent: do later
+# TODO: This should happen only once, compared to the rest that will be more frequent: do later
 
 
 
@@ -85,7 +107,10 @@ subprocess.call(['./'+f_exec_filename])
 #######################
 # Exectution ffinder.f
 
-f_exec_filename = 'phot/a.out'
-subprocess.call([fcompilator, '-o', f_exec_filename, 'phot/ffinder.f'])
-subprocess.call(['./'+f_exec_filename])
+f_exec_filename = 'a.out'
+workdir = "phot/"
+subprocess.call([fcompilator, '-o', f_exec_filename, 'ffinder.f'], cwd=workdir)
+subprocess.call(['./'+f_exec_filename], cwd=workdir)
+
+sys.exit()
 
