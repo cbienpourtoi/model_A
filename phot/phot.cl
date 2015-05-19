@@ -5,10 +5,12 @@
 ##galfit.feedme##
 
 imdel f.fits
-imarith("/home/arianna/work/alpha/models/model_A/bulge.fits", "/", "/home/arianna/work/alpha/models/model_A/galaxy.fits", "f.fits")
+imarith("../fits_inputs/bulge.fits", "/", "../fits_inputs/galaxy.fits", "f.fits")
 
-imcopy  /home/arianna/work/alpha/models/model_A/bulge.fits snb.fits
-imcopy  /home/arianna/work/alpha/models/model_A/galaxy.fits tnb.fits
+imdel snb.fits
+imdel tnb.fits
+imcopy  ../fits_inputs/bulge.fits snb.fits
+imcopy  ../fits_inputs/galaxy.fits tnb.fits
 
 
 ##########################################################################
@@ -21,11 +23,11 @@ imcopy  /home/arianna/work/alpha/models/model_A/galaxy.fits tnb.fits
 ############################################################################
 ##Consistency check
 
-displ(image="/home/arianna/work/alpha/models/model_A/galaxy.fits",frame=1) 
-tvmark(frame=1,coords="Kall.dat",color=205,lab-,num+)
+#displ(image="../fits_inputs/galaxy.fits",frame=1) 
+#tvmark(frame=1,coords="Kall.dat",color=205,lab-,num+)
 
-displ(image="f.fits",zrange=no,zscale=no,ztrans="linear",z1=0,z2=1,frame=3) 
-tvmark(frame=3,coords="Kall.dat",color=201,mark="rectangle",lengths="6",lab-,num-)
+#displ(image="f.fits",zrange=no,zscale=no,ztrans="linear",z1=0,z2=1,frame=3) 
+#tvmark(frame=3,coords="Kall.dat",color=201,mark="rectangle",lengths="6",lab-,num-)
 
 
 
@@ -79,63 +81,56 @@ noao
 digiphot
 daophot
 
-phot("snb.fits","Kall.dat",\
-	"NABall_nb.mag",skyfile="",\
-     datapars="",scale=1.,fwhmpsf=2.27,emissio=yes,sigma=0.0,datamin=-100,\ 
-               datamax=1e5,noise="poisson",\
-     centerpars="",calgorithm="none",cbox=0,cthreshold=0.,minsnratio=1.,\
-	       cmaxiter=0,maxshift=0,clean=no,rclean=0.,rclip=0.,kclean=0.,\
-	       mkcenter=no,\
-     fitskypars="",salgorithm="constant",annulus=10,dannulus=10,skyvalue=0.,\ 
-               smaxiter=10,sloclip=0.,shiclip=0.,snreject=50,sloreject=3.,\  
-               shireject=3.,khist=3.,binsize=0.1,smooth=no,rgrow=0., mksky=no,\
-     photpars="",weighting="constant",apertures=3,zmag=0.,mkapert=no,\
-     interactive=no,radplots=no,verify=no,update=no,verbose=no,\ 
-     graphics="stdgraph",display="stdimage",icommands="",gcommands="")
+# On one line after
+#phot("snb.fits","Kall.dat",\
+#	"NABall_nb.mag",skyfile="",\
+#     datapars="",scale=1.,fwhmpsf=2.27,emissio=yes,sigma=0.0,datamin=-100,\ 
+#               datamax=1e5,noise="poisson",\
+#     centerpars="",calgorithm="none",cbox=0,cthreshold=0.,minsnratio=1.,\
+#	       cmaxiter=0,maxshift=0,clean=no,rclean=0.,rclip=0.,kclean=0.,\
+#	       mkcenter=no,\
+#    fitskypars="",salgorithm="constant",annulus=10,dannulus=10,skyvalue=0.,\ 
+#               smaxiter=10,sloclip=0.,shiclip=0.,snreject=50,sloreject=3.,\  
+#               shireject=3.,khist=3.,binsize=0.1,smooth=no,rgrow=0., mksky=no,\
+#     photpars="",weighting="constant",apertures=3,zmag=0.,mkapert=no,\
+#     interactive=no,radplots=no,verify=no,update=no,verbose=no,\ 
+#     graphics="stdgraph",display="stdimage",icommands="",gcommands="")
  
+phot("snb.fits","Kall.dat", "NABall_nb.mag",skyfile="", datapars="",scale=1.,fwhmpsf=2.27,emissio=yes,sigma=0.0,datamin=-100, datamax=1e5,noise="poisson", centerpars="",calgorithm="none",cbox=0,cthreshold=0.,minsnratio=1., cmaxiter=0,maxshift=0,clean=no,rclean=0.,rclip=0.,kclean=0., mkcenter=no, fitskypars="",salgorithm="constant",annulus=10,dannulus=10,skyvalue=0., smaxiter=10,sloclip=0.,shiclip=0.,snreject=50,sloreject=3., shireject=3.,khist=3.,binsize=0.1,smooth=no,rgrow=0., mksky=no, photpars="",weighting="constant",apertures=3,zmag=0.,mkapert=no, interactive=no,radplots=no,verify=no,update=no,verbose=no, graphics="stdgraph",display="stdimage",icommands="",gcommands="")
 
 
-txdump("NABall_nb.mag",\
-       "XCENTER,YCENTER,STDEV,FLUX,SUM,AREA,ID",\
-       yes, headers=no,paramet=no, >> "NABall_nb.txt")
-
+# Corrected to pyraf, use stdout = instead of >>
+#txdump("NABall_nb.mag", "XCENTER,YCENTER,STDEV,FLUX,SUM,AREA,ID", yes, headers=no,paramet=no, >> "NABall_nb.txt")
+txdump("NABall_nb.mag", "XCENTER,YCENTER,STDEV,FLUX,SUM,AREA,ID", yes, headers=no,paramet=no, Stdout="NABall_nb.txt")
 
 
 phot("tnb.fits","Kall.dat",\
-	"NATall_nb.mag",skyfile="",\
+"NATall_nb.mag",skyfile="",\
      datapars="",scale=1.,fwhmpsf=2.27,emissio=yes,sigma=0.0,datamin=-100,\ 
                datamax=1e5,noise="poisson",\
      centerpars="",calgorithm="none",cbox=0,cthreshold=0.,minsnratio=1.,\
-	       cmaxiter=0,maxshift=0.,clean=no,rclean=0.,rclip=0.,kclean=0.,\
-	       mkcenter=no,\
+       cmaxiter=0,maxshift=0.,clean=no,rclean=0.,rclip=0.,kclean=0.,\
+       mkcenter=no,\
      fitskypars="",salgorithm="constant",annulus=10,dannulus=10,skyvalue=0.,\ 
                smaxiter=10,sloclip=0.,shiclip=0.,snreject=50,sloreject=3.,\  
                shireject=3.,khist=3.,binsize=0.1,smooth=no,rgrow=0., mksky=no,\
      photpars="",weighting="constant",apertures=3,zmag=25.,mkapert=no,\
      interactive=no,radplots=no,verify=no,update=no,verbose=no,\ 
      graphics="stdgraph",display="stdimage",icommands="",gcommands="")
+
+
+phot("tnb.fits", "Kall.dat", "NATall_nb.mag",skyfile="", datapars="",scale=1.,fwhmpsf=2.27,emissio=yes,sigma=0.0,datamin=-100, datamax=1e5,noise="poisson", centerpars="",calgorithm="none",cbox=0,cthreshold=0.,minsnratio=1., cmaxiter=0,maxshift=0.,clean=no,rclean=0.,rclip=0.,kclean=0., mkcenter=no, fitskypars="",salgorithm="constant",annulus=10,dannulus=10,skyvalue=0., smaxiter=10,sloclip=0.,shiclip=0.,snreject=50,sloreject=3., shireject=3.,khist=3.,binsize=0.1,smooth=no,rgrow=0., mksky=no, photpars="",weighting="constant",apertures=3,zmag=25.,mkapert=no, interactive=no,radplots=no,verify=no,update=no,verbose=no, graphics="stdgraph",display="stdimage",icommands="",gcommands="")
+
+
+
  
 txdump("NATall_nb.mag",\
        "XCENTER,YCENTER,STDEV,FLUX,SUM,AREA,ID",\
-       yes, headers=no,paramet=no, >> "NATall_nb.txt")
+       yes, headers=no,paramet=no, Stdout="NATall_nb.txt")
 
-phot("f.fits","Kall.dat",\
-	"NAFall_nb.mag",skyfile="",\
-     datapars="",scale=1.,fwhmpsf=2.27,emissio=no,sigma=0.0,datamin=-100,\ 
-               datamax=1e5,noise="poisson",\
-     centerpars="",calgorithm="none",cbox=0,cthreshold=0.,minsnratio=1.,\
-	       cmaxiter=0,maxshift=0.,clean=no,rclean=0.,rclip=0.,kclean=0.,\
-	       mkcenter=no,\
-     fitskypars="",salgorithm="constant",annulus=10,dannulus=10,skyvalue=0.,\ 
-               smaxiter=10,sloclip=0.,shiclip=0.,snreject=50,sloreject=3.,\  
-               shireject=3.,khist=3.,binsize=0.1,smooth=no,rgrow=0., mksky=no,\
-     photpars="",weighting="constant",apertures=3,zmag=25.,mkapert=no,\
-     interactive=no,radplots=no,verify=no,update=no,verbose=no,\ 
-     graphics="stdgraph",display="stdimage",icommands="",gcommands="")
- 
-txdump("NAFall_nb.mag",\
-       "XCENTER,YCENTER,STDEV,FLUX,SUM,AREA,ID",\
-       yes, headers=no,paramet=no, >> "NAFall_nb.txt")
+phot("f.fits","Kall.dat", "NAFall_nb.mag", skyfile="", datapars="", scale=1., fwhmpsf=2.27, emissio=no, sigma=0.0, datamin=-100, datamax=1e5, noise="poisson", centerpars="", calgorithm="none", cbox=0, cthreshold=0., minsnratio=1., cmaxiter=0, maxshift=0., clean=no, rclean=0., rclip=0., kclean=0., mkcenter=no, fitskypars="", salgorithm="constant", annulus=10, dannulus=10, skyvalue=0., smaxiter=10, sloclip=0., shiclip=0., snreject=50, sloreject=3., shireject=3., khist=3., binsize=0.1, smooth=no, rgrow=0., mksky=no, photpars="", weighting="constant", apertures=3, zmag=25., mkapert=no, interactive=no, radplots=no, verify=no, update=no, verbose=no, graphics="stdgraph", display="stdimage", icommands="", gcommands="")
+
+txdump("NAFall_nb.mag", "XCENTER,YCENTER,STDEV,FLUX,SUM,AREA,ID", yes, headers=no,paramet=no, Stdout="NAFall_nb.txt")
 
 ###########################################################################
 

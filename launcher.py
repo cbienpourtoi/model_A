@@ -104,28 +104,36 @@ for line in file(prefile, mode='r'):
 f.close()
 
 
+fortfile = "ML.f"
 f_exec_filename = 'a.out'
-subprocess.check_output([fcompilator, '-o', f_exec_filename, 'ML.f'])
-subprocess.call(['./'+f_exec_filename], stdin=open("commands_for_ML", 'r'))
-
-sys.exit()
+subprocess.check_output([fcompilator, '-o', f_exec_filename, fortfile])
+error_code = subprocess.call(['./'+f_exec_filename], stdin=open("commands_for_ML", 'r'))
+if error_code != 0:
+    print "Error while executing "+fortfile
+    sys.exit()
 
 #######################
 # Exectution prob_bd.f
 
+fortfile = 'prob_bd.f'
 f_exec_filename = 'a.out'
-subprocess.check_output([fcompilator, '-o', f_exec_filename, 'prob_bd.f'])
-subprocess.check_output(['./'+f_exec_filename])
-#subprocess.check_output([fcompilator, '-o', f_exec_filename, 'prob_bd.f'], stderr=open(std_out_dir+"prob_bd_compil.txt", 'w'))
-#subprocess.check_output(['./'+f_exec_filename], stderr=open(std_out_dir+"prob_bd_exec.txt", 'w'))
+subprocess.check_output([fcompilator, '-o', f_exec_filename, fortfile])
+error_code = subprocess.call(['./'+f_exec_filename])
+if error_code != 0:
+    print "Error while executing "+fortfile
+    sys.exit()
 
 
 
 #######################
 # Exectution ffinder.f
 
+fortfile = 'ffinder.f'
 f_exec_filename = 'a.out'
 workdir = "phot/"
 
-subprocess.check_output([fcompilator, '-o', f_exec_filename, 'fxfinder.f'], cwd=workdir)
-subprocess.check_output(['./'+f_exec_filename], cwd=workdir)
+subprocess.check_output([fcompilator, '-o', f_exec_filename, fortfile], cwd=workdir)
+error_code = subprocess.call(['./'+f_exec_filename], cwd=workdir)
+if error_code != 0:
+    print "Error while executing "+fortfile
+    sys.exit()
