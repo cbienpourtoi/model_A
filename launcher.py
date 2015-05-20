@@ -20,7 +20,7 @@ __status__ = "Development"
 import subprocess
 import os
 import sys
-
+import phot.phot as phot
 
 
 ###############################
@@ -53,7 +53,27 @@ print "Will use "+fcompilator+" as fortran compilator"
 """ TODO: check I/O for each process"""
 
 
-std_out_dir = "stdout/" # In this directory I'll put all the outputs from the codes that are usually displayed on screen
+#std_out_dir = "stdout/" # In this directory I'll put all the outputs from the codes that are usually displayed on screen
+
+
+
+
+#######################
+# Exectution create_input.f
+
+fortfile = "create_input.f"
+f_exec_filename = 'a.out'
+subprocess.check_output([fcompilator, '-o', f_exec_filename, fortfile])
+
+""" # TODO: Commented until I know how to feed the code
+error_code = subprocess.call(['./'+f_exec_filename], stdin=open("commands_for_create_input", 'r'))
+if error_code != 0:
+    print "Error while executing "+fortfile
+    sys.exit()
+"""
+
+# TODO: This should happen only once, compared to the rest that will be more frequent: do later
+# TODO: for loop from here to the end: ?
 
 
 #######################
@@ -67,9 +87,9 @@ subprocess.check_output(['sm'], stdin=open(workdir+"overplot.sm", 'r'), cwd=work
 
 
 #######################
-# Exectution create_input.f
+# Exectution pyraf phot.py
 
-# TODO: This should happen only once, compared to the rest that will be more frequent: do later
+phot.execute()
 
 
 
@@ -110,7 +130,9 @@ subprocess.check_output([fcompilator, '-o', f_exec_filename, fortfile])
 error_code = subprocess.call(['./'+f_exec_filename], stdin=open("commands_for_ML", 'r'))
 if error_code != 0:
     print "Error while executing "+fortfile
+    # i have an error here that is new, since I used create_input. I guess it created bad values and now the code does not run automatically.
     sys.exit()
+
 
 #######################
 # Exectution prob_bd.f
