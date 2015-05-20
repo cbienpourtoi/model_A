@@ -1,6 +1,6 @@
       program create_input
 
-      double precision xp,yp,xs,ys,pa,ps,incl,vhel
+      double precision xp,yp,xs,ys,pa,ps,incl,vhel,nbin
 
       
       open(1,file="input.model_A.dat",status="unknown")
@@ -24,9 +24,12 @@
       write(*,*)'vhel,ned'
       read(*,*)vned
       
+        write(*,*)'NBIN'
+        READ(*,*)nbin
+      
 
 
-        write(1,*)xp,yp,xs,ys,ps,Rc,Rmc,Rsc,Dc,Dmc,Dsc,pa,incl,vned
+        write(1,*)xp,yp,xs,ys,ps,Rc,Rmc,Rsc,Dc,Dmc,Dsc,pa,incl,vned,nbin
 
       stop
       end

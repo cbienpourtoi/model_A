@@ -3,6 +3,7 @@
 
 from pyraf import iraf
 import os, errno
+import shutil
 
 def silentremove(filename):
     try:
@@ -17,7 +18,7 @@ def execute():
     ## use GALFIT to fit and to create a model disk vs bulge##
     ##galfit.feedme##
 
-    input_dir = "iraf_inputs/"
+    input_dir = "iraf_input/"
     tmp_dir = "iraf_tmp/"
     if not os.path.exists(tmp_dir):
         os.mkdir(tmp_dir)
@@ -90,6 +91,8 @@ def execute():
     iraf.noao(_doprint=False)
     iraf.digiphot(_doprint=False)
     iraf.daophot(_doprint=False)
+     
+    shutil.copyfile("phot/Kall.dat", input_dir+"Kall.dat")
      
     iraf.phot(tmp_dir+"snb.fits",input_dir+"Kall.dat", tmp_dir+"NABall_nb.mag",skyfile="", datapars="",scale=1.,fwhmpsf=2.27,emissio="yes",sigma=0.0,datamin=-100, datamax=1e5,noise="poisson", centerpars="",calgorithm="none",cbox=0,cthreshold=0.,minsnratio=1., cmaxiter=0,maxshift=0,clean="no",rclean=0.,rclip=0.,kclean=0., mkcenter="no", fitskypars="",salgorithm="constant",annulus=10,dannulus=10,skyvalue=0., smaxiter=10,sloclip=0.,shiclip=0.,snreject=50,sloreject=3., shireject=3.,khist=3.,binsize=0.1,smooth="no",rgrow=0., mksky="no", photpars="",weighting="constant",apertures=3,zmag=0.,mkapert="no", interactive="no",radplots="no",verify="no",update="no",verbose="no", graphics="stdgraph",display="stdimage",icommands="",gcommands="")
 

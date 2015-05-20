@@ -61,16 +61,21 @@ print "Will use "+fcompilator+" as fortran compilator"
 #######################
 # Exectution create_input.f
 
+# rewrite this in python? Should be easy.
+# This file only creates input.model_A.dat
+
 fortfile = "create_input.f"
 f_exec_filename = 'a.out'
 subprocess.check_output([fcompilator, '-o', f_exec_filename, fortfile])
 
+
 """ # TODO: Commented until I know how to feed the code
+"""
 error_code = subprocess.call(['./'+f_exec_filename], stdin=open("commands_for_create_input", 'r'))
 if error_code != 0:
     print "Error while executing "+fortfile
     sys.exit()
-"""
+
 
 # TODO: This should happen only once, compared to the rest that will be more frequent: do later
 # TODO: for loop from here to the end: ?
@@ -79,18 +84,23 @@ if error_code != 0:
 #######################
 # Exectution supermongo overplot.sm
 
+
+""" Need the file catalog09.cat (given by lodo)"""
+""" output : Kall.dat"""
+
+
 workdir = "phot/"
 #subprocess.check_output(['sm'], stdin=open(workdir+"overplot.sm", 'r'), cwd=workdir, stdout=open(std_out_dir+"overplot.txt", 'w'))
 subprocess.check_output(['sm'], stdin=open(workdir+"overplot.sm", 'r'), cwd=workdir)
 
 
 
-
 #######################
 # Exectution pyraf phot.py
 
-phot.execute()
+""" Need the file bulge.fitrs + galaxy.fits (come from galfit given by lodo) + Kall.dat"""
 
+phot.execute()
 
 
 #######################
@@ -104,6 +114,8 @@ for line in file(prefile, mode='r'):
     if line[0] != "#":
         f.write(line.replace(":", " "))
 f.close()
+
+sys.exit()
 
 # TODO: replace with the right catalog in ML.f
 
