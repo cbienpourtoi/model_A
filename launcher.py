@@ -22,6 +22,7 @@ import os
 import sys
 import phot.phot as phot
 
+# TODO: how to reset packages automatically?
 
 ###############################
 ### Test fortran compilers ####
@@ -64,13 +65,14 @@ print "Will use "+fcompilator+" as fortran compilator"
 # rewrite this in python? Should be easy.
 # This file only creates input.model_A.dat
 
+# TODO: input.model_A.dat is not a good filename convention : correct. 
+
+# TODO : Kill this code and replace it by a nnice python configuration file !
+
 fortfile = "create_input.f"
 f_exec_filename = 'a.out'
 subprocess.check_output([fcompilator, '-o', f_exec_filename, fortfile])
 
-
-""" # TODO: Commented until I know how to feed the code
-"""
 error_code = subprocess.call(['./'+f_exec_filename], stdin=open("commands_for_create_input", 'r'))
 if error_code != 0:
     print "Error while executing "+fortfile
