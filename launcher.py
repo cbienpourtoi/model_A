@@ -30,8 +30,6 @@ reload(phot)
 
 
 
-# TODO: how to reset packages automatically?
-
 ###############################
 ### Test fortran compilers ####
 ###############################
@@ -58,7 +56,6 @@ print "Will use "+fcompilator+" as fortran compilator"
 # Exectution of the series of codes #
 #####################################
 
-""" TODO: check the right order of things """
 """ TODO: check I/O for each process"""
 
 
@@ -73,9 +70,10 @@ print "Will use "+fcompilator+" as fortran compilator"
 # rewrite this in python? Should be easy.
 # This file only creates input.model_A.dat
 
-# TODO: input.model_A.dat is not a good filename convention : correct. 
-
+# TODO: input.model_A.dat is not a good filename convention : correct.
 # TODO : Kill this code and replace it by a nnice python configuration file !
+
+
 
 fortfile = "create_input.f"
 f_exec_filename = 'a.out'
@@ -110,7 +108,7 @@ subprocess.check_output(['sm'], stdin=open(workdir+"overplot.sm", 'r'), cwd=work
 #######################
 # Exectution pyraf phot.py
 
-""" Need the file bulge.fitrs + galaxy.fits (come from galfit given by lodo) + Kall.dat"""
+""" Need the file bulge.fits + galaxy.fits (come from galfit given by lodo) + Kall.dat"""
 
 # TODO: need to produce these images (gal + pne positions + color codes with velocity) IRAF does not do it, do it by myself.
 
