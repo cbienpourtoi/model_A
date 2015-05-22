@@ -50,11 +50,10 @@ def clean_PN_catalog(old, new):
 def plot_image(fitsfile, PNtable, imagefile):
     gc = aplpy.FITSFigure(fitsfile)
     gc.show_grayscale(stretch="log")
-    print PNtable["VEL"]
     plt.scatter(PNtable['PNx_pix'], PNtable['PNy_pix'], c=PNtable["VEL"], edgecolor="none", marker='o', s=30, alpha=0.9)
     plt.colorbar()
     #gc.show_markers(PNtable['PNx_pix'], PNtable['PNy_pix'], edgecolor="green", facecolor='none', marker='o', s=10, alpha=0.5)
-    plt.show()
+    #plt.show()
     gc.save(imagefile)
     plt.close()
 

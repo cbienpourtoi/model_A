@@ -88,34 +88,20 @@ input_model_A(config, "input_model_A.dat")
 # Convert the PN coordinates according to the galfit model coordinates system
 
 galaxy_center_pix = get_galaxy_center('iraf_input/galaxy.fits')
+
 PNtable = convert_coordinates("phot/catalog09.cat", galaxy_center_pix, "PNpositions.cat")
 
 plot_image('iraf_input/galaxy.fits', PNtable, "gal_and_PN.png")
 
 
-sys.exit()
 
-
-
-
-
-#######################
-# Prepares the PN catalog with good format
-
-catfile = "phot/catalog09.cat"
-new_catfile = "phot/PN_catalog_cleaned.cat"
-clean_PN_catalog(catfile, new_catfile)
-
-# TODO: replace with the right catalog in ML.f
-
-
-
+"""
 #######################
 # Exectution supermongo overplot.sm
 
 
-""" Input: PN_catalog_cleaned.cat (cleaned version of catalog09.cat given by lodo)"""
-""" output : Kall.dat"""
+# Input: PN_catalog_cleaned.cat (cleaned version of catalog09.cat given by lodo)
+# output : Kall.dat
 
 workdir = "phot/"
 #subprocess.call(['sm'], stdin=open(workdir+"overplot.sm", 'r'), cwd=workdir, stdout=open("overplot.log", "w"))
@@ -127,6 +113,18 @@ if error_code != 0:
 plot_image('iraf_input/galaxy.fits', "phot/Kall.dat", "gal_and_PN.png")
 
 sys.exit()
+"""
+
+#######################
+# Prepares the PN catalog with good format
+
+catfile = "phot/catalog09.cat"
+new_catfile = "phot/PN_catalog_cleaned.cat"
+clean_PN_catalog(catfile, new_catfile)
+
+# TODO: replace with the right catalog in ML.f
+
+
 
 #######################
 # Exectution pyraf phot.py
