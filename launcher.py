@@ -157,7 +157,6 @@ if error_code != 0:
 
 
 
-
 #######################
 # Exectution ML.f
 
@@ -173,6 +172,7 @@ f = open(postfile, "w")
 for line in file(prefile, mode='r'):
     f.write((line.replace("-NAN.", ".5        ")).replace("NAN.", ".5        "))
 f.close()
+
 
 # ML.f runs a maximum likelihood fitting using position to calculate the azimuthal? angle of the PNes in the galaxy plane
 # outputs likely values of rotation velocity, dispersion in the bulge and in the disk = likelihood.dat in bins
@@ -190,6 +190,7 @@ if error_code != 0:
     # i have an error here that is new, since I used create_input. I guess it created bad values and now the code does not run automatically.
     sys.exit()
 
+sys.exit()
 
 #######################
 # Exectution prob_bd.f
