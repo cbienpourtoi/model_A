@@ -53,7 +53,8 @@ c     catalogue (without :)
 c     f
        open(18,file="phot/NA9_f_NaNcorrected.dat",status="old")
 c     input created with create_input.f
-       open(21,file="input.model_A.dat",status="old")
+c     comment by Loic: input.model_A.dat is now input_modelA.dat
+       open(21,file="input_model_A.dat",status="old")
 c     rejection 0.04 nearly 2 sigma
        open(56,file="table.dat",status="unknown")
 

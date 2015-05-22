@@ -4,13 +4,13 @@ __author__ = 'loic'
 
 # [Input values (former create_input.f)]
 
-centerPNS = [0., 0.]                # Center PNS image in pixel. Format: [x, y] #remove this value?
+centerPNS = {'x':0., 'y':0.}                # Center PNS image in pixel. Format: [x, y] #remove this value?
 
-center2MASS = [0., 0.]              # Center 2MASS image in pixel. Format: [x, y] #check the real center from bulge.fits (or galaxy.fits)
+center2MASS = {'x':0., 'y':0.}              # Center 2MASS image in pixel. Format: [x, y] #check the real center from bulge.fits (or galaxy.fits)
 
 pixel_scale = 1.                    # Pixel scale. Format: arcsec/pix
 
-gal_coord = [54.6208, -5.44980001]  # Coordinates of the main galaxy (RA,DEC). Format = [deg, deg]
+gal_coord = {'RA':54.6208, 'Dec':-5.44980001}  # Coordinates of the main galaxy (RA,DEC). Format = [deg, deg]
 
 pos_angle = 0.                      # Position angle N-->E (-..), from galfit. Format = deg
 
@@ -21,7 +21,7 @@ vel_ned = 660.                         # Systemic velocity of teh galaxy, from N
 nbin = 4.                           # Number of bins
 
 
-
+"""
 
       double precision xp,yp,xs,ys,pa,ps,incl,vhel,nbin
 
@@ -54,3 +54,4 @@ nbin = 4.                           # Number of bins
 
         write(1,*)xp,yp,xs,ys,ps,Rc,Rmc,Rsc,Dc,Dmc,Dsc,pa,incl,vned,nbin
 
+"""

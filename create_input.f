@@ -29,7 +29,7 @@
       
 
 
-        write(1,*)xp,yp,xs,ys,ps,Rc,Rmc,Rsc,Dc,Dmc,Dsc,pa,incl,vned,nbin
+        write(1,*)xp,yp,xs,ys,ps,Rc,Dc,pa,incl,vned,nbin
 
       stop
       end

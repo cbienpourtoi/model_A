@@ -22,8 +22,9 @@ import os
 import sys
 import phot.phot as phot
 import shutil
-#import config
-#reload(config)
+import config
+reload(config)
+from functions import *
 
 # delete this when we work in production mode:
 reload(phot)
@@ -65,23 +66,11 @@ print "Will use "+fcompilator+" as fortran compilator"
 
 
 #######################
-# Exectution create_input.f
+# Gets initial input values from the configuration file
+# formely create_input.f
 
-# rewrite this in python? Should be easy.
-# This file only creates input.model_A.dat
-
-# TODO: input.model_A.dat is not a good filename convention : correct.
-# TODO : Kill this code and replace it by a nnice python configuration file !
-
-fortfile = "create_input.f"
-f_exec_filename = 'a.out'
-subprocess.check_output([fcompilator, '-o', f_exec_filename, fortfile])
-
-error_code = subprocess.call(['./'+f_exec_filename], stdin=open("commands_for_create_input", 'r'))
-if error_code != 0:
-    print "Error while executing "+fortfile
-    sys.exit()
-
+# TODO: check which of the values in the config.py file can be measured automatically
+input_model_A(config)
 
 
 # TODO: This should happen only once, compared to the rest that will be more frequent: do later
@@ -195,4 +184,5 @@ error_code = subprocess.call(['./'+f_exec_filename])
 if error_code != 0:
     print "Error while executing "+fortfile
     sys.exit()
+
 
