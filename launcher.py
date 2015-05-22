@@ -13,6 +13,7 @@ __status__ = "Development"
 
 """ A python file to rule them all: fortran, sm, iraf and all that ****"""
 
+TO DO FOR monday: get catalog file convention that will work. Right now it is too complicated between different files. Who need catalog09? Why? How?
 
 #################
 ### Packages ####
@@ -95,26 +96,6 @@ plot_image('iraf_input/galaxy.fits', PNtable, "gal_and_PN.png")
 
 
 
-"""
-#######################
-# Exectution supermongo overplot.sm
-
-
-# Input: PN_catalog_cleaned.cat (cleaned version of catalog09.cat given by lodo)
-# output : Kall.dat
-
-workdir = "phot/"
-#subprocess.call(['sm'], stdin=open(workdir+"overplot.sm", 'r'), cwd=workdir, stdout=open("overplot.log", "w"))
-error_code = subprocess.call(['sm'], stdin=open(workdir+"overplot.sm", 'r'), cwd=workdir, stdout=open("overplot.log", "w"))
-if error_code != 0:
-    print "Error while executing overplot.sm"
-    sys.exit()
-
-plot_image('iraf_input/galaxy.fits', "phot/Kall.dat", "gal_and_PN.png")
-
-sys.exit()
-"""
-
 #######################
 # Prepares the PN catalog with good format
 
@@ -176,6 +157,15 @@ f.close()
 
 # ML.f runs a maximum likelihood fitting using position to calculate the azimuthal? angle of the PNes in the galaxy plane
 # outputs likely values of rotation velocity, dispersion in the bulge and in the disk = likelihood.dat in bins
+
+
+# Good version of the PN catalog readable by ML.f:
+PN_catalog_forML = "phot/PN_catalog_forML.cat"
+PNtable.write(PN_catalog_forML, format="ascii", comment=False)
+
+
+
+sys.exit()
 
 # TODO: I have to make it so that it uses catalog0X all the time.
 
