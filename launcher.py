@@ -73,7 +73,7 @@ print "Will use "+fcompilator+" as fortran compilator"
 
 # input : the data from the configuration config.py
 # output : the same data in input_model_A.dat, in line, to be read by f77 codes.
-input_model_A(config)
+input_model_A(config, "input_model_A.dat")
 
 
 # TODO: This should happen only once, compared to the rest that will be more frequent: do later
@@ -86,16 +86,9 @@ input_model_A(config)
 #######################
 # Prepares the PN catalog with good format
 
-#TODO: put this more at the begining?
-
 catfile = "phot/catalog09.cat"
 new_catfile = "phot/PN_catalog_cleaned.cat"
-f = open(new_catfile, "w")
-for line in file(catfile, mode='r'):
-    if line[0] != "#":
-        f.write(line.replace(":", " "))
-f.close()
-
+clean_PN_catalog(catfile, new_catfile)
 
 # TODO: replace with the right catalog in ML.f
 
@@ -107,7 +100,6 @@ f.close()
 
 """ Input: PN_catalog_cleaned.cat (cleaned version of catalog09.cat given by lodo)"""
 """ output : Kall.dat"""
-
 
 workdir = "phot/"
 #subprocess.check_output(['sm'], stdin=open(workdir+"overplot.sm", 'r'), cwd=workdir, stdout=open(std_out_dir+"overplot.txt", 'w'))
