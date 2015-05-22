@@ -83,6 +83,22 @@ input_model_A(config, "input_model_A.dat")
 
 
 
+
+#######################
+# Convert the PN coordinates according to the galfit model coordinates system
+
+galaxy_center_pix = get_galaxy_center('iraf_input/galaxy.fits')
+PNtable = convert_coordinates("phot/catalog09.cat", galaxy_center_pix, "PNpositions.cat")
+
+plot_image('iraf_input/galaxy.fits', PNtable, "gal_and_PN.png")
+
+
+sys.exit()
+
+
+
+
+
 #######################
 # Prepares the PN catalog with good format
 
@@ -102,9 +118,15 @@ clean_PN_catalog(catfile, new_catfile)
 """ output : Kall.dat"""
 
 workdir = "phot/"
-#subprocess.check_output(['sm'], stdin=open(workdir+"overplot.sm", 'r'), cwd=workdir, stdout=open(std_out_dir+"overplot.txt", 'w'))
-subprocess.check_output(['sm'], stdin=open(workdir+"overplot.sm", 'r'), cwd=workdir)
+#subprocess.call(['sm'], stdin=open(workdir+"overplot.sm", 'r'), cwd=workdir, stdout=open("overplot.log", "w"))
+error_code = subprocess.call(['sm'], stdin=open(workdir+"overplot.sm", 'r'), cwd=workdir, stdout=open("overplot.log", "w"))
+if error_code != 0:
+    print "Error while executing overplot.sm"
+    sys.exit()
 
+plot_image('iraf_input/galaxy.fits', "phot/Kall.dat", "gal_and_PN.png")
+
+sys.exit()
 
 #######################
 # Exectution pyraf phot.py

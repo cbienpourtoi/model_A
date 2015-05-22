@@ -1,3 +1,5 @@
+dev x11 -bg white
+
 	erase
 	ctype black
 	ltype 0	
@@ -16,32 +18,43 @@
 
 	LIMITS -460 460 -460 460 BOX 3 3 3 3
 
+###########################
+## Reads PN catalog here ##
+###########################
+
 	data PN_catalog_cleaned.cat
 	read rah 5 read ram 6 read ras 7 read  dech  8 read decm 9 read decs 10  read v 11 read x 3 read y 4
 	
-	set ra=rah*3600+ram*60+ras 
+
+##############################
+## RA, Dec dtype conversion ##
+##############################
+
+	set ra=rah*3600+ram*60+ras
 	set dec=dech*3600+decm*60+decs
 
 	print {ra dec v}
-#
+
+#  ra dec of the center from NED in this case would be (10:47:42.3,13:59:9)
 #	set rac=10*3600+47*60+42.3 
 #	set decc=13*3600+59*60+9
 
 #	print {rac decc}
 
- 
+#IT SUBTRACT THE COORDINATES OF THE CENTER FROM THE COORDINATES OF THE pnE
 #	set x= ra - rac
 #	set y= dec - decc
 
+#calculating the angle of the stretchingthat depends on your declination decc
 #	set a=decc*3.141592654/(3600*180)
-
+# transorming from hours to degrees and correcting for stretch
 #	set x=x*15*COS(a)
 
-#      	set   x =x
- 
 	print {x y}
 
 #	points x y
+
+#setting the position angle of the instrument (read from header rarely used)
 
 	set   pa_rad = ((0)/180*3.141592654)
 
@@ -53,16 +66,21 @@
 
         set yp=(x*SIN(pa_rad) + y*COS(pa_rad))
 
+#set coordinates of the center of the galaxy in the image where you want to overplot the objects
+
 	set xc=350
 	set yc=350
 
-	set xk=(-x+xc)
-	set yk=y+yc
+#lets double check this on data but I think we have to flip the RA coordinate
+	set xk=(-x*1+xc)
+	set yk=y*1+yc #1=pixel scale
 
+#you create the file that you overplot
 	print Kall.dat {xk yk}
 
    
- 
+ #here you make a color plot of the objects positions color coded according to their velocities
+
 	
 		do i=0,dimen(yp)-1{
 	
@@ -74,37 +92,37 @@
 	
 
 			
-	   if (vv < 500) {
+	   if (vv < 800) {
 		      set b = 255
 		      set g = 0
 		      set r = 0
 		      #write standard v < 325 at $i
 		      #print {r g b x y v}
 		   } else {
-		      if (vv < 600) {
+		      if (vv < 900) {
 			 set b = 255
-			 set g = int((vv-500)*2.55)
+			 set g = int((vv-800)*2.55)
 			 set r = 0
 			 #write standard v < 475 at $i
 			 #print {r g b x y v}
 		      } else { 
-			 if (vv < 700) {
-			    set b = int((700-vv)*2.55)
+			 if (vv < 1000) {
+			    set b = int((1000-vv)*2.55)
 			    set g = 255
 			    set r = 0
 			    #write standard v < 625 at $i
 			    #print {r g b x y v}
 		         } else {
-			    if (vv < 800) {
+			    if (vv < 1100) {
 			       set b = 0
 			       set g = 255
-			       set r = int((vv-700)*2.55)
+			       set r = int((vv-1000)*2.55)
 			       #write standard v < 775 at $i
 			       #print {r g b x y v}
 			    } else {
-			       if (vv < 900) {
+			       if (vv < 1200) {
 				  set b = 0
-				  set g = int((900-vv)*2.55)
+				  set g = int((1200-vv)*2.55)
 				  set r = 255
 				  #write standard v < 925 at $i
 				  #print {r g b x y v}
@@ -159,5 +177,3 @@
 	LIMITS  300 900 0 0 BOX 3 3 1 3
 
 	LIMITS  -360 360 -360 360 BOX 1 1 3 0
-
-       
