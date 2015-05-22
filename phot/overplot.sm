@@ -16,7 +16,7 @@
 
 	LIMITS -460 460 -460 460 BOX 3 3 3 3
 
-	data catalog09.cat
+	data PN_catalog_cleaned.cat
 	read rah 5 read ram 6 read ras 7 read  dech  8 read decm 9 read decs 10  read v 11 read x 3 read y 4
 	
 	set ra=rah*3600+ram*60+ras 

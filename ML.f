@@ -49,7 +49,7 @@ c       do oo=1,184
 c INPUT & OUTPUT FILES
       
 c     catalogue (without :)
-       open(11,file="phot/catalog09.cat",status="old")
+       open(11,file="phot/PN_catalog_cleaned.cat",status="old")
 c     f
        open(18,file="phot/NA9_f_NaNcorrected.dat",status="old")
 c     input created with create_input.f

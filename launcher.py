@@ -70,6 +70,9 @@ print "Will use "+fcompilator+" as fortran compilator"
 # formely create_input.f
 
 # TODO: check which of the values in the config.py file can be measured automatically
+
+# input : the data from the configuration config.py
+# output : the same data in input_model_A.dat, in line, to be read by f77 codes.
 input_model_A(config)
 
 
@@ -78,18 +81,37 @@ input_model_A(config)
 
 
 
+
+
+#######################
+# Prepares the PN catalog with good format
+
+#TODO: put this more at the begining?
+
+catfile = "phot/catalog09.cat"
+new_catfile = "phot/PN_catalog_cleaned.cat"
+f = open(new_catfile, "w")
+for line in file(catfile, mode='r'):
+    if line[0] != "#":
+        f.write(line.replace(":", " "))
+f.close()
+
+
+# TODO: replace with the right catalog in ML.f
+
+
+
 #######################
 # Exectution supermongo overplot.sm
 
 
-""" Need the file catalog09.cat (given by lodo)"""
+""" Input: PN_catalog_cleaned.cat (cleaned version of catalog09.cat given by lodo)"""
 """ output : Kall.dat"""
 
 
 workdir = "phot/"
 #subprocess.check_output(['sm'], stdin=open(workdir+"overplot.sm", 'r'), cwd=workdir, stdout=open(std_out_dir+"overplot.txt", 'w'))
 subprocess.check_output(['sm'], stdin=open(workdir+"overplot.sm", 'r'), cwd=workdir)
-
 
 
 #######################
@@ -100,8 +122,6 @@ subprocess.check_output(['sm'], stdin=open(workdir+"overplot.sm", 'r'), cwd=work
 # TODO: need to produce these images (gal + pne positions + color codes with velocity) IRAF does not do it, do it by myself.
 
 phot.execute()
-
-
 
 
 #######################
@@ -124,22 +144,7 @@ if error_code != 0:
     sys.exit()
 
 
-#######################
-# Prepares the catalog with good format for use in ML.f
 
-#TODO: put this more at the begining?
-
-catfile = "phot/catalog09.cat"
-shutil.copyfile(catfile, catfile+'.old')
-
-f = open(catfile, "w")
-for line in file(catfile+'.old', mode='r'):
-    if line[0] != "#":
-        f.write(line.replace(":", " "))
-f.close()
-
-
-# TODO: replace with the right catalog in ML.f
 
 #######################
 # Exectution ML.f

@@ -32,7 +32,7 @@ c Likelihood code to be run on a mock galaxy. Input:catalogue of PNe and input f
 c INPUT & OUTPUT FILES
       
 c     catalogue (without :) created with set_catalogue.sm
-       open(11,file="phot/catalog09.cat",status="old")
+       open(11,file="phot/PN_catalog_cleaned.cat",status="old")
 c      write(*,*)'input file'
 c      read(*,*)inputfile
 
