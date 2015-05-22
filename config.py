@@ -21,6 +21,8 @@ vel_ned = 660.                         # Systemic velocity of teh galaxy, from N
 nbin = 4.                           # Number of bins
 
 
+
+
       double precision xp,yp,xs,ys,pa,ps,incl,vhel,nbin
 
 

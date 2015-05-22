@@ -73,8 +73,6 @@ print "Will use "+fcompilator+" as fortran compilator"
 # TODO: input.model_A.dat is not a good filename convention : correct.
 # TODO : Kill this code and replace it by a nnice python configuration file !
 
-
-
 fortfile = "create_input.f"
 f_exec_filename = 'a.out'
 subprocess.check_output([fcompilator, '-o', f_exec_filename, fortfile])
