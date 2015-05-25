@@ -24,6 +24,23 @@ nbin = 4.                           # Number of bins
 
 
 
+""" Config for ML.f """
+
+# Do epicyclic approximation ?
+epicyclic_approx = True
+
+fix_vh = False
+free_f = False
+no_halo = False
+
+
+
+# Minimal number of objects per bin (number of bins will be calculated from this value)
+min_PN_per_bin = 30
+
+
+
+
 """ Simulations configuration """
 
 simulation = {"pix_scale":1.*u.arcsec}       # Pixel scale of the simulations

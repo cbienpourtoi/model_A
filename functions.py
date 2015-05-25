@@ -8,6 +8,7 @@ from astropy import units as u
 from astropy.coordinates import SkyCoord
 from astropy.io import fits
 import matplotlib.pyplot as plt
+from math import *
 import config
 
 reload(config)
@@ -48,6 +49,12 @@ def clean_PN_catalog(old, new):
 
 
 def plot_image(fitsfile, PNtable, imagefile):
+    """ Makes images of the PN positions and velocities with respect to the galaxy
+    :param fitsfile: the fits file to be used as galaxy image
+    :param PNtable: The table containing the PN properties (pos, vel)
+    :param imagefile: The output file
+    :return:
+    """
     gc = aplpy.FITSFigure(fitsfile)
     gc.show_grayscale(stretch="log")
     plt.scatter(PNtable['PNx_pix'], PNtable['PNy_pix'], c=PNtable["VEL"], edgecolor="none", marker='o', s=30, alpha=0.9)
@@ -113,4 +120,32 @@ def get_galaxy_center(fitsfile):
     yvalue = float(ychar.split("+/-", 1)[0])
     return {"x":xvalue, "y":yvalue}
 
+
+def create_commands_ML(ML_command_file, PNtable):
+    """ Creates a file that will be fed to ML.f containing its parameters
+    :param ML_command_file: the file name of the parameters that will be used as stdin by ML.f
+    :param PNtable: the Table of PN, to have the number of objects
+    :return:
+    """
+
+    f = open(ML_command_file, "w")
+    commands = ""
+
+    # Input values from config.py:
+    for confitem in [config.epicyclic_approx, config.fix_vh, config.free_f, config.no_halo]:
+        if confitem:
+            commands += "1"
+        else:
+            commands += "0"
+        commands += "\n"
+
+    # Bins calculation:
+    nPN = len(PNtable)
+    nbins = int(floor(nPN / config.min_PN_per_bin))
+    nobj_bin = int(floor(nPN/nbins))
+    commands += str(nbins) + "\n"
+    commands += str(nobj_bin)
+
+    f.write(commands)
+    f.close()
 
