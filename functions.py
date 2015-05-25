@@ -15,7 +15,7 @@ reload(config)
 import numpy as np
 
 
-def input_model_A(config, filename):
+def input_model_A(config, nbins, filename):
     """ creates a file with the parameters from the config.py, to be used by fortran
     :param config: configuration parameters
     :param filename: simple text file in which the config parameters are put, to be read in the fortran code
@@ -31,8 +31,7 @@ def input_model_A(config, filename):
     f.write(str(config.pos_angle) + ' ')
     f.write(str(config.inclination) + ' ')
     f.write(str(config.vel_ned) + ' ')
-    f.write(str(config.nbin) + ' ')
-    # f.write(config.centerPNS['x'], config.centerPNS['y'], config.center2MASS['x'], config.center2MASS['y'], config.pixel_scale, config.gal_coord['RA'], config.gal_coord['Dec'], config.pos_angle, config.inclination, config.vel_ned, config.nbin)
+    f.write(str(int(nbins)) + ' ')
     f.close()
 
 
@@ -79,7 +78,7 @@ def convert_coordinates(catalog, galaxy_center_pix, PNpos_file):
     # Coordinates of the galaxy center (from config.py)
     coord_gal = SkyCoord(config.gal_coord["RA"], config.gal_coord["Dec"])
     # PN positions in RA(h:m:s), Dec(d:m:s)
-    PNtable = Table.read(catalog, format="ascii")
+    PNtable = Table.read(catalog, format="ascii", delimiter=" ", header_start=-1, data_start=0)
 
     # Will calculate the differences between the galaxy center coordinates and the PN coordinates: dRA, dDec
     dRA = []
@@ -121,7 +120,7 @@ def get_galaxy_center(fitsfile):
     return {"x":xvalue, "y":yvalue}
 
 
-def create_commands_ML(ML_command_file, PNtable):
+def create_commands_ML(ML_command_file, nbins, PNtable):
     """ Creates a file that will be fed to ML.f containing its parameters
     :param ML_command_file: the file name of the parameters that will be used as stdin by ML.f
     :param PNtable: the Table of PN, to have the number of objects
@@ -132,7 +131,7 @@ def create_commands_ML(ML_command_file, PNtable):
     commands = ""
 
     # Input values from config.py:
-    for confitem in [config.epicyclic_approx, config.fix_vh, config.free_f, config.no_halo]:
+    for confitem in [config.epicyclic_approx, config.fixed_disp_vel, config.kinematics_only, config.no_halo]:
         if confitem:
             commands += "1"
         else:
@@ -141,13 +140,26 @@ def create_commands_ML(ML_command_file, PNtable):
 
     # Bins calculation:
     nPN = len(PNtable)
-    nbins = int(floor(nPN / config.min_PN_per_bin))
     nobj_bin = int(floor(nPN/nbins))
     commands += str(nbins) + "\n"
     commands += str(nobj_bin)
 
     f.write(commands)
     f.close()
+
+
+def get_number_bins(PNtable):
+    """
+    :param PNtable: PN table
+    :return: the number of bins that will be used
+    """
+
+    nPN = len(PNtable)
+    nbins = int(floor(nPN / config.min_PN_per_bin))
+
+    return nbins
+
+
 
 
 def replace_NANs(prefile, postfile):

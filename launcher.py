@@ -66,24 +66,6 @@ print "Will use " + fcompilator + " as fortran compilator"
 
 
 
-#######################
-# Gets initial input values from the configuration file
-# formely create_input.f
-
-# TODO: check which of the values in the config.py file can be measured automatically
-
-# input : the data from the configuration config.py
-# output : the same data in input_model_A.dat, in line, to be read by f77 codes.
-input_model_A(config, "input_model_A.dat")
-
-
-# TODO: This should happen only once, compared to the rest that will be more frequent: do later
-# TODO: for loop from here to the end: ?
-
-
-
-
-
 
 #######################
 # Convert the PN coordinates according to the galfit model coordinates system
@@ -92,15 +74,40 @@ galaxy_center_pix = get_galaxy_center('iraf_input/galaxy.fits')
 
 PNtable = convert_coordinates("phot/catalog09.cat", galaxy_center_pix, "PNpositions.cat")
 
-
 # TODO: Improve a bit the images. have one for the color (velocities), and one for the positions. Maybe make a little zoom ?
 plot_image('iraf_input/galaxy.fits', PNtable, "gal_and_PN.png")
+
+
+
+# TODO: This should happen only once, compared to the rest that will be more frequent: do later
+# TODO: for loop from here to the end: ?.
+
+
+
+
+#######################
+# Gets initial input values from the configuration file
+# and creates different commanding files
+
+# TODO: check which of the values in the config.py file can be measured automatically
+
+# Gets the number of bins that will be used in the other codes:
+nbins = get_number_bins(PNtable)
+
+# Creates the file containings the commands to ML.f:
+ML_command_file = "commands_for_ML"
+create_commands_ML(ML_command_file, nbins, PNtable)
+
+
+# Creates the file input_model_A.dat:
+input_model_A(config, nbins, "input_model_A.dat")
 
 
 
 #######################
 # Prepares the PN catalog with good format
 
+# RA Dec must be with ":"
 catfile = "phot/catalog09.cat"
 new_catfile = "phot/PN_catalog_cleaned.cat"
 clean_PN_catalog(catfile, new_catfile)
@@ -147,29 +154,12 @@ if error_code != 0:
 
 # The file NA9_f.dat can contain NaN and we don't want them, so I replace the NaN by 0.5
 # and create a new catalog NA9_f_NaNcorrected.dat, that is the one read by the fortran code ML.f
-
 prefile = "phot/NA9_f.dat"  # todo: created in ffinder.f
 postfile = "phot/NA9_f_NaNcorrected.dat"
 replace_NANs(prefile, postfile)
 
 
-"""
-# Good version of the PN catalog readable by ML.f:
-PN_catalog_forML = "phot/PN_catalog_forML.cat"
-f = open(PN_catalog_forML, "w")
-for row in PNtable:
-    txt = str((row.as_void)).replace("(", "").replace(")", "").replace("'", "").replace(",", "").replace(":", "") + "\n"
-    f.write(txt)
-f.close()
-#PNtable.write(PN_catalog_forML, format="ascii", comment=False)
-
-"""
-
 # TODO: I have to make it so that it uses catalog0X all the time.
-
-# Creates the file containings the commands to ML.f:
-ML_command_file = "commands_for_ML"
-create_commands_ML(ML_command_file, PNtable)
 
 # ML.f runs a maximum likelihood fitting using position to calculate the azimuthal? angle of the PNes in the galaxy plane
 # outputs likely values of rotation velocity, dispersion in the bulge and in the disk = likelihood.dat in bins
@@ -183,7 +173,7 @@ if error_code != 0:
     # i have an error here that is new, since I used create_input. I guess it created bad values and now the code does not run automatically.
     sys.exit()
 
-sys.exit()
+
 
 #######################
 # Exectution prob_bd.f

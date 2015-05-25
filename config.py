@@ -2,7 +2,7 @@ __author__ = 'loic'
 
 import astropy.units as u
 
-""" General configuration file """
+""" General configuration """
 
 # [Input values (former create_input.f)]
 
@@ -20,25 +20,27 @@ inclination = 72.                    # Inclination, from galfit. Format: cos^-1(
 
 vel_ned = 660.                         # Systemic velocity of teh galaxy, from Nasa Extragalactic Database (https://ned.ipac.caltech.edu/). Format = lm/s
 
-nbin = 4.                           # Number of bins
 
 
+""" ML.f """
 
-""" Config for ML.f """
-
-# Do epicyclic approximation ?
+# Do epicyclic approximation? ("epicyclic approximation?1=yes")
 epicyclic_approx = True
 
-fix_vh = False
-free_f = False
+# Dispersion velocity fixed? ("fix vh?1=yes")
+fixed_disp_vel = False
+
+# Calculate on the basis on kinematics only (don't use the photometric probability)? (free f?1=yes)
+kinematics_only = False
+
+# Fit only the disk, without halo component? (no halo?1=yes)
 no_halo = False
 
 
+""" Binning """
 
 # Minimal number of objects per bin (number of bins will be calculated from this value)
 min_PN_per_bin = 30
-
-
 
 
 """ Simulations configuration """
