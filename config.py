@@ -51,3 +51,18 @@ simulation = {"pix_scale":1.*u.arcsec}       # Pixel scale of the simulations
 
 """ TODO: filenames here """
 
+
+# Fits file inputs:
+iraf_input_dir = "iraf_input/"
+totalfits = "galaxy.fits"
+bulgefits = "bulge.fits"
+
+
+
+# temporary files from IRAF (phot.py) to ffinder: (No change needed usually)
+iraf_tmp_dir = "iraf_tmp/"
+iraf_total_file = "NATall_nb"
+iraf_bulge_file = "NABall_nb"
+iraf_fraction_file = "NAFall_nb"
+fractionfits = "fraction.fits"
+

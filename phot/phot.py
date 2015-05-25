@@ -4,6 +4,8 @@
 from pyraf import iraf
 import os, errno
 import shutil
+import config
+reload(config)
 
 def silentremove(filename):
     try:
@@ -18,23 +20,32 @@ def execute():
     ## use GALFIT to fit and to create a model disk vs bulge##
     ##galfit.feedme##
 
-    input_dir = "iraf_input/"
-    tmp_dir = "iraf_tmp/"
+    # path to fits files:
+    total = config.iraf_input_dir+config.totalfits
+    bulge = config.iraf_input_dir+config.bulgefits
+    fraction = config.iraf_tmp_dir+config.fractionfits
+
+    input_dir = config.iraf_input_dir
+    tmp_dir = config.iraf_tmp_dir
     if not os.path.exists(tmp_dir):
         os.mkdir(tmp_dir)
 
-    if os.path.exists(tmp_dir+"f.fits"):
-         iraf.module.imdelete(tmp_dir+"f.fits")
+    if os.path.exists(fraction):
+         iraf.module.imdelete(fraction)
 
-    iraf.module.imarith(input_dir+"bulge.fits", "/", input_dir+"galaxy.fits", tmp_dir+"f.fits")
+    # Makes the fraction image by dividing the bulge by the total:
+    iraf.module.imarith(bulge, "/", total, fraction)
+
+    """ LLT: I don't think we need this anymore:
 
     if os.path.exists(tmp_dir+"snb.fits"):
         iraf.module.imdelete(tmp_dir+"snb.fits")
     if os.path.exists(tmp_dir+"tnb.fits"):
         iraf.module.imdelete(tmp_dir+"tnb.fits")
 
-    iraf.module.imcopy(input_dir+"bulge.fits", tmp_dir+"snb.fits")
-    iraf.module.imcopy(input_dir+"galaxy.fits", tmp_dir+"tnb.fits")
+    iraf.module.imcopy(bulge, tmp_dir+"snb.fits")
+    iraf.module.imcopy(total, tmp_dir+"tnb.fits")
+    """
 
     ##########################################################################
     ##Note: the coordinate in pixel as obtained from RA and Dec differ from the
@@ -74,19 +85,20 @@ def execute():
 
     ##snb.fits & tnb.fits without bg (when I made the model)
 
-    silentremove(tmp_dir+"NABall.mag")
-    silentremove(tmp_dir+"NABall.txt")
-    silentremove(tmp_dir+"NATall.mag")
-    silentremove(tmp_dir+"NATall.txt")
-    silentremove(tmp_dir+"NAFall.mag")
-    silentremove(tmp_dir+"NAFall.txt")
+    # filenames
+    bulgemag = tmp_dir+config.iraf_bulge_file+".mag"
+    bulgetxt = tmp_dir+config.iraf_bulge_file+".txt"
+    totalmag = tmp_dir+config.iraf_total_file+".mag"
+    totaltxt = tmp_dir+config.iraf_total_file+".txt"
+    fractionmag = tmp_dir+config.iraf_fraction_file+".mag"
+    fractiontxt = tmp_dir+config.iraf_fraction_file+".txt"
 
-    silentremove(tmp_dir+"NABall_nb.mag")
-    silentremove(tmp_dir+"NABall_nb.txt")
-    silentremove(tmp_dir+"NATall_nb.mag")
-    silentremove(tmp_dir+"NATall_nb.txt")
-    silentremove(tmp_dir+"NAFall_nb.mag")
-    silentremove(tmp_dir+"NAFall_nb.txt")
+    silentremove(bulgemag)
+    silentremove(bulgetxt)
+    silentremove(totalmag)
+    silentremove(totaltxt)
+    silentremove(fractionmag)
+    silentremove(fractiontxt)
 
     iraf.noao(_doprint=False)
     iraf.digiphot(_doprint=False)
@@ -94,18 +106,18 @@ def execute():
      
     shutil.copyfile("phot/Kall.dat", input_dir+"Kall.dat")
      
-    iraf.phot(tmp_dir+"snb.fits",input_dir+"Kall.dat", tmp_dir+"NABall_nb.mag",skyfile="", datapars="",scale=1.,fwhmpsf=2.27,emissio="yes",sigma=0.0,datamin=-100, datamax=1e5,noise="poisson", centerpars="",calgorithm="none",cbox=0,cthreshold=0.,minsnratio=1., cmaxiter=0,maxshift=0,clean="no",rclean=0.,rclip=0.,kclean=0., mkcenter="no", fitskypars="",salgorithm="constant",annulus=10,dannulus=10,skyvalue=0., smaxiter=10,sloclip=0.,shiclip=0.,snreject=50,sloreject=3., shireject=3.,khist=3.,binsize=0.1,smooth="no",rgrow=0., mksky="no", photpars="",weighting="constant",apertures=3,zmag=0.,mkapert="no", interactive="no",radplots="no",verify="no",update="no",verbose="no", graphics="stdgraph",display="stdimage",icommands="",gcommands="")
+    iraf.phot(bulge,input_dir+"Kall.dat", bulgemag, skyfile="", datapars="",scale=1.,fwhmpsf=2.27,emissio="yes",sigma=0.0,datamin=-100, datamax=1e5,noise="poisson", centerpars="",calgorithm="none",cbox=0,cthreshold=0.,minsnratio=1., cmaxiter=0,maxshift=0,clean="no",rclean=0.,rclip=0.,kclean=0., mkcenter="no", fitskypars="",salgorithm="constant",annulus=10,dannulus=10,skyvalue=0., smaxiter=10,sloclip=0.,shiclip=0.,snreject=50,sloreject=3., shireject=3.,khist=3.,binsize=0.1,smooth="no",rgrow=0., mksky="no", photpars="",weighting="constant",apertures=3,zmag=0.,mkapert="no", interactive="no",radplots="no",verify="no",update="no",verbose="no", graphics="stdgraph",display="stdimage",icommands="",gcommands="")
 
     # LLT: Corrected to pyraf, use stdout = instead of >>
-    iraf.txdump(tmp_dir+"NABall_nb.mag", "XCENTER,YCENTER,STDEV,FLUX,SUM,AREA,ID", "yes", headers="no",paramet="no", Stdout=tmp_dir+"NABall_nb.txt")
+    iraf.txdump(bulgemag, "XCENTER,YCENTER,STDEV,FLUX,SUM,AREA,ID", "yes", headers="no",paramet="no", Stdout=bulgetxt)
 
-    iraf.phot(tmp_dir+"tnb.fits", input_dir+"Kall.dat", tmp_dir+"NATall_nb.mag",skyfile="", datapars="",scale=1.,fwhmpsf=2.27,emissio="yes",sigma=0.0,datamin=-100, datamax=1e5,noise="poisson", centerpars="",calgorithm="none",cbox=0,cthreshold=0.,minsnratio=1., cmaxiter=0,maxshift=0.,clean="no",rclean=0.,rclip=0.,kclean=0., mkcenter="no", fitskypars="",salgorithm="constant",annulus=10,dannulus=10,skyvalue=0., smaxiter=10,sloclip=0.,shiclip=0.,snreject=50,sloreject=3., shireject=3.,khist=3.,binsize=0.1,smooth="no",rgrow=0., mksky="no", photpars="",weighting="constant",apertures=3,zmag=25.,mkapert="no", interactive="no",radplots="no",verify="no",update="no",verbose="no", graphics="stdgraph",display="stdimage",icommands="",gcommands="")
+    iraf.phot(total, input_dir+"Kall.dat", totalmag, skyfile="", datapars="",scale=1.,fwhmpsf=2.27,emissio="yes",sigma=0.0,datamin=-100, datamax=1e5,noise="poisson", centerpars="",calgorithm="none",cbox=0,cthreshold=0.,minsnratio=1., cmaxiter=0,maxshift=0.,clean="no",rclean=0.,rclip=0.,kclean=0., mkcenter="no", fitskypars="",salgorithm="constant",annulus=10,dannulus=10,skyvalue=0., smaxiter=10,sloclip=0.,shiclip=0.,snreject=50,sloreject=3., shireject=3.,khist=3.,binsize=0.1,smooth="no",rgrow=0., mksky="no", photpars="",weighting="constant",apertures=3,zmag=25.,mkapert="no", interactive="no",radplots="no",verify="no",update="no",verbose="no", graphics="stdgraph",display="stdimage",icommands="",gcommands="")
 
-    iraf.txdump(tmp_dir+"NATall_nb.mag", "XCENTER,YCENTER,STDEV,FLUX,SUM,AREA,ID", "yes", headers="no",paramet="no", Stdout=tmp_dir+"NATall_nb.txt")
+    iraf.txdump(totalmag, "XCENTER,YCENTER,STDEV,FLUX,SUM,AREA,ID", "yes", headers="no",paramet="no", Stdout=totaltxt)
 
-    iraf.phot(tmp_dir+"f.fits",input_dir+"Kall.dat", tmp_dir+"NAFall_nb.mag", skyfile="", datapars="", scale=1., fwhmpsf=2.27, emissio="no", sigma=0.0, datamin=-100, datamax=1e5, noise="poisson", centerpars="", calgorithm="none", cbox=0, cthreshold=0., minsnratio=1., cmaxiter=0, maxshift=0., clean="no", rclean=0., rclip=0., kclean=0., mkcenter="no", fitskypars="", salgorithm="constant", annulus=10, dannulus=10, skyvalue=0., smaxiter=10, sloclip=0., shiclip=0., snreject=50, sloreject=3., shireject=3., khist=3., binsize=0.1, smooth="no", rgrow=0., mksky="no", photpars="", weighting="constant", apertures=3, zmag=25., mkapert="no", interactive="no", radplots="no", verify="no", update="no", verbose="no", graphics="stdgraph", display="stdimage", icommands="", gcommands="")
+    iraf.phot(fraction,input_dir+"Kall.dat", fractionmag, skyfile="", datapars="", scale=1., fwhmpsf=2.27, emissio="no", sigma=0.0, datamin=-100, datamax=1e5, noise="poisson", centerpars="", calgorithm="none", cbox=0, cthreshold=0., minsnratio=1., cmaxiter=0, maxshift=0., clean="no", rclean=0., rclip=0., kclean=0., mkcenter="no", fitskypars="", salgorithm="constant", annulus=10, dannulus=10, skyvalue=0., smaxiter=10, sloclip=0., shiclip=0., snreject=50, sloreject=3., shireject=3., khist=3., binsize=0.1, smooth="no", rgrow=0., mksky="no", photpars="", weighting="constant", apertures=3, zmag=25., mkapert="no", interactive="no", radplots="no", verify="no", update="no", verbose="no", graphics="stdgraph", display="stdimage", icommands="", gcommands="")
 
-    iraf.txdump(tmp_dir+"NAFall_nb.mag", "XCENTER,YCENTER,STDEV,FLUX,SUM,AREA,ID", "yes", headers="no",paramet="no", Stdout=tmp_dir+"NAFall_nb.txt")
+    iraf.txdump(fractionmag, "XCENTER,YCENTER,STDEV,FLUX,SUM,AREA,ID", "yes", headers="no",paramet="no", Stdout=fractiontxt)
 
     ###########################################################################
     ##use program ffinder.f to obtain a readable list input for likelihood....

@@ -58,12 +58,7 @@ print "Will use " + fcompilator + " as fortran compilator"
 # Exectution of the series of codes #
 #####################################
 
-""" TODO: check I/O for each process"""
-
-
-# std_out_dir = "stdout/" # In this directory I'll put all the outputs from the codes that are usually displayed on screen
-
-
+# TODO: check I/O for each process
 
 
 
@@ -123,41 +118,27 @@ clean_PN_catalog(catfile, new_catfile)
 
 phot.execute()
 
+sys.exit()
 
 #######################
-# Exectution ffinder.f
-
-# TODO: rewrite? not necessary...
-
-# inputs are all the catalogs from before
-# reads them, and divide the flux by the area for each Pn, for each image (bulge, total, division f)
-# then divides the results from each PN : bulge / total and writes in NA0_f09 (also writes values of division, and then you can check consistency - could make consistency check ?)...
-# f = fraction
+# Exectution ffinder (former ffinder.f)
 
 
-fortfile = 'ffinder.f'
-f_exec_filename = 'a.out'
-workdir = "phot/"
+# TODO:  put the catalogs somewhere in the flow!
 
-subprocess.check_output([fcompilator, '-o', f_exec_filename, fortfile], cwd=workdir)
-error_code = subprocess.call(['./' + f_exec_filename], cwd=workdir)
-if error_code != 0:
-    print "Error while executing " + fortfile
-    sys.exit()
+repcatas = "phot/"
+catalog_bulge = "NABall_nb.txt"
+catalog_total = "NATall_nb.txt"
+catalog_fraction = "NAFall_nb.txt"
+cat_flux_per_area = "NA9_f.dat"
 
+ffinder(repcatas+catalog_bulge, repcatas+catalog_total, repcatas+catalog_fraction, repcatas+cat_flux_per_area)
 
 
 #######################
 # Exectution ML.f
 
 # TODO : Check that the previous catalog name will be coherent with the new one (right now it is not!)
-
-# The file NA9_f.dat can contain NaN and we don't want them, so I replace the NaN by 0.5
-# and create a new catalog NA9_f_NaNcorrected.dat, that is the one read by the fortran code ML.f
-prefile = "phot/NA9_f.dat"  # todo: created in ffinder.f
-postfile = "phot/NA9_f_NaNcorrected.dat"
-replace_NANs(prefile, postfile)
-
 
 # TODO: I have to make it so that it uses catalog0X all the time.
 

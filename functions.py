@@ -163,7 +163,8 @@ def get_number_bins(PNtable):
 
 
 def replace_NANs(prefile, postfile):
-    """ Replace the NAN and -NAN values in a file by 0.5
+    """ Not Used anymore, since I rewrote ffinder.f
+    Replace the NAN and -NAN values in a file by 0.5
     :param prefile: file containing NANs
     :param postfile: new file
     :return:
@@ -173,3 +174,52 @@ def replace_NANs(prefile, postfile):
     for line in file(prefile, mode='r'):
         f.write((line.replace("-NAN.", ".5        ")).replace("NAN.", ".5        "))
     f.close()
+
+
+def ffinder(catalog_bulge, catalog_total, catalog_fraction, cat_flux_per_area):
+    """ Gives fluxes of the PN per area and saves them in a file
+    :param catalog_bulge: the IRAF catalog with the flux values from the bulge
+    :param catalog_total: the IRAF catalog with the flux values from the total
+    :param catalog_fraction: the IRAF catalog with the flux values from the division
+    :param cat_flux_per_area: the output catalog with the fluxes per area
+    :return:
+    """
+
+    bulge = Table.read(catalog_bulge, format="ascii")
+    total = Table.read(catalog_total, format="ascii")
+    fraction = Table.read(catalog_fraction, format="ascii")
+
+    list_tables = [bulge, total, fraction]
+    list_tables = rename_columns_catalogs(list_tables)
+
+    # Replaces the nan values by 0.5
+    f_bulge_over_total = bulge["flux"] / total["flux"]
+    f_fraction_per_area = fraction["flux"] / fraction["area"]
+
+    f_bulge_over_total[np.isnan(f_bulge_over_total)] = .5
+    f_fraction_per_area[np.isnan(f_fraction_per_area)] = .5
+
+    f = open(cat_flux_per_area, "w")
+    for i in np.arange(len(total)):
+        f.write(str(f_bulge_over_total[i]) +" ")
+        f.write(str(f_fraction_per_area[i]) +" ")
+        f.write(str(bulge["ID"][i]) +"\n")
+    f.close()
+
+
+def rename_columns_catalogs(list_of_catalogs):
+    """ Gives names to the catalog columns outputs by IRAF
+    :param list_of_catalogs: a list of tables to rename columns in
+    :return: the upgraded list
+    """
+
+    for t in list_of_catalogs:
+        t.rename_column('col1', 'X')
+        t.rename_column('col2', 'Y')
+        t.rename_column('col3', 'error_position')
+        t.rename_column('col4', 'flux')
+        t.rename_column('col5', 'sum')
+        t.rename_column('col6', 'area')
+        t.rename_column('col7', 'ID')
+
+    return list_of_catalogs
