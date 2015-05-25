@@ -150,11 +150,8 @@ if error_code != 0:
 
 prefile = "phot/NA9_f.dat"  # todo: created in ffinder.f
 postfile = "phot/NA9_f_NaNcorrected.dat"
+replace_NANs(prefile, postfile)
 
-f = open(postfile, "w")
-for line in file(prefile, mode='r'):
-    f.write((line.replace("-NAN.", ".5        ")).replace("NAN.", ".5        "))
-f.close()
 
 """
 # Good version of the PN catalog readable by ML.f:
@@ -168,10 +165,9 @@ f.close()
 
 """
 
-# sys.exit()
-
 # TODO: I have to make it so that it uses catalog0X all the time.
 
+# Creates the file containings the commands to ML.f:
 ML_command_file = "commands_for_ML"
 create_commands_ML(ML_command_file, PNtable)
 

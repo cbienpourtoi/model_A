@@ -149,3 +149,15 @@ def create_commands_ML(ML_command_file, PNtable):
     f.write(commands)
     f.close()
 
+
+def replace_NANs(prefile, postfile):
+    """ Replace the NAN and -NAN values in a file by 0.5
+    :param prefile: file containing NANs
+    :param postfile: new file
+    :return:
+    """
+
+    f = open(postfile, "w")
+    for line in file(prefile, mode='r'):
+        f.write((line.replace("-NAN.", ".5        ")).replace("NAN.", ".5        "))
+    f.close()
