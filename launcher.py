@@ -65,12 +65,12 @@ print "Will use " + fcompilator + " as fortran compilator"
 #######################
 # Convert the PN coordinates according to the galfit model coordinates system
 
-galaxy_center_pix = get_galaxy_center('iraf_input/galaxy.fits')
+galaxy_center_pix = get_galaxy_center(config.iraf_input_dir+config.totalfits)
 
-PNtable = convert_coordinates("phot/catalog09.cat", galaxy_center_pix, "PNpositions.cat")
+PNtable = convert_coordinates(config.main_catalog, galaxy_center_pix)
 
 # TODO: Improve a bit the images. have one for the color (velocities), and one for the positions. Maybe make a little zoom ?
-plot_image('iraf_input/galaxy.fits', PNtable, "gal_and_PN.png")
+plot_image(config.iraf_input_dir+config.totalfits, PNtable, "gal_and_PN.png")
 
 
 
@@ -103,28 +103,22 @@ input_model_A(config, nbins, "input_model_A.dat")
 # Prepares the PN catalog with good format
 
 # RA Dec must be with ":"
-catfile = "phot/catalog09.cat"
-new_catfile = "phot/PN_catalog_cleaned.cat"
-clean_PN_catalog(catfile, new_catfile)
-
-# TODO: replace with the right catalog in ML.f
-
+clean_PN_catalog(config.main_catalog, config.clean_catalog)
 
 
 #######################
 # Exectution pyraf phot.py
 
-""" Need the file bulge.fits + galaxy.fits (come from galfit given by lodo) + Kall.dat"""
-
 phot.execute()
 
-sys.exit()
 
 #######################
 # Exectution ffinder (former ffinder.f)
 
 
 # TODO:  put the catalogs somewhere in the flow!
+
+CONTINUER CHanGER LES NOMS ET LES METRE EN CONFIG : DEJA QUaSIMENT FAIT POUR LIGNEs suiVANTEs
 
 repcatas = "phot/"
 catalog_bulge = "NABall_nb.txt"

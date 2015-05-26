@@ -64,11 +64,10 @@ def plot_image(fitsfile, PNtable, imagefile):
     plt.close()
 
 
-def convert_coordinates(catalog, galaxy_center_pix, PNpos_file):
+def convert_coordinates(catalog, galaxy_center_pix):
     """ Converts coordinates of the PNs to their pixel positions in the galfit image
     :param catalog: file containing the RA, Dec of the PNs
     :param galaxy_center_pix: center of teh galaxy in pixels
-    :param PNpos_file: file in which we will write the positions of the PNs in pixel, on the galfit image
     :return: A table containing the initial data + the PN pixel positions
     """
 
@@ -100,7 +99,7 @@ def convert_coordinates(catalog, galaxy_center_pix, PNpos_file):
     colPNy = Column(PNy, name="PNy_pix")
     PNtable.add_column(colPNx)
     PNtable.add_column(colPNy)
-    Table([colPNx, colPNy]).write(PNpos_file, format= "ascii")
+    Table([colPNx, colPNy]).write(config.position_file, format= "ascii")
 
     return PNtable
 
