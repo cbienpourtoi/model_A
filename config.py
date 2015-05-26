@@ -34,7 +34,7 @@ vel_ned = 660.                         # Systemic velocity of teh galaxy, from N
 epicyclic_approx = True
 
 # Dispersion velocity fixed? ("fix vh?1=yes")
-fixed_disp_vel = True
+fixed_disp_vel = False
 
 # Calculate on the basis on kinematics only (don't use the photometric probability)? (free f?1=yes)
 kinematics_only = False
