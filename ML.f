@@ -1650,6 +1650,7 @@ c     sigma clipping
                open(14,file="rejected.dat",status="unknown")
                open(23,file="unliky_d.dat",status="unknown")
                open(24,file="unliky_b.dat",status="unknown")
+               open(45,file="likelihood_threshold.dat",status="unknown")
 
                
                g=0
@@ -1902,7 +1903,9 @@ c                     endif
 c               close(17)
 
                write(*,*)g,l,n,nbin,oo
-                write(*,*)s3(1,o),s3(2,o),s3(3,o),s3(4,o),s3(5,o)
+                c comment by Loic:
+                c Keep these values they are important
+                write(45,*)s3(1,o),s3(2,o),s3(3,o),s3(4,o),s3(5,o)
                
 
 c               write(*,*)'carry on?0=no'
