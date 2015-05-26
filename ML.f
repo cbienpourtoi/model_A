@@ -1903,8 +1903,8 @@ c                     endif
 c               close(17)
 
                write(*,*)g,l,n,nbin,oo
-                c comment by Loic:
-                c Keep these values they are important
+c comment by Loic:
+c Keep these values they are important
                 write(45,*)s3(1,o),s3(2,o),s3(3,o),s3(4,o),s3(5,o)
                
 
@@ -1974,5 +1974,6 @@ c 777        enddo
                close(17)
                close(14)
                close(15)
+               close(45)
                stop
                end
