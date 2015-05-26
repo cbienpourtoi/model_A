@@ -117,24 +117,11 @@ phot.execute()
 
 
 # TODO:  put the catalogs somewhere in the flow!
-
-CONTINUER CHanGER LES NOMS ET LES METRE EN CONFIG : DEJA QUaSIMENT FAIT POUR LIGNEs suiVANTEs
-
-repcatas = "phot/"
-catalog_bulge = "NABall_nb.txt"
-catalog_total = "NATall_nb.txt"
-catalog_fraction = "NAFall_nb.txt"
-cat_flux_per_area = "NA9_f.dat"
-
-ffinder(repcatas+catalog_bulge, repcatas+catalog_total, repcatas+catalog_fraction, repcatas+cat_flux_per_area)
+ffinder(config.bulgetxt, config.totaltxt, config.fractiontxt, config.cat_flux_per_area)
 
 
 #######################
 # Exectution ML.f
-
-# TODO : Check that the previous catalog name will be coherent with the new one (right now it is not!)
-
-# TODO: I have to make it so that it uses catalog0X all the time.
 
 # ML.f runs a maximum likelihood fitting using position to calculate the azimuthal? angle of the PNes in the galaxy plane
 # outputs likely values of rotation velocity, dispersion in the bulge and in the disk = likelihood.dat in bins
@@ -145,7 +132,6 @@ subprocess.check_output([fcompilator, '-o', f_exec_filename, fortfile])
 error_code = subprocess.call(['./' + f_exec_filename], stdin=open("commands_for_ML", 'r'))
 if error_code != 0:
     print "Error while executing " + fortfile
-    # i have an error here that is new, since I used create_input. I guess it created bad values and now the code does not run automatically.
     sys.exit()
 
 

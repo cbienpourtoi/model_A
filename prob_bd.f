@@ -40,7 +40,7 @@ c      write(*,*)'qui'
 c       open(11,file=inputfile,status="old")
 c       write(*,*)'letto'
 c     f
-       open(18,file= "phot/NA9_f.dat",status="old")
+       open(18,file= "phot/flux_per_area.dat",status="old")
 c     input created with create_input.f
 c     comment by Loic: input.model_A.dat is now input_modelA.dat
        open(21,file="input_model_A.dat",status="old")

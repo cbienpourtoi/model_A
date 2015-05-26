@@ -2,6 +2,12 @@ __author__ = 'loic'
 
 import astropy.units as u
 
+
+# Main input catalog
+main_catalog = "phot/catalog09.cat" # Change it!
+
+
+
 """ General configuration """
 
 # [Input values (former create_input.f)]
@@ -49,19 +55,17 @@ simulation = {"pix_scale":1.*u.arcsec}       # Pixel scale of the simulations
 
 
 
-""" TODO: filenames here """
+#########################
+#### TEMPORARY FILES ####
+#########################
+# No change needed on these files
 
-# Main input catalog
-main_catalog = "phot/catalog09.cat" # Change it!
 clean_catalog = "phot/PN_catalog_cleaned.cat" # Don't change it!
-
 
 # Fits file inputs:
 iraf_input_dir = "iraf_input/"
 totalfits = "galaxy.fits"
 bulgefits = "bulge.fits"
-
-
 
 # temporary files from IRAF (phot.py) to ffinder: (No change needed usually)
 iraf_tmp_dir = "iraf_tmp/"
@@ -72,3 +76,16 @@ fractionfits = "fraction.fits"
 
 # temporary file : list of positions of PNs, measured in convert_coordinates() and passed in phot.py
 position_file = "PNpositions.cat"
+
+# temporary files:
+bulgemag = iraf_tmp_dir+iraf_bulge_file+".mag"
+bulgetxt = iraf_tmp_dir+iraf_bulge_file+".txt"
+totalmag = iraf_tmp_dir+iraf_total_file+".mag"
+totaltxt = iraf_tmp_dir+iraf_total_file+".txt"
+fractionmag = iraf_tmp_dir+iraf_fraction_file+".mag"
+fractiontxt = iraf_tmp_dir+iraf_fraction_file+".txt"
+
+# temporary file created by ffinder, used by ML and prob_bd
+cat_flux_per_area = "phot/flux_per_area.dat" # Don't change it!
+
+
