@@ -95,4 +95,7 @@ fractiontxt = iraf_tmp_dir+iraf_fraction_file+".txt"
 # temporary file created by ffinder, used by ML and prob_bd
 cat_flux_per_area = "phot/flux_per_area.dat" # Don't change it!
 
+# Bins data created by ML.f and used by prob_bd.f:
+bintablename = "bin.dat"
+subtablename = "lastbin.dat"
 

@@ -222,3 +222,32 @@ def rename_columns_catalogs(list_of_catalogs):
         t.rename_column('col7', 'ID')
 
     return list_of_catalogs
+
+
+def passes_bindata_for_probbd():
+    """ prob_bd() needs data from bin.dat (created by ML.f), but only the last lines,
+    which correspond to the last iteration. Here we make a new file lastbin.dat
+    with only these last lines, that will be read y prob_bd.f.
+    :return:
+    """
+
+    bintable = Table.read(config.bintablename, format="ascii")
+    bintable.rename_column("col6", "iteration")
+    bintable.rename_column("col2", "bin_number")
+    last_iteration = np.max(bintable["iteration"])
+    subtable = bintable[bintable["iteration"] == last_iteration]
+    # tests that the new table is in the right order:
+    if np.any(subtable["bin_number"] != np.sort(subtable["bin_number"])):
+        print "The subtable created from "+config.bintablename+" seems to be badly ordered in the bin_number. This should not happen..."
+        print subtable
+        print "Will quit now"
+        sys.exit()
+    else:
+        f = open(config.subtablename, "w")
+        for row in subtable:
+            for value in row:
+                f.write(str(value)+" ")
+            f.write("\n")
+        f.close()
+
+

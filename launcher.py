@@ -129,7 +129,8 @@ if error_code != 0:
     print "Error while executing " + fortfile
     sys.exit()
 
-
+# Creates a new file from bin.dat created by ML.f with only the last iteration. This file will be read by prob_bd.f
+passes_bindata_for_probbd()
 
 #######################
 # Exectution prob_bd.f

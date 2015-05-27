@@ -55,11 +55,11 @@ c       open(15,file="bin.dat",status="unknown")
 c     coordinate (xs,ys,x,y,ysi)
 c       open(44,file="coord.dat",status="unknown")
 c     rgal(h), h, raggio di ogni bin 
-       open(15,file="bin_model9.dat",status="unknown")
+       open(15,file="lastbin.dat",status="unknown")
 c     coordinate and vel v_av, xs, ysi
-       open(12,file="likethresh9.dat",status="unknown")
+       open(12,file="likelihood_threshold.dat",status="unknown")
 c     likelihood
-       open(10,file="likelihood_model9.dat",status="unknown")
+       open(10,file="likelihood.dat",status="unknown")
 c     data used in the program before and after sigma-clipping
 c       open(66,file="cleancatalogue.dat",status="unknown")
 c     errors
@@ -296,7 +296,6 @@ c                  cat_c(i)=0
                cont1=0
 
                do h=1,nbin
-
                   read(10,*)mxl(h),mxv(h),mxs(h),mxsv(h),mxh(h),mxf(h)
 
                   if(rgal(nbin).le.rgalgc(nbin))rgal(nbin)=rgalgc(nbin)
