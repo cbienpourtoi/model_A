@@ -13,6 +13,7 @@ __status__ = "Development"
 
 """ A python file to rule them all: fortran, sm, iraf and all that ****"""
 
+# TODO: organize files in directories (right now the fortran files dump everything in the main directory. Also divide input, tmp, output...)
 
 #################
 ### Packages ####
