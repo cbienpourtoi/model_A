@@ -137,15 +137,19 @@ c     reading parameters
        pa_rad=((pa-180))*pi/180  
        i_rad=ai*pi/180
 
-       write(*,*)' i_rad=',i_rad,' i_deg=',ai, 'pa= ', pa
-       write(*,*) xp,yp,Rc,Rmc,Rsc,Dc,Dmc,Dsc
+c   Commented by Loic to improve speed
+c       write(*,*)' i_rad=',i_rad,' i_deg=',ai, 'pa= ', pa
+c   Commented by Loic to improve speed
+c       write(*,*) xp,yp,Rc,Rmc,Rsc,Dc,Dmc,Dsc
 
        cos_i=COS(i_rad)
        sin_i=SIN(i_rad)
 
-       write(*,*)'cos_i=',cos_i,' sin_i=',sin_i
+c   Commented by Loic to improve speed
+c       write(*,*)'cos_i=',cos_i,' sin_i=',sin_i
 
-       write(*,*)'log(e)', log(e)
+c   Commented by Loic to improve speed
+c       write(*,*)'log(e)', log(e)
 
        
 
@@ -157,7 +161,8 @@ c     probability
 
        do j=1,10
           read(56,*)lcut(j)
-          write(*,*)lcut(j)
+c   Commented by Loic to improve speed
+c          write(*,*)lcut(j)
        enddo
 
  56    close(56)
@@ -183,7 +188,8 @@ c          Read the file containin the fi values
           
           if(eee3.eq.1)fb(i)=0
 
-          write(*,*)fb(i)
+c   Commented by Loic to improve speed
+c         write(*,*)fb(i)
 
 c          In case you still don't have a fi file
 
@@ -202,9 +208,10 @@ c         In case your PNe coordinates are in RA and Dec
      &                       dec(i),decm(i),decs(i),vhel(i)  
 
 
-          write(*,*)id(i),xpix(i),ypix(i),ra(i),
-     &                       ram(i),ras(i),
-     &                       dec(i),decm(i),decs(i),vhel(i)  
+c   Commented by Loic to improve speed
+c          write(*,*)id(i),xpix(i),ypix(i),ra(i),
+c     &                       ram(i),ras(i),
+c     &                       dec(i),decm(i),decs(i),vhel(i)
 
           n=n+1
           ppm(i)=n
@@ -214,15 +221,19 @@ c         In case your PNe coordinates are in RA and Dec
           Racc=Rc/15*3600
           Decc=Dc*3600
 
-          write(*,*)'Racc',Racc
-          write(*,*)'Decc',Decc
+c   Commented by Loic to improve speed
+c          write(*,*)'Racc',Racc
+c   Commented by Loic to improve speed
+c          write(*,*)'Decc',Decc
 
           xm(i)=0
           xm(i)=( ra(i)*3600 + ram(i)*60 + ras(i) )-Racc
-          write(*,*)'x',xm(i)*15,xpix(i)
+c   Commented by Loic to improve speed
+c          write(*,*)'x',xm(i)*15,xpix(i)
           ym(i)=0
           ym(i)=( dec(i)*3600 - decm(i)*60 - decs(i))-Decc
-         write(*,*)'y',ym(i),ypix(i)
+c   Commented by Loic to improve speed
+c         write(*,*)'y',ym(i),ypix(i)
           
           y_rad=Decc*pi/(3600*180)
          
@@ -244,7 +255,8 @@ c          if(pp(i).ne.200) then
 
 c          n=n+1
 
-          write(*,*)xpix(i)**2+ypix(i)**2,xm(i)**2+ym(i)**2,id(i),ppm(i)
+c   Commented by Loic to improve speed
+c          write(*,*)xpix(i)**2+ypix(i)**2,xm(i)**2+ym(i)**2,id(i),ppm(i)
 
           theta(i)=0
 
@@ -373,8 +385,10 @@ c     average velocity & sigma
        av2=av2/n
        sigma_los=sqrt(av2-av**2)
 
-       write(*,*) ' av=',av,' av2=',av2,' sig=',sigma_los,' n=',n
-       write(*,*)'v_ned=',vned
+c   Commented by Loic to improve speed
+c       write(*,*) ' av=',av,' av2=',av2,' sig=',sigma_los,' n=',n
+c   Commented by Loic to improve speed
+c       write(*,*)'v_ned=',vned
 
 
 
@@ -437,15 +451,17 @@ c     binning in a way that the number of PNe in each bin is almost constant, fi
           enddo                           
        enddo
                                                   
-       do i=1,n
-          write(*,*)b(i),i,fb(i)
-       enddo
+c   Commented by Loic to improve speed
+c       do i=1,n
+c          write(*,*)b(i),i,fb(i)
+c       enddo
 
        do h=1,nbin
 c          do i=1,n
              rgal(h)=b(int(h*n/nbin))
 c            enddo
-              write(*,*)'rgal', rgal(h)
+c   Commented by Loic to improve speed
+c              write(*,*)'rgal', rgal(h)
              enddo
 
             
@@ -495,7 +511,8 @@ c                if(h.eq.nbin)fb(i)=fb(i)+0.2
 
                  if(fb(i).le.0.5) then
                  fdisk(h)=fdisk(h)+1
-                 write(*,*)fb(i),gg(i)
+c   Commented by Loic to improve speed
+c                 write(*,*)fb(i),gg(i)
                  endif
 
                 if(mm(h).eq.nbmax)goto 333
@@ -552,22 +569,26 @@ c             m1(h)=0
              m1(h)=1+m1(h)+mtot
 c             m2(h)=m2(h)+mm(ll-1)
 
-             write(*,*)'mm(h-1)',mm(h-1),m1(h)
+c   Commented by Loic to improve speed
+c             write(*,*)'mm(h-1)',mm(h-1),m1(h)
 
             
 
           
-          write(*,*)'m/2',med(h),'r(m/2)',
-     &     b(med(h)),'rgal',rgal(h),
-     &     'r(m)',b(ntot),'r(1)',b(m1(h))
+c   Commented by Loic to improve speed
+c          write(*,*)'m/2',med(h),'r(m/2)',
+c     &     b(med(h)),'rgal',rgal(h),
+c     &     'r(m)',b(ntot),'r(1)',b(m1(h))
 
           rgal_plot(h)=b(med(h))
 
-          write(*,*)rgal_plot(h)
+c   Commented by Loic to improve speed
+c          write(*,*)rgal_plot(h)
         
 
-          write(*,*)'rgal',rgal(h),'mdisc',mm(h),'mbulge',mmb(h),h, 
-     &              'fb_d',phot(h),'fb',photb(h)
+c   Commented by Loic to improve speed
+c          write(*,*)'rgal',rgal(h),'mdisc',mm(h),'mbulge',mmb(h),h,
+c     &              'fb_d',phot(h),'fb',photb(h)
 
           write(15,*)rgal(h),h,b(med(h)),
      &     b(m1(h)),b(ntot),o
@@ -575,7 +596,8 @@ c             m2(h)=m2(h)+mm(ll-1)
        enddo
 c       close(15)
 
-       write(*,*)ntot,rgal(nbin),n
+c   Commented by Loic to improve speed
+c       write(*,*)ntot,rgal(nbin),n
 
 
 
@@ -663,12 +685,14 @@ c                write(*,*)fb(i),mm(h)
            gausb(h)=sqrt(gausb(h)/(phot(h)*mm(h))/(2*pi))
            
           
-           write(*,*)gausd(h),gausb(h),fdisk(h),mm(h)
+c   Commented by Loic to improve speed
+c           write(*,*)gausd(h),gausb(h),fdisk(h),mm(h)
 
            gausd(h)=int((gausd(h)/10)+0.5)
            gausb(h)=int((gausb(h)/10)+0.5)
            
-           write(*,*)gausd(h),  gausb(h)
+c   Commented by Loic to improve speed
+c           write(*,*)gausd(h),  gausb(h)
 
            s3(h,o)=lcut(gausd(h))
 
@@ -678,7 +702,8 @@ c                write(*,*)fb(i),mm(h)
 
          
            
-           write(*,*)s3(h,o),fdisk(h)
+c   Commented by Loic to improve speed
+c           write(*,*)s3(h,o),fdisk(h)
 
            write(57,*)fdisk(h)
            
@@ -714,8 +739,10 @@ c       close(57)
        enddo
   
 
-       write(*,*)'max=',max_v,max_i
-       write(*,*)'min=',min_v,min_i
+c   Commented by Loic to improve speed
+c       write(*,*)'max=',max_v,max_i
+c   Commented by Loic to improve speed
+c       write(*,*)'min=',min_v,min_i
 
 c       write(*,*)'ok?'
 c       read(*,*) yes
@@ -877,13 +904,15 @@ c               read(*,*)yes
 
  222              do j=1,nv,step
                      v_phi(j)=(vp+j)*sin_i
-                     write(*,*)'v_mod=',vp,v_phi(j),j
+c   Commented by Loic to improve speed
+c                     write(*,*)'v_mod=',vp,v_phi(j),j
 
                      do k=1,nr,step
                         sigma_r(k)=(vr+k)*sin_i
 c                        sigma_phi(k)=sqrt((sigma_r(k)**2)*0.5)
                       
-                        write(*,*)'sigma_rmod=',vp,vr,sigma_r(k),j,k
+c   Commented by Loic to improve speed
+c                        write(*,*)'sigma_rmod=',vp,vr,sigma_r(k),j,k
          
                         do l=1,nf,step
                            if(eee0.ne.1) then
@@ -892,13 +921,15 @@ c                        sigma_phi(k)=sqrt((sigma_r(k)**2)*0.5)
                               sigma_phi(l)=sqrt((sigma_r(k)**2)*0.5)
                            endif
 
-                           write(*,*)'sigma_phimod=',vp,vr,vphi,
-     &                          sigma_phi(l),j,k,l
+c   Commented by Loic to improve speed
+c                           write(*,*)'sigma_phimod=',vp,vr,vphi,
+c     &                          sigma_phi(l),j,k,l
 
                            do g=1,nh,step
                               sigma_h(g)=(vh+g)
-                              write(*,*)'3sigma_hmod=',vp,vr,vphi,vh,
-     &                         sigma_h(g),j,k,l,g
+c   Commented by Loic to improve speed
+c                              write(*,*)'3sigma_hmod=',vp,vr,vphi,vh,
+c     &                         sigma_h(g),j,k,l,g
 
 
 c     in case of FREE photometric distribution DE COOMMENT THIS
@@ -1012,8 +1043,9 @@ c                           lnL(j,k,l,g,f)=(-0.5*n*log(2*pi)+like)
 c                           lnL=(-0.5*n*log(2*pi)+like)
                            lnL=like
 
-                           write(*,*)'f=',phot(h),
-     &                     ' lnL=', lnL,j,k,l,g,h,mm(h),chi2,oo
+c   Commented by Loic to improve speed
+c                           write(*,*)'f=',phot(h),
+c     &                     ' lnL=', lnL,j,k,l,g,h,mm(h),chi2,oo
                                               
                            if((lnL).gt.max)then
 
@@ -1037,7 +1069,8 @@ c     in case of free photometric distribution
                                               
                            endif
 
-                           write(*,*)Lmax,max
+c   Commented by Loic to improve speed
+c                           write(*,*)Lmax,max
 
                            if((cont.eq.2).and.(lnL.gt.(Lmax-chi2)))
      &                      then
@@ -1081,10 +1114,11 @@ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 
             enddo
 
-                  write(*,*) 'maxv',maxj,'max sigma_r',maxk,
-     &                 'max sigma_phi',maxl,'max sigma_halo',maxg,
-     &                 'max f',maxf,'max L', max, 'cont', cont,
-     &                 'll',ll,'lll',lll,'Lmax',Lmax
+c   Commented by Loic to improve speed
+c                  write(*,*) 'maxv',maxj,'max sigma_r',maxk,
+c     &                 'max sigma_phi',maxl,'max sigma_halo',maxg,
+c     &                 'max f',maxf,'max L', max, 'cont', cont,
+c     &                 'll',ll,'lll',lll,'Lmax',Lmax
 
 c                  write(*,*)'ok?'
 c                  read(*,*)yes
@@ -1128,7 +1162,8 @@ c                     else
 
                         cont=1
                        
-                        write(*,*)'chi2=',chi2
+c   Commented by Loic to improve speed
+c                        write(*,*)'chi2=',chi2
 
 c                        write(*,*)'ok?'
 c                        read(*,*)yes
@@ -1215,7 +1250,8 @@ c                  if(h.eq.1)aa(h)=rgal(h)**2-b(1)**2
 
                   endif
                   
-                     write(*,*)'find errors'
+c   Commented by Loic to improve speed
+c                     write(*,*)'find errors'
 
                      if((p0+p1+p2+p3).eq.0)chi2=6.63/2
                      if((p0+p1+p2+p3).eq.1)chi2=5.39/2
@@ -1224,7 +1260,8 @@ c                  if(h.eq.1)aa(h)=rgal(h)**2-b(1)**2
 
 
 
-              write(*,*)'yuo have',5-(p0+p1+p2+p3),'free parameters'
+c   Commented by Loic to improve speed
+c              write(*,*)'yuo have',5-(p0+p1+p2+p3),'free parameters'
 
 
 c                   if((mm(h)-5+(p0+p1+p2+p3)-1).gt.45)then
@@ -1257,7 +1294,8 @@ c                     endif
 c                  rejm=(max-s3)/(mm(h)-1-5+(p0+p1+p2+p3))
 c                  if(rejm.le.rejmin)rejmin=rejm
                   
-                  write(*,*)max,mm(h)
+c   Commented by Loic to improve speed
+c                  write(*,*)max,mm(h)
 c                  write(*,*)'pippo'
 c                  read(*,*)yes
 
@@ -1331,7 +1369,8 @@ c                  endif
               
                close(77)
 
-               write(*,*)'number of planetariae',n
+c   Commented by Loic to improve speed
+c               write(*,*)'number of planetariae',n
                close(10)
 c
  20          format(10(1x,f8.3))
@@ -1361,7 +1400,8 @@ c rotation curve
 
                 nmax=4
                 alpha=30*pi/180
-                write(*,*) TAN(alpha)
+c   Commented by Loic to improve speed
+c                write(*,*) TAN(alpha)
                 
                 do i=1,nmax
                    velavR(i)=0
@@ -1491,7 +1531,8 @@ c                      sigmaR(j)=sqrt(sigmaR(j)/(denR(j)-1))
 c                      write(*,*)velavB(j),denB(j),j,sigmaB(j),supp(j)
 c                      write(*,*)velavR(j),denR(j),j,sigmaR(j),supp(j)
 
-                       write(*,*)velavR(j),den(j),j,sigmaR(j),supp(j)
+c   Commented by Loic to improve speed
+c                       write(*,*)velavR(j),den(j),j,sigmaR(j),supp(j)
 
 c                   if(j.eq.nmax)supp(j)=450
                    
@@ -1620,7 +1661,8 @@ c                sigmaR(j)=sqrt(sigmaR(j)/(denR(j)-1))
 c                write(*,*)velavB(j),denB(j),j,sigmaB(j),supp(j)
 c                write(*,*)velavR(j),denR(j),j,sigmaR(j),supp(j)
 
-                write(*,*)velavR(j),den(j),j,sigmaR(j),supp(j)
+c   Commented by Loic to improve speed
+c                write(*,*)velavR(j),den(j),j,sigmaR(j),supp(j)
 
 c     if(j.eq.nmax)supp(j)=450
                    
@@ -1707,7 +1749,8 @@ c                         s3(5,3)=-7.1
 
                   likes_av=0
 c                  rej(oo,h)=(mxl(h)-s3)/(mm(h)-1-5+(p0+p1+p2+p3))
-                  write(*,*)mxl(h),s3(h,o),mm(h)
+c   Commented by Loic to improve speed
+c                  write(*,*)mxl(h),s3(h,o),mm(h)
 
 c                  write(*,*)'pippo'
 c                  read(*,*)yes
@@ -1813,8 +1856,10 @@ c     &                                 exp(-(v_halos(i))))))
 
                          likes_av=likes_av+likes
 
-                         write(*,*)likes,fb(i),mxf(h),con(i),mm(h),ys(i)
-                         write(*,*)'likelihood threshold',rej(oo,h),oo,h
+c   Commented by Loic to improve speed
+c                         write(*,*)likes,fb(i),mxf(h),con(i),mm(h),ys(i)
+c   Commented by Loic to improve speed
+c                         write(*,*)'likelihood threshold',rej(oo,h),oo,h
 
 c                         if(bd(i).eq.1)then
                          
@@ -1847,8 +1892,10 @@ c                           con(i)=con(i)+1
                                                       
 c                           if(con(i).eq.2)then
                               l=l+1
-                               write(*,*)'**rejected***'
-                              write(*,*)l,likes,i,gg(i),'cont',con(i)
+c   Commented by Loic to improve speed
+c                               write(*,*)'**rejected***'
+c   Commented by Loic to improve speed
+c                              write(*,*)l,likes,i,gg(i),'cont',con(i)
 c     if(bb(i).eq.bd(i))then
                               write(14,*)likes,h,mm(h),xs(i),ys(i),
      &                         gg(i),vhel(i),oo
@@ -1892,7 +1939,8 @@ c                             endif
 c                          endif
 c                     endif
  315              enddo
-                  write(*,*)likes_av/mm(h)
+c   Commented by Loic to improve speed
+c                  write(*,*)likes_av/mm(h)
                enddo
 
  771           format(12(1x,f8.2))
@@ -1902,15 +1950,18 @@ c                     endif
                close(10)
 c               close(17)
 
-               write(*,*)g,l,n,nbin,oo
+c   Commented by Loic to improve speed
+c               write(*,*)g,l,n,nbin,oo
 c comment by Loic:
 c Keep these values they are important
                 write(45,*)s3(1,o),s3(2,o),s3(3,o),s3(4,o),s3(5,o)
                
 
 c               write(*,*)'carry on?0=no'
-               write(*,*)'yuo have',5-(p0+p1+p2+p3),'free parameters'
-               write(*,*)'v_av=',av
+c   Commented by Loic to improve speed
+c               write(*,*)'yuo have',5-(p0+p1+p2+p3),'free parameters'
+c   Commented by Loic to improve speed
+c               write(*,*)'v_av=',av
 c               read(*,*)lll
 
                if((l.eq.0).or.(lll.eq.0)) goto 777

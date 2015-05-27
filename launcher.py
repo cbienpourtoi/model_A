@@ -58,9 +58,6 @@ print "Will use " + fcompilator + " as fortran compilator"
 # Exectution of the series of codes #
 #####################################
 
-# TODO: check I/O for each process
-
-
 
 #######################
 # Convert the PN coordinates according to the galfit model coordinates system
@@ -115,8 +112,6 @@ phot.execute()
 #######################
 # Exectution ffinder (former ffinder.f)
 
-
-# TODO:  put the catalogs somewhere in the flow!
 ffinder(config.bulgetxt, config.totaltxt, config.fractiontxt, config.cat_flux_per_area)
 
 

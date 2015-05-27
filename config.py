@@ -3,28 +3,35 @@ __author__ = 'loic'
 import astropy.units as u
 
 
+
+
+""" General configuration """
+
 # Main input catalog
 main_catalog = "phot/catalog09.cat" # Change it!
 
 
 
-""" General configuration """
+# Center PN image in pixel. Format: [x, y] #remove this value?
+centerPNS = {'x':0., 'y':0.}
 
-# [Input values (former create_input.f)]
+# Center 2MASS image in pixel. Format: [x, y] #check the real center from bulge.fits (or galaxy.fits)
+center2MASS = {'x':0., 'y':0.}
 
-centerPNS = {'x':0., 'y':0.}                # Center PNS image in pixel. Format: [x, y] #remove this value?
+# Pixel scale. Format: arcsec/pix
+pixel_scale = 1.
 
-center2MASS = {'x':0., 'y':0.}              # Center 2MASS image in pixel. Format: [x, y] #check the real center from bulge.fits (or galaxy.fits)
+# Coordinates of the main galaxy (RA,DEC). Format = [deg, deg]
+gal_coord = {'RA':54.6208*u.deg, 'Dec':-5.44980001*u.deg}
 
-pixel_scale = 1.                    # Pixel scale. Format: arcsec/pix
+# Position angle N-->E (-..), from galfit. Format = deg
+pos_angle = 0.
 
-gal_coord = {'RA':54.6208*u.deg, 'Dec':-5.44980001*u.deg}  # Coordinates of the main galaxy (RA,DEC). Format = [deg, deg]
+# Inclination, from galfit. Format: cos^-1(b/a)
+inclination = 72.
 
-pos_angle = 0.                      # Position angle N-->E (-..), from galfit. Format = deg
-
-inclination = 72.                    # Inclination, from galfit. Format: cos^-1(b/a)
-
-vel_ned = 660.                         # Systemic velocity of teh galaxy, from Nasa Extragalactic Database (https://ned.ipac.caltech.edu/). Format = lm/s
+# Systemic velocity of teh galaxy, from Nasa Extragalactic Database (https://ned.ipac.caltech.edu/). Format = lm/s
+vel_ned = 660.
 
 
 
