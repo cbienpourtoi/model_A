@@ -67,9 +67,6 @@ galaxy_center_pix = get_galaxy_center(config.iraf_input_dir+config.totalfits)
 
 PNtable = convert_coordinates(config.main_catalog, galaxy_center_pix)
 
-# TODO: Improve a bit the images. have one for the color (velocities), and one for the positions. Maybe make a little zoom ?
-plot_image(config.iraf_input_dir+config.totalfits, PNtable, "gal_and_PN.png")
-
 
 
 # TODO: This should happen only once, compared to the rest that will be more frequent: do later
@@ -108,6 +105,10 @@ clean_PN_catalog(config.main_catalog, config.clean_catalog)
 # Exectution pyraf phot.py
 
 phot.execute()
+
+# TODO: Improve a bit the images. have one for the color (velocities), and one for the positions. Maybe make a little zoom ?
+plot_image(config.iraf_tmp_dir+config.fractionfits, PNtable, "gal_and_PN.png")
+
 
 
 #######################
