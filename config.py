@@ -8,7 +8,7 @@ import astropy.units as u
 """ General configuration """
 
 # Main input catalog
-main_catalog = "phot/catalog09.cat" # Change it!
+main_catalog = "/home/arianna/work/alpha/models/models1/model_A/catalog09.cat_ari" # Change it!
 
 
 
@@ -71,6 +71,7 @@ clean_catalog = "phot/PN_catalog_cleaned.cat" # Don't change it!
 
 # Fits file inputs:
 iraf_input_dir = "iraf_input/"
+#iraf_input_dir ="/home/arianna/work/alpha/models/models1/model_A/"
 totalfits = "galaxy.fits"
 bulgefits = "bulge.fits"
 

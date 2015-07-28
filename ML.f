@@ -1679,7 +1679,7 @@ c                enddo
 
               
 c             write(*,*)tot
-c             write(*,*)'sigma clipping?  0=no'
+c            write(*,*)'sigma clipping?  0=no'
 c             read(*,*) cc
 c             if(cc.eq.0)goto 777
 
@@ -1954,9 +1954,10 @@ c   Commented by Loic to improve speed
 c               write(*,*)g,l,n,nbin,oo
 c comment by Loic:
 c Keep these values they are important
-                write(45,*)s3(1,o),s3(2,o),s3(3,o),s3(4,o),s3(5,o)
-               
-
+                do h=1,nbin
+                write(45,*)s3(h,o)
+                enddo
+                close(45)
 c               write(*,*)'carry on?0=no'
 c   Commented by Loic to improve speed
 c               write(*,*)'yuo have',5-(p0+p1+p2+p3),'free parameters'
@@ -1973,6 +1974,7 @@ c               read(*,*)lll
                open(12,file="vprofile.dat",status="unknown")
                open(10,file="likelihood.dat",status="unknown")
                open(77,file='error.dat',status='unknown')
+               open(45,file="likelihood_threshold.dat",status="unknown")
 
                goto 666
                   

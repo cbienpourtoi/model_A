@@ -20,6 +20,8 @@ def execute():
     ## use GALFIT to fit and to create a model disk vs bulge##
     ##galfit.feedme##
 
+    iraf.images()
+
     # path to fits files:
     total = config.iraf_input_dir+config.totalfits
     bulge = config.iraf_input_dir+config.bulgefits
@@ -31,10 +33,13 @@ def execute():
         os.mkdir(tmp_dir)
 
     if os.path.exists(fraction):
-         iraf.module.imdelete(fraction)
+         iraf.imdelete(fraction)
+
+    print fraction
+    print bulge
 
     # Makes the fraction image by dividing the bulge by the total:
-    iraf.module.imarith(bulge, "/", total, fraction)
+    iraf.imarith(bulge, "/", total, fraction)
 
     """ LLT: I don't think we need this anymore:
 

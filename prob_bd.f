@@ -465,6 +465,7 @@ c               write(*,*)mm(h),mmm(h)
 c               write(*,*)n,tot_gc,cont,cont1
 
                do h=1,nbin
+                    write(*,*)nbin
                   write(*,*)rgal(h),rgalgc(h),mm(h)
                   read(12,*)lth(h)
                      
