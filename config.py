@@ -8,7 +8,7 @@ import astropy.units as u
 """ General configuration """
 
 # Main input catalog
-main_catalog = "/home/arianna/work/alpha/models/models1/model_A/catalog09.cat_ari" # Change it!
+main_catalog = "phot/catalog.cat" # Change it!
 
 
 
