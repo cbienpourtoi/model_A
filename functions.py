@@ -95,11 +95,27 @@ def convert_coordinates(catalog, galaxy_center_pix):
     PNx = [galaxy_center_pix["x"] - d for d in dPNx] # Minus sign from Arianna.
     PNy = [galaxy_center_pix["y"] + d for d in dPNy]
 
+
+    dRA_arcsec = []
+    dDec_arcsec = []
+    for (r, d) in zip(dRA, dDec):
+        dRA_arcsec.append((r.to("arcsec"))/u.arcsec)
+        dDec_arcsec.append((d.to("arcsec"))/u.arcsec)
+
+    colPNdRA = Column(dRA_arcsec, name="PNdRA_arcsec")
+    colPNdDec = Column(dDec_arcsec, name="PNdDec_arcsec")
     colPNx = Column(PNx, name="PNx_pix")
     colPNy = Column(PNy, name="PNy_pix")
     PNtable.add_column(colPNx)
     PNtable.add_column(colPNy)
-    Table([colPNx, colPNy]).write(config.position_file, format= "ascii")
+    PNtable.add_column(colPNdRA)
+    PNtable.add_column(colPNdDec)
+    Table([colPNx, colPNy, colPNdRA, colPNdDec]).write(config.position_file, format= "ascii")
+
+
+    #PNtable.write("ari.txt", format= "ascii")
+    #print PNtable
+    #sys.exit()
 
     return PNtable
 

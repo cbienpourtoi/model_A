@@ -7,9 +7,11 @@ import astropy.units as u
 
 """ General configuration """
 
-# Main input catalog
-main_catalog = "phot/catalog.cat" # Change it!
+# Where are all the model_XYZ repertories with all the data (catalogs + fits)
+all_inputs = "inputs/"
 
+# Where we will put all the results
+all_outputs = "outputs/"
 
 
 # Center PN image in pixel. Format: [x, y] #remove this value?
@@ -32,6 +34,10 @@ inclination = 72.
 
 # Systemic velocity of teh galaxy, from Nasa Extragalactic Database (https://ned.ipac.caltech.edu/). Format = lm/s
 vel_ned = 660.
+
+
+""" Files to save """
+filestosave = {"Ffinder":["gal_and_PN.png"], "ML":["likelihood.dat", "bin.dat", "error.dat", "unliky.dat", "rejected.dat"], "Probbd":["prob_bd.dat", "radial.dat", "count.dat", "all.dat"]}
 
 
 
@@ -66,6 +72,11 @@ simulation = {"pix_scale":1.*u.arcsec}       # Pixel scale of the simulations
 #### TEMPORARY FILES ####
 #########################
 # No change needed on these files
+
+
+
+# Main input catalog
+main_catalog = "phot/catalog.cat" # Don't change it
 
 clean_catalog = "phot/PN_catalog_cleaned.cat" # Don't change it!
 

@@ -48,7 +48,7 @@ def main():
             fcompilator = c
             break
         except:
-            print c + " not found"
+            print c + " not found (this message is normal)"
 
     print "Will use " + fcompilator + " as fortran compilator"
 
@@ -130,7 +130,8 @@ def main():
     error_code = subprocess.call(['./' + f_exec_filename], stdin=open("commands_for_ML", 'r'))
     if error_code != 0:
         print "Error while executing " + fortfile
-        sys.exit()
+        return fortfile
+        #sys.exit()
 
     # Creates a new file from bin.dat created by ML.f with only the last iteration. This file will be read by prob_bd.f
     passes_bindata_for_probbd()
@@ -144,7 +145,9 @@ def main():
     error_code = subprocess.call(['./' + f_exec_filename])
     if error_code != 0:
         print "Error while executing " + fortfile
-        sys.exit()
+        return fortfile
+
+    return 0
 
 if __name__ == "__main__":
     main()

@@ -254,10 +254,10 @@ c              write(*,*)'rgalgc', rgalgc(h)
  
 c GC obtaining prob for each GC
  
-               open(17,file="prob_bd9.dat",status="unknown")
+               open(17,file="prob_bd.dat",status="unknown")
               open(19,file="all.dat",status="unknown")
-              open(21,file="radial9.dat",status="unknown")
-              open(22,file="count9.dat",status="unknown")
+              open(21,file="radial.dat",status="unknown")
+              open(22,file="count.dat",status="unknown")
 
                likes=0
                tot_gc=0
