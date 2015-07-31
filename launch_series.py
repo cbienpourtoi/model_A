@@ -35,8 +35,12 @@ from functions import *
 
 
 # Change this if you want to run it only on one model/catalog. Else, put a '*' to do everything
-model_number = 'F'
-catalog_number = '00'
+model_number = '*'
+catalog_number = '*'
+
+# Creates the IRAF input directory where the fits files will be stored
+if not os.path.isdir(config.iraf_input_dir):
+	os.mkdir(config.iraf_input_dir)
 
 # Creates the directory where to put the outputs:
 if not os.path.isdir(config.all_outputs):
