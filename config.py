@@ -37,7 +37,7 @@ vel_ned = 660.
 
 
 """ Files to save """
-filestosave = {"Ffinder":["gal_and_PN.png"], "ML":["likelihood.dat", "bin.dat", "error.dat", "unliky.dat", "rejected.dat"], "Probbd":["prob_bd.dat", "radial.dat", "count.dat", "all.dat"]}
+filestosave = {"Ffinder":["gal_and_PN.png", "phot/flux_per_area.dat"], "ML":["likelihood.dat", "bin.dat", "error.dat", "unliky.dat", "rejected.dat"], "Probbd":["prob_bd.dat", "radial.dat", "count.dat", "all.dat"]}
 
 
 

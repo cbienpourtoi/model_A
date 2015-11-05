@@ -75,30 +75,30 @@ for model in list_of_models:
         shutil.copyfile(catalog, config.main_catalog)
 
         # correct output directory (depends on the catalog number)
-        catalogDicrectory = mainDirOutput+"/"+os.path.splitext(os.path.basename(catalog))[0]+'/'
-        if os.path.isdir(catalogDicrectory):
-            shutil.rmtree(catalogDicrectory)
-        os.mkdir(catalogDicrectory)
+        catalogDirectory = mainDirOutput+"/"+os.path.splitext(os.path.basename(catalog))[0]+'/'
+        if os.path.isdir(catalogDirectory):
+            shutil.rmtree(catalogDirectory)
+        os.mkdir(catalogDirectory)
 
         error_code = launcher.main()
         if error_code == 0:
             for code in config.filestosave:
                 for file in config.filestosave[code]:
-                    shutil.copyfile(file, catalogDicrectory+file)
+                    shutil.copyfile(file, os.path.join(catalogDirectory, os.path.basename(file)))
         else:
             errorMessage = "There was an error running " + error_code + ". Only the files created before "+ error_code+" will be transfered to output."
-            errorFile = catalogDicrectory+"ERROR_MESSAGE.txt"
+            errorFile = catalogDirectory+"ERROR_MESSAGE.txt"
             logError = open(errorFile, 'w')
             logError.write(str(datetime.datetime.now())+" -- ")
             logError.write(errorMessage)
             logError.close()
             if error_code == 'ML.f':
                 for file in config.filestosave["Ffinder"]:
-                    shutil.copyfile(file, catalogDicrectory+file)
+                    shutil.copyfile(file, os.path.join(catalogDirectory, os.path.basename(file)))
             if error_code == 'prob_bd.f':
                 for file in config.filestosave["Ffinder"]:
-                    shutil.copyfile(file, catalogDicrectory+file)
+                    shutil.copyfile(file, os.path.join(catalogDirectory, os.path.basename(file)))
                 for file in config.filestosave["ML"]:
-                    shutil.copyfile(file, catalogDicrectory+file)
+                    shutil.copyfile(file, os.path.join(catalogDirectory, os.path.basename(file)))
                 # Add creates an error and continues
 
