@@ -40,7 +40,7 @@ def main():
 
     # Automatically checks the presence of g77 and f77 compilators.
 
-    fcompilators = ["f77", "g77"]  # add your compilator here if you want
+    fcompilators = ["f77", "g77", "gfortran"]  # add your compilator here if you want
 
     for c in fcompilators:
         try:
