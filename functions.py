@@ -10,6 +10,7 @@ from astropy.io import fits
 import matplotlib.pyplot as plt
 from math import *
 import config
+import re
 
 reload(config)
 import numpy as np
@@ -120,19 +121,24 @@ def convert_coordinates(catalog, galaxy_center_pix):
     return PNtable
 
 
-
 def get_galaxy_center(fitsfile):
-    """ Will get the center position from the fits file. Won't work on real observations right now.
+    """ Will get the center position from the fits file. 
+    Working with all FITS files with data in first HDU.
+
     :param fitsfile: a fits where the galaxy is centered.
     :return: position center [x,y] in pixels
     """
-    #TODO: it works only for simulations. What about observations ? (tip? take simple the central pixel from the total size / 2)
     hdulist = fits.open(fitsfile)
-    xchar = hdulist[0].header["1_XC"]
-    ychar = hdulist[0].header["1_YC"]
-    xvalue = float(xchar.split("+/-", 1)[0])
-    yvalue = float(ychar.split("+/-", 1)[0])
-    return {"x":xvalue, "y":yvalue}
+    if all(x in hdulist[0].header for x in ["1_XC", "1_YC"]):
+        xchar = hdulist[0].header["1_XC"]
+        ychar = hdulist[0].header["1_YC"]
+        xvalue = float(re.findall('[-+]?[0-9]*\.?[0-9]+', xchar)[0])
+        yvalue = float(re.findall('[-+]?[0-9]*\.?[0-9]+', ychar)[0])
+    else:
+        dy, dx = np.shape(hdulist[0].data)
+        xvalue = dx/2.
+        yvalue = dy/2.
+    return {"x": xvalue, "y": yvalue}
 
 
 def create_commands_ML(ML_command_file, nbins, PNtable):
